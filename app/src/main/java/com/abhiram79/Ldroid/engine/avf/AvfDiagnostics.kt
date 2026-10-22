@@ -14,7 +14,7 @@
  * (Pixel 8/9/10) before investing in a real dual-backend rewrite. Reports
  * what's present, what's granted, whether the service is reachable, and
  * (optionally) attempts to create + start a minimal VM using our existing
- * Alpine kernel/initrd in filesDir.
+ * Debian kernel/initrd in filesDir.
  */
 package com.abhiram79.Ldroid.engine.avf
 
@@ -146,7 +146,7 @@ object AvfDiagnostics {
     }
 
     /**
-     * Attempts a real minimal-VM creation using our existing alpine kernel
+     * Attempts a real minimal-VM creation using our existing Debian kernel
      * + initrd. Returns a human-readable result string. Blocks for a few
      * seconds. Call off the UI thread.
      *
