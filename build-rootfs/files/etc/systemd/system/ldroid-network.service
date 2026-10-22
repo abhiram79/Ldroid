@@ -1,0 +1,13 @@
+[Unit]
+Description=LDroid VM networking
+After=ldroid-bootstrap.service
+Wants=ldroid-bootstrap.service
+Before=ldroid-ready.service dropbear.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/lib/ldroid/ldroid-network
+
+[Install]
+WantedBy=multi-user.target
