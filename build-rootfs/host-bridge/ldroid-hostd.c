@@ -1,5 +1,5 @@
 /*
- * Ldroid - Rootless Podman for Android
+ * Ldroid - Debian Linux for Android
  * Copyright (C) 2024-2026 Ldroid contributors
  *
  * ldroid-hostd - guest side of the Android host bridge.
@@ -43,10 +43,11 @@
 #define VSOCK_PORT  9101
 #define HOST_TIMEOUT_S 5
 
-/* Podman container count, pushed to Android over the host channel instead of
- * being polled: graphroot is pinned in
- * build-rootfs/files/etc/containers/storage.conf, and podman creates one
- * subdirectory per container here, named by its 64-char hex id. */
+/* Container count, pushed to Android over the host channel instead of being
+ * polled: a container runtime creates one subdirectory per container here,
+ * named by its 64-char hex id. The Debian image ships no container runtime,
+ * so this normally reports 0; the protocol is kept for compatibility with
+ * older guest images. */
 #define STATS_DIR "/var/lib/containers/storage/overlay-containers"
 #define STATS_DEBOUNCE_MS 500
 #define STATS_SLOW_TICK_MS 15000
@@ -482,8 +483,8 @@ static long long mono_ms(void) {
     return (long long)ts.tv_sec * 1000 + ts.tv_nsec / 1000000;
 }
 
-/* podman names one overlay-containers subdirectory per container after its
- * 64-character lowercase hex id. */
+/* A container runtime names one overlay-containers subdirectory per container
+ * after its 64-character lowercase hex id. */
 static int is_container_id(const char *name) {
     size_t len = strlen(name);
     if (len != 64) return 0;
@@ -494,8 +495,8 @@ static int is_container_id(const char *name) {
     return 1;
 }
 
-/* Counts podman containers by counting STATS_DIR subdirectories whose name is
- * a container id. Never execs podman or parses JSON. A missing directory (no
+/* Counts containers by counting STATS_DIR subdirectories whose name is a
+ * container id. Never execs a runtime or parses JSON. A missing directory (no
  * containers created yet) counts as 0. */
 static int count_containers(void) {
     DIR *dir = opendir(STATS_DIR);
@@ -535,8 +536,8 @@ struct stats_state {
 };
 
 /* Establishes the inotify watch on STATS_DIR if it isn't already watched.
- * Safe to call when the directory doesn't exist yet (podman hasn't created a
- * container) - just retried on the next slow tick. */
+ * Safe to call when the directory doesn't exist yet (no container has been
+ * created) - just retried on the next slow tick. */
 static void stats_try_watch(struct stats_state *st) {
     if (st->inotify_fd < 0 || st->wd >= 0) return;
     int wd = inotify_add_watch(st->inotify_fd, STATS_DIR, STATS_WATCH_MASK);
@@ -562,7 +563,7 @@ static void stats_init(struct stats_state *st) {
 
 /* Drains pending inotify events (the fd is O_NONBLOCK, so this never blocks)
  * and marks the count dirty with a fresh debounce deadline, so a burst of
- * events (e.g. `podman run --rm`) coalesces into one push. */
+ * events (e.g. a short-lived container) coalesces into one push. */
 static void stats_drain_inotify(struct stats_state *st) {
     char buf[4096] __attribute__((aligned(__alignof__(struct inotify_event))));
     for (;;) {
