@@ -99,7 +99,7 @@ object NetworkUtils {
      * first, capped and sanitized for injection into the guest's `/etc/resolv.conf`
      * (see [sanitizeDnsList]).
      *
-     * IPv4-only here on purpose: musl's resolver in the Alpine guest reads a plain
+     * IPv4-only here on purpose: glibc's resolver in the Debian guest reads a plain
      * `nameserver <addr>` line per line, and the guest network stack this feeds (see
      * `ldroid-network`) is IPv4-only, so a literal we can't reach is worse than none.
      */
@@ -119,7 +119,7 @@ object NetworkUtils {
      * Pure validation/cleanup so [dnsServers]'s output is safe to write into a guest
      * config file: reject anything that isn't a plain dotted-quad IPv4 literal (kills
      * IPv6 literals, whitespace, and shell metacharacters in one check), drop loopback
-     * and the unspecified address, de-duplicate, and cap at 2 - musl reads at most 3
+     * and the unspecified address, de-duplicate, and cap at 2 - glibc reads at most 3
      * `nameserver` lines and one slot is reserved for a public fallback the guest writes.
      */
     internal fun sanitizeDnsList(addresses: List<String?>): List<String> =
