@@ -1,0 +1,12 @@
+[Unit]
+Description=LDroid VM ready marker
+After=ldroid-network.service ldroid-xvnc.service ldroid-pulseaudio.service ldroid-vsock.service ldroid-downloads.service ldroid-hostd.service dropbear.service
+Wants=ldroid-network.service ldroid-xvnc.service ldroid-pulseaudio.service ldroid-vsock.service ldroid-downloads.service ldroid-hostd.service dropbear.service
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/lib/ldroid/ldroid-ready
+
+[Install]
+WantedBy=multi-user.target
