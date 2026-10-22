@@ -1,10 +1,12 @@
 #!/bin/sh
 # Regression tests for QEMU guest DNS resolver ordering.
+# ldroid-network's qemu_resolv_conf() is exercised directly; sourcing it with
+# LDROID_NETWORK_LIB_ONLY=1 suppresses the networking main().
 set -eu
 
 ROOT=$(cd "$(dirname "$0")/.." && pwd)
 # shellcheck disable=SC1091
-. "$ROOT/files/etc/init.d/ldroid-network"
+LDROID_NETWORK_LIB_ONLY=1 . "$ROOT/files/usr/local/lib/ldroid/ldroid-network"
 
 assert_resolvers() {
     actual=$(qemu_resolv_conf "$1")
@@ -62,7 +64,7 @@ assert_resolvers '' \
 nameserver 8.8.8.8
 nameserver 1.1.1.1'
 
-# Public fallback duplicates are removed and the result never exceeds musl's
+# Public fallback duplicates are removed and the result never exceeds glibc's
 # three nameserver slots, even when more device values are supplied.
 assert_resolvers '8.8.8.8,8.8.8.8,1.1.1.1' \
     'nameserver 8.8.8.8
