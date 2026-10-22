@@ -1,0 +1,13 @@
+[Unit]
+Description=LDroid console getty on %I
+After=dev-%i.device
+Before=ldroid-ready.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/bin/ldroid-getty %I
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target
