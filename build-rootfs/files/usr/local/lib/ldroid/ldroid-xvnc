@@ -1,0 +1,27 @@
+#!/bin/sh
+# LDroid X11 server: TigerVNC's Xvnc (combined X server + RFB).
+# Called by ldroid-xvnc.service; systemd supervises the foreground process.
+set -u
+
+# Per-boot DPI from the kernel cmdline token written by the Android app.
+# Digit-only capture: /proc/cmdline ends in '\n', and an `awk -v RS=' '`
+# parse would keep that newline on the last token, so Xvnc rejects -dpi.
+XVNC_DPI=$(sed -n 's/.*ldroid\.x11\.dpi=\([0-9]*\).*/\1/p' /proc/cmdline 2>/dev/null)
+[ -z "$XVNC_DPI" ] && XVNC_DPI=96
+
+# /tmp lives on the persistent ext4 overlay, so a stale X server lock from a
+# previous boot blocks Xvnc with "Server is already active for display 0".
+rm -f /tmp/.X0-lock /tmp/.X11-unix/X0
+mkdir -p /tmp/.X11-unix
+
+# -SecurityTypes None is fine: the listening socket only sees traffic from
+# the Android side (127.0.0.1 inside the guest's network namespace).
+exec /usr/bin/Xtigervnc :0 \
+    -geometry 1280x720 \
+    -depth 24 \
+    -SecurityTypes None \
+    -localhost no \
+    -rfbport 5900 \
+    -AlwaysShared \
+    -dpi "$XVNC_DPI" \
+    -AcceptSetDesktopSize
