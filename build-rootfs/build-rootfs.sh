@@ -163,7 +163,7 @@ for svc in ldroid-migrate ldroid-bootstrap ldroid-network ldroid-resize \
 done
 
 # Console getty instances.  The wrapper picks the tty named by ldroid.tty=;
-# the other instance sleeps forever, exactly like the old inittab lines.
+# the other instance sleeps forever, exactly like the old console getty lines.
 ln -sf /etc/systemd/system/ldroid-getty@.service \
     "$ROOTFS/etc/systemd/system/multi-user.target.wants/ldroid-getty@hvc0.service"
 ln -sf /etc/systemd/system/ldroid-getty@.service \
