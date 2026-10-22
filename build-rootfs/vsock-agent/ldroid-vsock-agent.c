@@ -1,5 +1,5 @@
 /*
- * Ldroid - Rootless Podman for Android
+ * Ldroid - Debian Linux for Android
  * Copyright (C) 2024-2026 Ldroid contributors
  *
  * ldroid-vsock-agent — guest-side peer for Ldroid's AVF backend.
