@@ -90,7 +90,7 @@ main() {
         # AVF backend: crosvm wires the guest to a TAP that Android's tethering
         # manager runs DHCP on. Use Debian's ISC client; its script writes
         # /etc/resolv.conf from the lease.
-        timeout 8 dhclient -1 -4 "$NETIF" 2>/dev/null || true
+        timeout 8 dhclient -1 -d -4 "$NETIF" 2>/dev/null || true
         [ -s /etc/resolv.conf ] || \
             printf 'nameserver 8.8.8.8\nnameserver 1.1.1.1\n' > /etc/resolv.conf
         if ! ip -o -4 addr show dev "$NETIF" 2>/dev/null | grep -q 'inet '; then
