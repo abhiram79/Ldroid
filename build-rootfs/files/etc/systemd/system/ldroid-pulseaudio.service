@@ -1,0 +1,20 @@
+[Unit]
+Description=LDroid PulseAudio server (null sink + TCP capture stream)
+After=ldroid-bootstrap.service
+Wants=ldroid-bootstrap.service
+Before=ldroid-ready.service
+
+[Service]
+Type=simple
+Environment=XDG_RUNTIME_DIR=/run/ldroid-pulse
+Environment=PULSE_RUNTIME_PATH=/run/ldroid-pulse
+ExecStartPre=/bin/mkdir -p /run/ldroid-pulse
+ExecStartPre=/bin/chmod 755 /run/ldroid-pulse
+ExecStart=/usr/bin/pulseaudio --daemonize=no --disallow-exit --exit-idle-time=-1 "--load=module-null-sink sink_name=ldroid_sink rate=44100 channels=2 format=s16le" "--load=module-simple-protocol-tcp source=ldroid_sink.monitor record=true rate=44100 format=s16le channels=2 listen=0.0.0.0 port=4713" "--load=module-native-protocol-unix"
+Restart=always
+RestartSec=1
+StandardOutput=append:/var/log/pulseaudio.log
+StandardError=append:/var/log/pulseaudio.log
+
+[Install]
+WantedBy=multi-user.target
