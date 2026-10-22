@@ -207,7 +207,7 @@ int main(int argc, char *argv[]) {
     /* Kick getty to (re)emit the login prompt. terminal.sock is a QEMU chardev
      * with server=on,wait=off, so whatever getty printed to hvc0 before this
      * bridge connected was discarded (no client attached). getty starts right
-     * after `::wait:openrc default`, racing this connect, so the prompt is
+     * after systemd reaches multi-user.target, racing this connect, so the prompt is
      * usually gone — leaving a blank terminal until a keystroke retriggers it.
      * A lone CR is read by getty as an empty login name, so it re-displays
      * /etc/issue + the login prompt. Mirrors the manual Enter users hit today;
