@@ -30,7 +30,7 @@ The export already includes: app version, device info (model / Android version),
 If this is about the VM, include terminal output from running:
 ```
 uname -a
-cat /etc/alpine-release
+cat /etc/os-release
 ```
 
 ## Additional Context
