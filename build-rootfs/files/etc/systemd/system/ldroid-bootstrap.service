@@ -1,0 +1,13 @@
+[Unit]
+Description=LDroid VM bootstrap (modules, devpts, sysctl, downloads)
+After=local-fs.target
+Before=ldroid-network.service ldroid-xvnc.service ldroid-pulseaudio.service ldroid-vsock.service ldroid-downloads.service ldroid-hostd.service ldroid-ready.service
+Wants=local-fs.target
+
+[Service]
+Type=oneshot
+RemainAfterExit=yes
+ExecStart=/usr/local/lib/ldroid/ldroid-bootstrap
+
+[Install]
+WantedBy=multi-user.target
