@@ -689,7 +689,7 @@ class QemuEngine @Inject constructor(
             when {
                 current == desiredBytes -> return
                 // NEVER delete: storage.img is the persistent ext4 overlay (every
-                // apk add, container, user file). Deleting on mismatch could wipe
+                // apt install, user file). Deleting on mismatch could wipe
                 // all guest data if the size ever changes (a corrupted DataStore
                 // falling back to the 2GB default, or a future resize UI). Grow in
                 // place when larger — the guest's first-boot resize2fs claims the
