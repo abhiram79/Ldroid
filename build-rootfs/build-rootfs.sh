@@ -127,7 +127,7 @@ chmod 0644 "$ROOTFS/usr/share/doc/ldroid/"*
 echo "ldroid" > "$ROOTFS/etc/hostname"
 echo "127.0.0.1 localhost ldroid" > "$ROOTFS/etc/hosts"
 echo "::1 localhost ip6-localhost" >> "$ROOTFS/etc/hosts"
-printf 'LANG=C.UTF-8\n' > "$ROOTFS/etc/locale.conf"
+printf 'LANG=C.UTF-8\n' > "$ROOTFS/etc/locale.conf"\nmkdir -p "$ROOTFS/etc/default"\nprintf 'LANG=C.UTF-8\n' > "$ROOTFS/etc/default/locale"
 
 # Debian's glibc resolver; ldroid-network rewrites this at boot with the
 # device-provided resolvers.  Keep a working fallback baked into the image.
