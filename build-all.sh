@@ -198,7 +198,7 @@ run_boot_test() {
     log "Launching App..."
     adb shell am start -n "$pkg/$activity" >/dev/null 2>&1
     
-    echo -e "${YELLOW}>>> PLEASE PRESS 'Start Podman' IN THE APP NOW <<<${NC}"
+    echo -e "${YELLOW}>>> PLEASE PRESS 'Start VM' IN THE APP NOW <<<${NC}"
     
     # Poll console log
     log "Waiting for VM to boot (timeout: ${timeout}s)..."
