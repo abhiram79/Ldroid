@@ -1,0 +1,71 @@
+#!/bin/sh
+# LDroid VM system bootstrap: modules, devpts, sysctl, downloads share.
+#
+# Called by ldroid-bootstrap.service after local-fs.target.  Every operation
+# is idempotent: systemd may restart the unit, and the persistent overlay
+# means some mounts survive a soft reboot.
+set -u
+
+echo "Loading kernel modules..." > /dev/console
+
+# Seed the system clock from the host. AVF/crosvm doesn't wire an emulated
+# RTC the way QEMU TCG does, so without this the guest boots at epoch
+# (1970-01-01) and every TLS certificate appears "not yet valid" - apt update
+# warns, curl/wget fail, etc. AvfEngine passes `ldroid.epoch=<unix-secs>` on
+# the cmdline; parse it here. No-op when the marker is absent (QEMU path).
+LDROID_EPOCH=$(sed -n 's/.*ldroid\.epoch=\([0-9]*\).*/\1/p' /proc/cmdline)
+if [ -n "$LDROID_EPOCH" ] && [ "$LDROID_EPOCH" -gt 0 ] 2>/dev/null; then
+    date -s "@$LDROID_EPOCH" >/dev/null 2>&1
+fi
+
+# /dev sub-mounts (the initramfs supplies devtmpfs; add the rest explicitly).
+mkdir -p /dev/pts /dev/shm 2>/dev/null
+mountpoint -q /dev/pts || mount -t devpts devpts /dev/pts \
+    -o gid=5,mode=0620,ptmxmode=0666,noexec,nosuid
+mountpoint -q /dev/shm || mount -t tmpfs tmpfs /dev/shm \
+    -o noexec,nosuid,nodev,size=64m
+[ -c /dev/ptmx ] || mknod /dev/ptmx c 5 2 2>/dev/null
+chmod 0666 /dev/ptmx /dev/pts/ptmx 2>/dev/null
+
+# Hostname (Debian does not enable its hostname service in this image).
+[ -r /etc/hostname ] && hostname -F /etc/hostname 2>/dev/null || true
+
+depmod -a 2>/dev/null || true
+for m in 9p 9pnet 9pnet_virtio; do modprobe "$m" 2>/dev/null || true; done
+
+# I/O scheduler - kernel cmdline `elevator=` was deprecated in Linux 5.0,
+# so set per-device via sysfs. mq-deadline is a good default for the ext4
+# overlay under random-write loads.
+for q in /sys/block/vda/queue/scheduler /sys/block/vdb/queue/scheduler; do
+    [ -w "$q" ] && echo mq-deadline > "$q" 2>/dev/null || true
+done
+
+# Downloads share (QEMU virtio-9p). On AVF, ldroid-downloads owns
+# /mnt/downloads instead (9p over vsock, rendezvous with the Android-side
+# 9p2000.L server) - skip the virtio-9p attempt there entirely.
+if ! grep -q 'ldroid\.backend=avf' /proc/cmdline 2>/dev/null; then
+    mkdir -p /mnt/downloads 2>/dev/null
+    mount -t 9p -o trans=virtio,version=9p2000.L,rw,msize=262144,cache=mmap,noatime \
+        downloads /mnt/downloads 2>/dev/null || true
+fi
+
+# ZRAM swap (1.5x RAM, lz4). With lz4 averaging ~3x compression on
+# text/heap pages, 1.5x RAM disksize gives ~4.5x effective memory under
+# pressure - enough headroom for Firefox + a desktop in a 2 GB VM.
+if [ -b /dev/zram0 ]; then
+    _mem_kb=$(awk '/^MemTotal:/{print $2}' /proc/meminfo)
+    echo lz4 > /sys/block/zram0/comp_algorithm 2>/dev/null || true
+    echo $((_mem_kb * 1536)) > /sys/block/zram0/disksize 2>/dev/null || true
+    mkswap /dev/zram0 >/dev/null 2>&1 && swapon -p 100 /dev/zram0 2>/dev/null || true
+fi
+
+# OOM behavior: let the OOM killer pick the highest-badness victim rather
+# than killing whatever triggered the allocation.
+[ -w /proc/sys/vm/oom_kill_allocating_task ] && \
+    echo 0 > /proc/sys/vm/oom_kill_allocating_task
+# overcommit_memory=1 lets browsers reserve the address space they want
+# without ENOMEM at mmap time.
+[ -w /proc/sys/vm/overcommit_memory ] && \
+    echo 1 > /proc/sys/vm/overcommit_memory
+
+exit 0
