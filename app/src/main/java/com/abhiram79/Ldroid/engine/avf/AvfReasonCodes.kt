@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Decodes android.system.virtualmachine.VirtualMachineCallback STOP_REASON_*
  * and ERROR_* integer codes to their constant names. Values verified against

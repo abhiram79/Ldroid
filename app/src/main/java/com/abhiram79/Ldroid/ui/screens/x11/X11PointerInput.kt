@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * The touch/mouse/scroll gesture state machine for the X11 viewer surface.
  * Moved out of X11Screen.kt's AndroidView(pointerInput) as-is; see that file

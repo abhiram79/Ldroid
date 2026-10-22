@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Full-screen pure-black overlay for server mode. Consumes all touches (the app
  * is still foreground, so this prevents stray input), shows a faint exit hint for

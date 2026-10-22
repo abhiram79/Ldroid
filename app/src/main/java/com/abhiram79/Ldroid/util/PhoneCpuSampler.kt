@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Samples phone-wide CPU use from /proc/stat for Status charts.
  */

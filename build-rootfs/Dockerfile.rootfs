@@ -1,6 +1,6 @@
 # build-rootfs/Dockerfile.rootfs
 
-# ── Stage 1: cross-compile podroid-vsock-agent (musl-static aarch64) ────────
+# ── Stage 1: cross-compile ldroid-vsock-agent (musl-static aarch64) ────────
 # Uses qemu-user under the hood — no separate cross-toolchain needed.
 FROM --platform=linux/arm64 alpine:3.24 AS vsock-builder
 RUN apk add --no-cache musl-dev gcc make linux-headers
@@ -28,9 +28,9 @@ RUN curl -L -o minirootfs.tar.gz \
  && rm minirootfs.tar.gz
 
 # Pull in the vsock-agent binary built in stage 1.
-COPY --from=vsock-builder /work/vsock-agent/podroid-vsock-agent /work/rootfs/usr/local/bin/podroid-vsock-agent
-COPY --from=vsock-builder /work/host-bridge/podroid-hostd /work/rootfs/usr/local/bin/podroid-hostd
-COPY --from=vsock-builder /work/overlay-normalize/podroid-overlay-normalize /work/rootfs/usr/local/bin/podroid-overlay-normalize
+COPY --from=vsock-builder /work/vsock-agent/ldroid-vsock-agent /work/rootfs/usr/local/bin/ldroid-vsock-agent
+COPY --from=vsock-builder /work/host-bridge/ldroid-hostd /work/rootfs/usr/local/bin/ldroid-hostd
+COPY --from=vsock-builder /work/overlay-normalize/ldroid-overlay-normalize /work/rootfs/usr/local/bin/ldroid-overlay-normalize
 
 ARG SYSTEM_VERSION=0
 ENV SYSTEM_VERSION=${SYSTEM_VERSION}
@@ -38,7 +38,7 @@ ENV SYSTEM_VERSION=${SYSTEM_VERSION}
 ENV ALPINE_VERSION=${ALPINE_RELEASE}
 COPY files /work/files
 # Staged by build_rootfs() in build-all.sh (docs/ lives outside this build
-# context); served in-guest by /usr/local/bin/podroid-docs.
+# context); served in-guest by /usr/local/bin/ldroid-docs.
 COPY docs-guide /work/docs-guide
 COPY build-rootfs.sh /work/build-rootfs.sh
 RUN chmod +x /work/build-rootfs.sh && /work/build-rootfs.sh

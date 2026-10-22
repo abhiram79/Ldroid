@@ -62,16 +62,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.abhiram79.Ldroid.R
 import com.abhiram79.Ldroid.ui.components.AdaptiveContainer
 import com.abhiram79.Ldroid.ui.components.PermissionRows
-import com.abhiram79.Ldroid.ui.components.PodroidGhostButton
-import com.abhiram79.Ldroid.ui.components.PodroidListRow
-import com.abhiram79.Ldroid.ui.components.PodroidPrimaryButton
-import com.abhiram79.Ldroid.ui.components.PodroidSectionLabel
-import com.abhiram79.Ldroid.ui.components.PodroidSwitch
+import com.abhiram79.Ldroid.ui.components.LdroidGhostButton
+import com.abhiram79.Ldroid.ui.components.LdroidListRow
+import com.abhiram79.Ldroid.ui.components.LdroidPrimaryButton
+import com.abhiram79.Ldroid.ui.components.LdroidSectionLabel
+import com.abhiram79.Ldroid.ui.components.LdroidSwitch
 import com.abhiram79.Ldroid.ui.components.VmBandwidthChips
 import com.abhiram79.Ldroid.ui.components.VmCpuChips
 import com.abhiram79.Ldroid.ui.components.VmRamChips
 import com.abhiram79.Ldroid.ui.components.VmStorageChips
-import com.abhiram79.Ldroid.ui.theme.PodroidTokens
+import com.abhiram79.Ldroid.ui.theme.LdroidTokens
 import com.abhiram79.Ldroid.util.AppPermission
 import com.abhiram79.Ldroid.util.AppPermissions
 import com.abhiram79.Ldroid.util.DeviceResourcePolicy
@@ -330,7 +330,7 @@ private fun SetupPageLayout(
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(horizontal = PodroidTokens.Spacing.XL),
+                .padding(horizontal = LdroidTokens.Spacing.XL),
         ) {
             if (isCompactHeight) {
                 Row(
@@ -341,15 +341,15 @@ private fun SetupPageLayout(
                     Column(
                         modifier = Modifier
                             .weight(1f)
-                            .padding(top = PodroidTokens.Spacing.XL, end = PodroidTokens.Spacing.XL),
+                            .padding(top = LdroidTokens.Spacing.XL, end = LdroidTokens.Spacing.XL),
                     ) {
-                        PodroidSectionLabel(stepLabel)
+                        LdroidSectionLabel(stepLabel)
                         Text(
                             text = title,
                             style = MaterialTheme.typography.displayLarge,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
-                        Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+                        Spacer(Modifier.height(LdroidTokens.Spacing.SM))
                         Text(
                             text = description,
                             style = MaterialTheme.typography.bodyMedium,
@@ -359,7 +359,7 @@ private fun SetupPageLayout(
                     Column(
                         modifier = Modifier
                             .weight(1f)
-                            .padding(top = PodroidTokens.Spacing.XL),
+                            .padding(top = LdroidTokens.Spacing.XL),
                     ) {
                         content()
                     }
@@ -370,22 +370,22 @@ private fun SetupPageLayout(
                         .weight(1f)
                         .verticalScroll(rememberScrollState()),
                 ) {
-                    Spacer(Modifier.height(PodroidTokens.Spacing.XL))
-                    PodroidSectionLabel(stepLabel)
+                    Spacer(Modifier.height(LdroidTokens.Spacing.XL))
+                    LdroidSectionLabel(stepLabel)
                     Text(
                         text = title,
                         style = MaterialTheme.typography.displayLarge,
                         color = MaterialTheme.colorScheme.onSurface,
                     )
-                    Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+                    Spacer(Modifier.height(LdroidTokens.Spacing.SM))
                     Text(
                         text = description,
                         style = MaterialTheme.typography.bodyMedium,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
-                    Spacer(Modifier.height(PodroidTokens.Spacing.XL))
+                    Spacer(Modifier.height(LdroidTokens.Spacing.XL))
                     content()
-                    Spacer(Modifier.height(PodroidTokens.Spacing.XL))
+                    Spacer(Modifier.height(LdroidTokens.Spacing.XL))
                 }
             }
             bottomBar()
@@ -411,10 +411,10 @@ private fun StoragePage(
         description = stringResource(R.string.storage_description),
         bottomBar  = { SetupNextBar(onNext = onNext) },
     ) {
-        PodroidListRow(
+        LdroidListRow(
             label = stringResource(R.string.load_balance),
             rightSlot = {
-                PodroidSwitch(checked = loadBalanceEnabled, onCheckedChange = onLoadBalanceToggle)
+                LdroidSwitch(checked = loadBalanceEnabled, onCheckedChange = onLoadBalanceToggle)
             },
         )
         if (loadBalanceEnabled) {
@@ -422,7 +422,7 @@ private fun StoragePage(
                 text = stringResource(R.string.load_balance_description),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(bottom = PodroidTokens.Spacing.SM),
+                modifier = Modifier.padding(bottom = LdroidTokens.Spacing.SM),
             )
         }
         VmStorageChips(
@@ -464,12 +464,12 @@ private fun VmConfigPage(
                 text = stringResource(R.string.load_balance_resources_hint),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                modifier = Modifier.padding(bottom = PodroidTokens.Spacing.SM),
+                modifier = Modifier.padding(bottom = LdroidTokens.Spacing.SM),
             )
         }
 
-        PodroidSectionLabel(stringResource(R.string.resources))
-        PodroidListRow(label = stringResource(R.string.storage), value = "$storageGb GB")
+        LdroidSectionLabel(stringResource(R.string.resources))
+        LdroidListRow(label = stringResource(R.string.storage), value = "$storageGb GB")
         VmRamChips(
             currentMb = ramMb,
             onChange = onRamChange,
@@ -489,19 +489,19 @@ private fun VmConfigPage(
             showDivider = true,
         )
 
-        PodroidSectionLabel(stringResource(R.string.network_label))
-        PodroidListRow(
+        LdroidSectionLabel(stringResource(R.string.network_label))
+        LdroidListRow(
             label = stringResource(R.string.ssh_access),
-            rightSlot = { PodroidSwitch(checked = sshEnabled, onCheckedChange = onSshToggle) },
+            rightSlot = { LdroidSwitch(checked = sshEnabled, onCheckedChange = onSshToggle) },
             divider = false,
         )
         if (sshEnabled) {
-            Spacer(Modifier.height(PodroidTokens.Spacing.XS))
+            Spacer(Modifier.height(LdroidTokens.Spacing.XS))
             Text(
                 text = stringResource(R.string.ssh_password_hint),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                fontFamily = PodroidTokens.mono(),
+                fontFamily = LdroidTokens.mono(),
             )
         }
     }
@@ -532,13 +532,13 @@ private fun StorageAccessPage(
         description = stringResource(R.string.storage_access_description),
         bottomBar  = { SetupNavBar(onBack = onBack, onNext = onNext, nextLabel = stringResource(R.string.continue_label)) },
     ) {
-        PodroidSectionLabel(stringResource(R.string.sharing))
-        PodroidListRow(
+        LdroidSectionLabel(stringResource(R.string.sharing))
+        LdroidListRow(
             label = stringResource(R.string.enable_downloads_sharing),
-            rightSlot = { PodroidSwitch(checked = storageAccessEnabled, onCheckedChange = onStorageAccessToggle) },
+            rightSlot = { LdroidSwitch(checked = storageAccessEnabled, onCheckedChange = onStorageAccessToggle) },
         )
         if (!canManageAllFiles) {
-            Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+            Spacer(Modifier.height(LdroidTokens.Spacing.SM))
             Text(
                 text = stringResource(R.string.requires_android_11),
                 style = MaterialTheme.typography.bodyMedium,
@@ -546,21 +546,21 @@ private fun StorageAccessPage(
             )
         }
         if (storageAccessEnabled && !hasStoragePermission) {
-            Spacer(Modifier.height(PodroidTokens.Spacing.LG))
+            Spacer(Modifier.height(LdroidTokens.Spacing.LG))
             if (canManageAllFiles) {
-                PodroidPrimaryButton(text = stringResource(R.string.grant_storage_access), onClick = onOpenStorageAccessSettings)
+                LdroidPrimaryButton(text = stringResource(R.string.grant_storage_access), onClick = onOpenStorageAccessSettings)
             } else {
-                PodroidPrimaryButton(
+                LdroidPrimaryButton(
                     text = stringResource(R.string.grant_storage_access),
                     onClick = { writeStoragePermLauncher.launch(Manifest.permission.WRITE_EXTERNAL_STORAGE) },
                 )
             }
         }
-        Spacer(Modifier.height(PodroidTokens.Spacing.LG))
+        Spacer(Modifier.height(LdroidTokens.Spacing.LG))
         Text(
             text = stringResource(R.string.storage_access_warning),
             style = MaterialTheme.typography.bodyMedium,
-            color = PodroidTokens.Amber,
+            color = LdroidTokens.Amber,
         )
     }
 }
@@ -583,18 +583,18 @@ private fun UsbPassthroughPage(
         description = stringResource(R.string.usb_passthrough_description),
         bottomBar  = { SetupNavBar(onBack = onBack, onNext = onNext, nextLabel = stringResource(R.string.continue_label)) },
     ) {
-        PodroidSectionLabel(stringResource(R.string.usb_devices_section))
-        PodroidListRow(
+        LdroidSectionLabel(stringResource(R.string.usb_devices_section))
+        LdroidListRow(
             label = stringResource(R.string.enable_usb_passthrough),
             rightSlot = {
-                PodroidSwitch(
+                LdroidSwitch(
                     checked = usbPassthroughEnabled && available,
                     onCheckedChange = onUsbPassthroughToggle,
                     enabled = available,
                 )
             },
         )
-        Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+        Spacer(Modifier.height(LdroidTokens.Spacing.SM))
         Text(
             text = if (available) {
                 stringResource(R.string.usb_passthrough_available)
@@ -666,8 +666,8 @@ private fun PermissionsPage(
 
 @Composable
 private fun SetupNextBar(onNext: () -> Unit) {
-    Column(modifier = Modifier.padding(vertical = PodroidTokens.Spacing.LG)) {
-        PodroidPrimaryButton(text = stringResource(R.string.continue_label), onClick = onNext)
+    Column(modifier = Modifier.padding(vertical = LdroidTokens.Spacing.LG)) {
+        LdroidPrimaryButton(text = stringResource(R.string.continue_label), onClick = onNext)
     }
 }
 
@@ -680,10 +680,10 @@ private fun SetupNavBar(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = PodroidTokens.Spacing.LG),
-        horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+            .padding(vertical = LdroidTokens.Spacing.LG),
+        horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
     ) {
-        PodroidGhostButton(text = stringResource(R.string.back), onClick = onBack, modifier = Modifier.weight(1f))
-        PodroidPrimaryButton(text = nextLabel, onClick = onNext, modifier = Modifier.weight(2f))
+        LdroidGhostButton(text = stringResource(R.string.back), onClick = onBack, modifier = Modifier.weight(1f))
+        LdroidPrimaryButton(text = nextLabel, onClick = onNext, modifier = Modifier.weight(2f))
     }
 }

@@ -1,9 +1,9 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
- * Lists container backup archives written by the guest `podroid-backup` tool
- * into Downloads/Podroid/backups when sharing is enabled.
+ * Lists container backup archives written by the guest `ldroid-backup` tool
+ * into Downloads/Ldroid/backups when sharing is enabled.
  */
 package com.abhiram79.Ldroid.data.repository
 
@@ -26,7 +26,7 @@ data class ContainerBackupFile(
 @Singleton
 class ContainerBackupRepository @Inject constructor() {
     companion object {
-        const val BACKUP_SUBDIR = "Podroid/backups"
+        const val BACKUP_SUBDIR = "Ldroid/backups"
 
         internal fun ensureBackupDirectory(dir: File): Boolean = runCatching {
             if (!dir.isDirectory) dir.mkdirs()
@@ -42,12 +42,12 @@ class ContainerBackupRepository @Inject constructor() {
     }
 
     fun guestBackupPathLabel(downloadsSharingEnabled: Boolean = isDownloadsReachable()): String =
-        if (downloadsSharingEnabled) "/mnt/downloads/Podroid/backups"
-        else "/var/backups/podroid"
+        if (downloadsSharingEnabled) "/mnt/downloads/Ldroid/backups"
+        else "/var/backups/ldroid"
 
     fun isDownloadsReachable(): Boolean {
         val dir = backupDirectory()
-        // Create Downloads/Podroid/backups if absent: the app holds All-files
+        // Create Downloads/Ldroid/backups if absent: the app holds All-files
         // access whenever Downloads sharing is on, so a successful mkdirs both
         // confirms reachability and gives the guest an existing target under the
         // 9p/virtio-9p mount. Nothing else creates this dir, so without it every
@@ -86,16 +86,16 @@ class ContainerBackupRepository @Inject constructor() {
     fun exportCommand(containerName: String): String {
         val q = ShellQuote.quote(containerName.trim())
         val fb = fallbackExportCommand(containerName)
-        return "if command -v podroid-backup >/dev/null 2>&1; then podroid-backup export $q; else $fb; fi"
+        return "if command -v ldroid-backup >/dev/null 2>&1; then ldroid-backup export $q; else $fb; fi"
     }
 
     fun saveImageCommand(imageRef: String): String {
         val q = ShellQuote.quote(imageRef.trim())
         val root = guestBackupPathLabel()
-        return "if command -v podroid-backup >/dev/null 2>&1; then podroid-backup save $q; else mkdir -p $root && podman save $q -o $root/\$(echo $q | tr -cd 'A-Za-z0-9._-')-\$(date +%Y%m%d-%H%M%S).tar; fi"
+        return "if command -v ldroid-backup >/dev/null 2>&1; then ldroid-backup save $q; else mkdir -p $root && podman save $q -o $root/\$(echo $q | tr -cd 'A-Za-z0-9._-')-\$(date +%Y%m%d-%H%M%S).tar; fi"
     }
 
-    fun listCommand(): String = "podroid-backup list"
+    fun listCommand(): String = "ldroid-backup list"
 
     fun fallbackExportCommand(containerName: String): String {
         val q = ShellQuote.quote(containerName.trim())

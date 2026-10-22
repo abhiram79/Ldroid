@@ -708,7 +708,7 @@ public final class TerminalBuffer {
         mTerminalSixel = null;
     }
 
-    // Podroid: sixel parsing is single-threaded (TerminalEmulator's parse loop
+    // Ldroid: sixel parsing is single-threaded (TerminalEmulator's parse loop
     // runs on the TerminalSession reader thread), so `synchronized` here only
     // adds monitor-acquisition cost on the hot path of image-heavy frames
     // (chafa, sixel-rendered tools). Drop it.
@@ -736,7 +736,7 @@ public final class TerminalBuffer {
         return true;
     }
 
-    // Podroid: single-threaded by the same reasoning as sixelReadData(); drop `synchronized`.
+    // Ldroid: single-threaded by the same reasoning as sixelReadData(); drop `synchronized`.
     public void sixelSetColor(int color) {
         if (mTerminalSixel != null)
             mTerminalSixel.setColor(color);

@@ -37,12 +37,12 @@ public final class TerminalRenderer {
 
     private final float[] asciiMeasures = new float[127];
 
-    // Podroid: hoisted out of the per-cell hot path. Image-heavy frames (chafa,
+    // Ldroid: hoisted out of the per-cell hot path. Image-heavy frames (chafa,
     // gnuplot) draw one Sixel bitmap per cell — allocating a fresh RectF each
     // time was straight-up GC pressure with no benefit since we just mutate it.
     private final RectF mBitmapDestRect = new RectF();
 
-    // Podroid: cache last paint color so repeated runs with the same color skip
+    // Ldroid: cache last paint color so repeated runs with the same color skip
     // the (relatively expensive) setColor() call. Reset at the start of each
     // render() so cross-frame state doesn't leak after a resize.
     private int mLastPaintColor = 0;
@@ -90,7 +90,7 @@ public final class TerminalRenderer {
         if (reverseVideo)
             canvas.drawColor(palette[TextStyle.COLOR_INDEX_FOREGROUND], PorterDuff.Mode.SRC);
 
-        // Podroid: reset Paint attribute state at the start of every frame so
+        // Ldroid: reset Paint attribute state at the start of every frame so
         // a previous frame's bold/underline/italic/strike-thru can't leak into
         // the first run of this frame (drawTextRun only sets these per-run
         // when the style demands it). Also reset mLastPaintColor so the
@@ -277,7 +277,7 @@ public final class TerminalRenderer {
                 foreColor = 0xFF000000 + (red << 16) + (green << 8) + blue;
             }
 
-            // Podroid: always set all four attributes per run — they MUST be
+            // Ldroid: always set all four attributes per run — they MUST be
             // reset to defaults when the run doesn't ask for them, otherwise
             // the previous run's bold/underline/italic/strike-thru leaks into
             // this run's drawTextRun() call.

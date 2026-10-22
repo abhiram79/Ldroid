@@ -49,20 +49,20 @@ import com.abhiram79.Ldroid.ui.components.AdaptiveContainer
 import com.abhiram79.Ldroid.ui.components.ChartSeries
 import com.abhiram79.Ldroid.ui.components.MetricChartCard
 import com.abhiram79.Ldroid.ui.components.MetricLegend
-import com.abhiram79.Ldroid.ui.components.PodroidListRow
-import com.abhiram79.Ldroid.ui.components.PodroidSectionLabel
-import com.abhiram79.Ldroid.ui.components.PodroidTopBar
-import com.abhiram79.Ldroid.ui.theme.PodroidTokens
+import com.abhiram79.Ldroid.ui.components.LdroidListRow
+import com.abhiram79.Ldroid.ui.components.LdroidSectionLabel
+import com.abhiram79.Ldroid.ui.components.LdroidTopBar
+import com.abhiram79.Ldroid.ui.theme.LdroidTokens
 import com.abhiram79.Ldroid.util.HostMetrics
 
 private const val TAB_PHONE = 0
 private const val TAB_VM = 1
 
-// Reuse the app's own accent palette (PodroidTokens) for chart series rather than
+// Reuse the app's own accent palette (LdroidTokens) for chart series rather than
 // inventing a new one, so the dashboard stays visually consistent with the rest of
 // the Material 3 theme in both light and dark mode.
-private val ChartPrimary = PodroidTokens.Accent
-private val ChartSecondary = PodroidTokens.Amber
+private val ChartPrimary = LdroidTokens.Accent
+private val ChartSecondary = LdroidTokens.Amber
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -94,7 +94,7 @@ fun StatusScreen(
 
     Scaffold(
         topBar = {
-            PodroidTopBar(
+            LdroidTopBar(
                 title = stringResource(R.string.status_page_title),
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
@@ -114,7 +114,7 @@ fun StatusScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = PodroidTokens.Spacing.XL, vertical = PodroidTokens.Spacing.SM),
+                        .padding(horizontal = LdroidTokens.Spacing.XL, vertical = LdroidTokens.Spacing.SM),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     StatusLiveBadge(active = ui.liveTick > 0L)
@@ -145,7 +145,7 @@ private fun StatusLiveBadge(active: Boolean) {
     if (!active) return
     Row(
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+        horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
     ) {
         Box(
             modifier = Modifier
@@ -179,8 +179,8 @@ private fun PhoneStatusTab(ui: StatusUiState) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = PodroidTokens.Spacing.LG, vertical = PodroidTokens.Spacing.MD),
-        verticalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.MD),
+            .padding(horizontal = LdroidTokens.Spacing.LG, vertical = LdroidTokens.Spacing.MD),
+        verticalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.MD),
     ) {
         MetricChartCard(
             title = stringResource(R.string.status_metric_phone_cpu),
@@ -248,25 +248,25 @@ private fun PhoneStatusTab(ui: StatusUiState) {
             ),
         )
 
-        PodroidSectionLabel(stringResource(R.string.status_phone_details))
-        PodroidListRow(label = stringResource(R.string.cpu_cores), value = "${metrics.phoneCpuCores}")
+        LdroidSectionLabel(stringResource(R.string.status_phone_details))
+        LdroidListRow(label = stringResource(R.string.cpu_cores), value = "${metrics.phoneCpuCores}")
         // /proc/loadavg is SELinux-blocked for third-party apps on modern Android, so
         // this is usually absent; hide the row rather than show a permanent placeholder.
         if (metrics.loadAvg1 != null) {
-            PodroidListRow(
+            LdroidListRow(
                 label = stringResource(R.string.status_load_average),
                 value = String.format("%.2f · %.2f · %.2f", metrics.loadAvg1, metrics.loadAvg5, metrics.loadAvg15),
                 mono = true,
             )
         }
-        PodroidListRow(label = stringResource(R.string.phone_ip), value = ui.phoneIp, mono = true)
+        LdroidListRow(label = stringResource(R.string.phone_ip), value = ui.phoneIp, mono = true)
         // A phone can hold several addresses at once (mobile data plus a WiFi or USB
         // tether). Forwards listen on all of them, so listing the rest saves the user
         // guessing which one a given PC can actually reach.
         ui.phoneAddresses
             .filter { it.address != ui.phoneIp }
             .forEach { extra ->
-                PodroidListRow(
+                LdroidListRow(
                     label = stringResource(R.string.phone_ip_also, extra.iface),
                     value = extra.address,
                     mono = true,
@@ -296,8 +296,8 @@ private fun VmStatusTab(ui: StatusUiState) {
         modifier = Modifier
             .fillMaxSize()
             .verticalScroll(rememberScrollState())
-            .padding(horizontal = PodroidTokens.Spacing.LG, vertical = PodroidTokens.Spacing.MD),
-        verticalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.MD),
+            .padding(horizontal = LdroidTokens.Spacing.LG, vertical = LdroidTokens.Spacing.MD),
+        verticalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.MD),
     ) {
         MetricChartCard(
             title = stringResource(R.string.status_metric_vm_cpu),
@@ -373,8 +373,8 @@ private fun VmStatusTab(ui: StatusUiState) {
             ),
         )
 
-        PodroidSectionLabel(stringResource(R.string.status_vm_details))
-        PodroidListRow(
+        LdroidSectionLabel(stringResource(R.string.status_vm_details))
+        LdroidListRow(
             label = stringResource(R.string.vm_status),
             rightSlot = {
                 AnimatedContent(
@@ -390,17 +390,17 @@ private fun VmStatusTab(ui: StatusUiState) {
                 }
             },
         )
-        PodroidListRow(
+        LdroidListRow(
             label = stringResource(R.string.backend),
             value = backendLabel(ui.engineSelection, ui.backendId),
             mono = true,
         )
-        PodroidListRow(label = stringResource(R.string.cpu_cores), value = "${ui.vmCpus}")
-        PodroidListRow(
+        LdroidListRow(label = stringResource(R.string.cpu_cores), value = "${ui.vmCpus}")
+        LdroidListRow(
             label = stringResource(R.string.status_vm_ram_allocated),
             value = HostMetrics.formatMb(ui.vmRamMb.toLong()),
         )
-        PodroidListRow(
+        LdroidListRow(
             label = stringResource(R.string.bandwidth_limit),
             value = if (ui.bandwidthMbps <= 0) {
                 stringResource(R.string.bandwidth_unlimited)
@@ -408,11 +408,11 @@ private fun VmStatusTab(ui: StatusUiState) {
                 "${ui.bandwidthMbps} Mbps"
             },
         )
-        PodroidListRow(
+        LdroidListRow(
             label = stringResource(R.string.load_balance),
             value = if (ui.loadBalanceEnabled) stringResource(R.string.on) else stringResource(R.string.off),
         )
-        PodroidListRow(
+        LdroidListRow(
             label = stringResource(R.string.port_forwards),
             value = "${ui.portForwardCount}",
             divider = false,

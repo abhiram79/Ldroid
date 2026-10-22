@@ -17,7 +17,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.abhiram79.Ldroid.R
-import com.abhiram79.Ldroid.ui.theme.PodroidTokens
+import com.abhiram79.Ldroid.ui.theme.LdroidTokens
 import com.abhiram79.Ldroid.util.DeviceResourcePolicy
 
 @OptIn(ExperimentalLayoutApi::class)
@@ -28,14 +28,14 @@ fun VmRamChips(
     enabled: Boolean = true,
     showDivider: Boolean = true,
 ) {
-    Column(modifier = Modifier.padding(bottom = PodroidTokens.Spacing.SM)) {
+    Column(modifier = Modifier.padding(bottom = LdroidTokens.Spacing.SM)) {
         Text(
             "${stringResource(R.string.ram_label)}  ·  ${formatRam(currentMb)}",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(
-                top = PodroidTokens.Spacing.MD,
-                bottom = PodroidTokens.Spacing.SM,
+                top = LdroidTokens.Spacing.MD,
+                bottom = LdroidTokens.Spacing.SM,
             ),
         )
         val totalRamMb = DeviceResourcePolicy.deviceTotalRamMb(LocalContext.current)
@@ -44,8 +44,8 @@ fun VmRamChips(
         }
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
-            verticalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+            horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
+            verticalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
         ) {
             ramOptions.forEach { mb ->
                 FilterChip(
@@ -53,8 +53,8 @@ fun VmRamChips(
                     enabled = enabled,
                     onClick = { onChange(mb) },
                     label = { Text(formatRam(mb)) },
-                    shape = RoundedCornerShape(PodroidTokens.Radius.Chip),
-                    colors = PodroidChipColors(),
+                    shape = RoundedCornerShape(LdroidTokens.Radius.Chip),
+                    colors = LdroidChipColors(),
                 )
             }
         }
@@ -62,7 +62,7 @@ fun VmRamChips(
             HorizontalDivider(
                 color = MaterialTheme.colorScheme.outline,
                 thickness = 1.dp,
-                modifier = Modifier.padding(top = PodroidTokens.Spacing.MD),
+                modifier = Modifier.padding(top = LdroidTokens.Spacing.MD),
             )
         }
     }
@@ -76,20 +76,20 @@ fun VmCpuChips(
     enabled: Boolean = true,
     showDivider: Boolean = true,
 ) {
-    Column(modifier = Modifier.padding(bottom = PodroidTokens.Spacing.SM)) {
+    Column(modifier = Modifier.padding(bottom = LdroidTokens.Spacing.SM)) {
         Text(
             "${stringResource(R.string.cpu_cores)}  ·  $currentCpus",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(
-                top = PodroidTokens.Spacing.MD,
-                bottom = PodroidTokens.Spacing.SM,
+                top = LdroidTokens.Spacing.MD,
+                bottom = LdroidTokens.Spacing.SM,
             ),
         )
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
-            verticalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+            horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
+            verticalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
         ) {
             DeviceResourcePolicy.CPU_OPTIONS.forEach { n ->
                 FilterChip(
@@ -97,8 +97,8 @@ fun VmCpuChips(
                     enabled = enabled,
                     onClick = { onChange(n) },
                     label = { Text("$n") },
-                    shape = RoundedCornerShape(PodroidTokens.Radius.Chip),
-                    colors = PodroidChipColors(),
+                    shape = RoundedCornerShape(LdroidTokens.Radius.Chip),
+                    colors = LdroidChipColors(),
                 )
             }
         }
@@ -108,13 +108,13 @@ fun VmCpuChips(
             text = stringResource(R.string.cpu_cores_hint),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(top = PodroidTokens.Spacing.SM),
+            modifier = Modifier.padding(top = LdroidTokens.Spacing.SM),
         )
         if (showDivider) {
             HorizontalDivider(
                 color = MaterialTheme.colorScheme.outline,
                 thickness = 1.dp,
-                modifier = Modifier.padding(top = PodroidTokens.Spacing.MD),
+                modifier = Modifier.padding(top = LdroidTokens.Spacing.MD),
             )
         }
     }
@@ -129,14 +129,14 @@ fun VmStorageChips(
     enabled: Boolean = true,
     showDivider: Boolean = true,
 ) {
-    Column(modifier = Modifier.padding(bottom = PodroidTokens.Spacing.SM)) {
+    Column(modifier = Modifier.padding(bottom = LdroidTokens.Spacing.SM)) {
         Text(
             "${stringResource(R.string.storage)}  ·  $currentGb GB",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(
-                top = PodroidTokens.Spacing.MD,
-                bottom = PodroidTokens.Spacing.SM,
+                top = LdroidTokens.Spacing.MD,
+                bottom = LdroidTokens.Spacing.SM,
             ),
         )
         val availableGb = DeviceResourcePolicy.deviceAvailableStorageGb(LocalContext.current)
@@ -145,8 +145,8 @@ fun VmStorageChips(
         }
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
-            verticalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+            horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
+            verticalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
         ) {
             storageOptions.forEach { gb ->
                 FilterChip(
@@ -154,8 +154,8 @@ fun VmStorageChips(
                     enabled = enabled && gb >= minGb,
                     onClick = { onChange(gb) },
                     label = { Text("$gb GB") },
-                    shape = RoundedCornerShape(PodroidTokens.Radius.Chip),
-                    colors = PodroidChipColors(),
+                    shape = RoundedCornerShape(LdroidTokens.Radius.Chip),
+                    colors = LdroidChipColors(),
                 )
             }
         }
@@ -163,13 +163,13 @@ fun VmStorageChips(
             text = stringResource(R.string.storage_grow_hint),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(top = PodroidTokens.Spacing.SM),
+            modifier = Modifier.padding(top = LdroidTokens.Spacing.SM),
         )
         if (showDivider) {
             HorizontalDivider(
                 color = MaterialTheme.colorScheme.outline,
                 thickness = 1.dp,
-                modifier = Modifier.padding(top = PodroidTokens.Spacing.MD),
+                modifier = Modifier.padding(top = LdroidTokens.Spacing.MD),
             )
         }
     }
@@ -183,20 +183,20 @@ fun VmBandwidthChips(
     enabled: Boolean = true,
     showDivider: Boolean = true,
 ) {
-    Column(modifier = Modifier.padding(bottom = PodroidTokens.Spacing.SM)) {
+    Column(modifier = Modifier.padding(bottom = LdroidTokens.Spacing.SM)) {
         Text(
             "${stringResource(R.string.bandwidth_limit)}  ·  ${formatBandwidth(currentMbps)}",
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.onSurface,
             modifier = Modifier.padding(
-                top = PodroidTokens.Spacing.MD,
-                bottom = PodroidTokens.Spacing.SM,
+                top = LdroidTokens.Spacing.MD,
+                bottom = LdroidTokens.Spacing.SM,
             ),
         )
         FlowRow(
             modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
-            verticalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+            horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
+            verticalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
         ) {
             DeviceResourcePolicy.BANDWIDTH_OPTIONS_MBPS.forEach { mbps ->
                 FilterChip(
@@ -204,8 +204,8 @@ fun VmBandwidthChips(
                     enabled = enabled,
                     onClick = { onChange(mbps) },
                     label = { Text(formatBandwidth(mbps)) },
-                    shape = RoundedCornerShape(PodroidTokens.Radius.Chip),
-                    colors = PodroidChipColors(),
+                    shape = RoundedCornerShape(LdroidTokens.Radius.Chip),
+                    colors = LdroidChipColors(),
                 )
             }
         }
@@ -213,7 +213,7 @@ fun VmBandwidthChips(
             HorizontalDivider(
                 color = MaterialTheme.colorScheme.outline,
                 thickness = 1.dp,
-                modifier = Modifier.padding(top = PodroidTokens.Spacing.MD),
+                modifier = Modifier.padding(top = LdroidTokens.Spacing.MD),
             )
         }
     }

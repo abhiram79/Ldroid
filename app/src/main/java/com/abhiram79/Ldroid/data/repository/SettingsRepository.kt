@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * App-wide settings backed by DataStore.
  */
@@ -73,7 +73,7 @@ class SettingsRepository @Inject constructor(
         val KEY_AVF_CPU_CAP             = intPreferencesKey("avf_cpu_cap")
         val KEY_USB_PASSTHROUGH_ENABLED = booleanPreferencesKey("usb_passthrough_enabled")
         val KEY_LOAD_BALANCE_ENABLED    = booleanPreferencesKey("load_balance_enabled")
-        /** Guest egress cap via `podroid.bandwidth=` cmdline + tc. 0 = unlimited. */
+        /** Guest egress cap via `ldroid.bandwidth=` cmdline + tc. 0 = unlimited. */
         val KEY_BANDWIDTH_MBPS          = intPreferencesKey("bandwidth_mbps")
         /** Start the VM automatically on BOOT_COMPLETED. Read by VmControlReceiver. */
         val KEY_AUTOSTART_ON_BOOT       = booleanPreferencesKey("autostart_on_boot")
@@ -115,7 +115,7 @@ class SettingsRepository @Inject constructor(
 
         /**
          * Default extra kernel cmdline — quiet boot + TCG-safe mitigations.
-         * `elevator=` is deprecated since Linux 5.0; podroid-bootstrap sets the I/O
+         * `elevator=` is deprecated since Linux 5.0; ldroid-bootstrap sets the I/O
          * scheduler per-device via sysfs instead.
          */
         const val DEFAULT_KERNEL_EXTRA_CMDLINE = "loglevel=1 quiet mitigations=off"
@@ -273,7 +273,7 @@ class SettingsRepository @Inject constructor(
     suspend fun getX11DpiSnapshot() = (x11Settings.first()).dpi
     suspend fun getLanguageSnapshot()                    = language.first()
 
-    // Snapshots used by non-Compose call sites (PodroidService, exporters).
+    // Snapshots used by non-Compose call sites (LdroidService, exporters).
     suspend fun getSshEnabledSnapshot()           = sshEnabled.first()
     suspend fun getVmRamMbSnapshot()              = vmRamMb.first()
     suspend fun getVmCpusSnapshot()               = vmCpus.first()

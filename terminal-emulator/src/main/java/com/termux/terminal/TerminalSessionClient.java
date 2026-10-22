@@ -34,7 +34,7 @@ public interface TerminalSessionClient {
 
     /**
      * Identifier reported by the emulator in response to XTVERSION (`CSI > 0 q`).
-     * Format: `<name> <version>`, e.g. `"Podroid 1.1.7-debug"`. Apps like Neovim
+     * Format: `<name> <version>`, e.g. `"Ldroid 1.1.7-debug"`. Apps like Neovim
      * use this to detect terminal capabilities. Default returns null → emulator
      * falls back to a bare name without version.
      */

@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  */
 package com.abhiram79.Ldroid.engine.avf
 
@@ -22,7 +22,7 @@ import java.io.OutputStream
 
 /**
  * Bridges AVF's console streams ↔ a filesystem unix-domain socket so the
- * existing `libpodroid-bridge.so` subprocess can splice PTY ↔ that socket
+ * existing `libldroid-bridge.so` subprocess can splice PTY ↔ that socket
  * unchanged. Uses `android.system.Os` directly because Android 14's
  * ServerSocketChannel doesn't expose the ProtocolFamily factory needed for
  * NIO unix sockets, but Os.bind() accepts UnixDomainSocketAddress.

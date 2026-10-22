@@ -40,7 +40,7 @@ object Routes {
 }
 
 @Composable
-fun PodroidNavGraph(
+fun LdroidNavGraph(
     windowSizeClass: WindowSizeClass,
     navController: NavHostController = rememberNavController(),
 ) {
@@ -50,7 +50,7 @@ fun PodroidNavGraph(
         .isSetupDone
         .collectAsStateWithLifecycle(initialValue = null)
 
-    // Scoped to PodroidNavGraph composable — survives all navigation including popUpTo(0)
+    // Scoped to LdroidNavGraph composable — survives all navigation including popUpTo(0)
     val terminalViewModel: TerminalViewModel = hiltViewModel()
 
     if (isSetupDone == null) {

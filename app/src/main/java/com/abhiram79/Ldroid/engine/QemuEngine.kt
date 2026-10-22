@@ -1,25 +1,25 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
- * QEMU engine for Podroid. Manages the VM lifecycle and exposes three Unix
+ * QEMU engine for Ldroid. Manages the VM lifecycle and exposes three Unix
  * sockets for the terminal layer:
  *
  *   serial.sock   — QEMU -serial (ttyAMA0 in the VM). Boot-log sink only:
  *                   QemuBootMonitor connects here for the lifetime of the VM,
- *                   streaming kernel messages and init-podroid boot stages
+ *                   streaming kernel messages and init-ldroid boot stages
  *                   into console.log + the in-memory ring buffer used by
  *                   BootStageDetector.
  *
  *   terminal.sock — QEMU virtio-console (/dev/hvc0 in the VM). Primary
- *                   terminal I/O. getty runs on hvc0; the podroid-bridge
+ *                   terminal I/O. getty runs on hvc0; the ldroid-bridge
  *                   binary connects here for bidirectional shell I/O. Fully
  *                   independent of serial.sock, so no socket hand-off.
  *
  *   ctrl.sock     — QEMU virtio-console (/dev/hvc1 in the VM). Resize signal
  *                   channel only. Bridge writes "RESIZE rows cols\n" on
  *                   SIGWINCH (debounced by RESIZE_DEBOUNCE_MS); the resize
- *                   daemon in init-podroid stty's hvc0 to deliver SIGWINCH
+ *                   daemon in init-ldroid stty's hvc0 to deliver SIGWINCH
  *                   to the foreground TUI inside the VM.
  */
 package com.abhiram79.Ldroid.engine
@@ -93,10 +93,10 @@ class QemuEngine @Inject constructor(
     override fun emulatorPid(): Int? {
         val proc = process?.takeIf { it.isAlive } ?: return null
         pidCache?.let { (p, pid) -> if (p === proc) return pid }
-        // libpodroid-launcher execv()s QEMU, so both names refer to the same PID.
+        // libldroid-launcher execv()s QEMU, so both names refer to the same PID.
         val pid = HostMetrics.childPidByExecutable(
             android.os.Process.myPid(),
-            setOf("libpodroid-launcher.so", "libqemu-system-aarch64.so"),
+            setOf("libldroid-launcher.so", "libqemu-system-aarch64.so"),
         )
         if (pid == null) {
             Log.w(TAG, "QEMU is running but its PID was not found in /proc")
@@ -134,7 +134,7 @@ class QemuEngine @Inject constructor(
 
     /**
      * Single dedicated thread that BOTH fork/exec's QEMU and blocks in
-     * waitFor(). libpodroid-launcher sets PR_SET_PDEATHSIG(SIGKILL), which is
+     * waitFor(). libldroid-launcher sets PR_SET_PDEATHSIG(SIGKILL), which is
      * THREAD-scoped: the kernel SIGKILLs QEMU when the thread that spawned it
      * dies — not when the app process dies. Forking from a Dispatchers.IO pool
      * thread let that thread be recycled (~60s idle keep-alive) once the start()
@@ -239,7 +239,7 @@ class QemuEngine @Inject constructor(
         // Fallback: create session now
         val bridgeExe = TerminalBridge.executable(context)
         if (!bridgeExe.exists()) {
-            throw IllegalStateException("podroid-bridge not found at ${bridgeExe.absolutePath}")
+            throw IllegalStateException("ldroid-bridge not found at ${bridgeExe.absolutePath}")
         }
 
         val sess = TerminalBridge.newSession(
@@ -321,11 +321,11 @@ class QemuEngine @Inject constructor(
             pb.redirectOutput(File("/dev/null"))
 
             // Fork QEMU on a private, long-lived thread (see qemuDispatcher).
-            // PR_SET_PDEATHSIG (set by libpodroid-launcher) is thread-scoped, so
+            // PR_SET_PDEATHSIG (set by libldroid-launcher) is thread-scoped, so
             // the spawning thread must outlive QEMU — a Dispatchers.IO pool
             // thread does not. waitFor() below runs on this same thread.
             val dispatcher = Executors.newSingleThreadExecutor { r ->
-                Thread(r, "podroid-qemu").apply { isDaemon = true }
+                Thread(r, "ldroid-qemu").apply { isDaemon = true }
             }.asCoroutineDispatcher()
             qemuDispatcher = dispatcher
 
@@ -344,7 +344,7 @@ class QemuEngine @Inject constructor(
                         val n = proc.errorStream.read(buf)
                         if (n < 0) break
                         val chunk = String(buf, 0, n).trimEnd()
-                        Log.d("PodroidVM-err", chunk.take(300))
+                        Log.d("LdroidVM-err", chunk.take(300))
                         recordStderr(chunk)
                     }
                 } catch (e: Exception) {
@@ -384,7 +384,7 @@ class QemuEngine @Inject constructor(
                 // IO thread and skips the dedicated-thread waitFor() reap. Set
                 // the error, signal a graceful stop, and fall through to the
                 // same waitFor() teardown the happy path uses (it reaps on the
-                // podroid-qemu thread). The guard below preserves this message.
+                // ldroid-qemu thread). The guard below preserves this message.
                 Log.e(TAG, "Socket timeout — QEMU sockets not ready after ${SOCKET_READY_TIMEOUT_MS}ms")
                 _state.value =
                     VmState.Error("QEMU failed to create sockets within ${SOCKET_READY_TIMEOUT_MS / 1000}s")
@@ -425,7 +425,7 @@ class QemuEngine @Inject constructor(
                 else -> VmState.Error(formatExitError(exitCode, config.storageAccessEnabled))
             }
         } catch (e: CancellationException) {
-            // The start() coroutine lives in PodroidService.serviceScope, which
+            // The start() coroutine lives in LdroidService.serviceScope, which
             // onDestroy() cancels on every stop/teardown. A stop destroys the
             // process first (engine.stop() → proc.destroy()), so this cancellation
             // IS the stop completing — finalize as a clean Stopped instead of
@@ -457,7 +457,7 @@ class QemuEngine @Inject constructor(
         _stopping.value = true
         // Issue the graceful SIGTERM immediately (non-blocking), then run the
         // graceful-wait → forceful-escalation off the caller's thread. stop() is
-        // called from PodroidService on the main thread, so blocking up to ~5s
+        // called from LdroidService on the main thread, so blocking up to ~5s
         // in waitFor() here risks an ANR under TCG load. The dedicated
         // qemuDispatcher thread already performs the final waitFor() reap in
         // start(), which drives cleanup() and the →Stopped transition.
@@ -471,7 +471,7 @@ class QemuEngine @Inject constructor(
             } catch (_: Exception) {
                 proc.destroyForcibly()
             }
-        }, "podroid-qemu-stop").apply { isDaemon = true }.start()
+        }, "ldroid-qemu-stop").apply { isDaemon = true }.start()
     }
 
     override fun openHostTransport(): com.abhiram79.Ldroid.engine.hostbridge.HostTransport? =
@@ -555,9 +555,9 @@ class QemuEngine @Inject constructor(
                 if (userKernelExtras.isNotEmpty()) append(" ").append(userKernelExtras)
                 append(" androidip=").append(config.androidIp)
                 if (config.sshEnabled) append(" ssh=1")
-                append(" podroid.x11.dpi=").append(config.x11Dpi)
-                if (config.bandwidthMbps > 0) append(" podroid.bandwidth=").append(config.bandwidthMbps)
-                if (config.dnsServers.isNotEmpty()) append(" podroid.dns=").append(config.dnsServers.joinToString(","))
+                append(" ldroid.x11.dpi=").append(config.x11Dpi)
+                if (config.bandwidthMbps > 0) append(" ldroid.bandwidth=").append(config.bandwidthMbps)
+                if (config.dnsServers.isNotEmpty()) append(" ldroid.dns=").append(config.dnsServers.joinToString(","))
             }
             args += "-append"; args += cmdline
         } else {
@@ -652,13 +652,13 @@ class QemuEngine @Inject constructor(
         // hvc1 = control channel (init daemon reads RESIZE messages from ctrl.sock)
         args += "-device";  args += "virtio-serial-pci"
         args += "-chardev"; args += "socket,id=term0,path=$terminalSockPath,server=on,wait=off"
-        args += "-device";  args += "virtconsole,chardev=term0,name=org.podroid.term"
+        args += "-device";  args += "virtconsole,chardev=term0,name=org.ldroid.term"
         args += "-chardev"; args += "socket,id=ctrl0,path=$ctrlSockPath,server=on,wait=off"
-        args += "-device";  args += "virtconsole,chardev=ctrl0,name=org.podroid.ctrl"
+        args += "-device";  args += "virtconsole,chardev=ctrl0,name=org.ldroid.ctrl"
 
-        // hvc2 = host bridge (guest podroid-hostd <-> Android host.sock)
+        // hvc2 = host bridge (guest ldroid-hostd <-> Android host.sock)
         args += "-chardev"; args += "socket,id=host0,path=$hostSockPath,server=on,wait=off"
-        args += "-device";  args += "virtconsole,chardev=host0,name=org.podroid.host"
+        args += "-device";  args += "virtconsole,chardev=host0,name=org.ldroid.host"
 
         args += "-display"; args += "none"
         args += "-qmp";     args += "unix:$qmpSocketPath,server,nowait"
@@ -668,11 +668,11 @@ class QemuEngine @Inject constructor(
             args += userQemuExtras.split(Regex("\\s+"))
         }
 
-        // Wrap QEMU in podroid-launcher when available — it sets PR_SET_PDEATHSIG
+        // Wrap QEMU in ldroid-launcher when available — it sets PR_SET_PDEATHSIG
         // so QEMU dies with the app on uninstall/OOM/force-stop instead of leaking
         // as an orphan under PPID=1. If the launcher is missing (older deploys),
         // fall back to spawning QEMU directly.
-        val launcher = File(context.applicationInfo.nativeLibraryDir, "libpodroid-launcher.so")
+        val launcher = File(context.applicationInfo.nativeLibraryDir, "libldroid-launcher.so")
         return if (launcher.exists()) {
             listOf(launcher.absolutePath, qemuExe.absolutePath) + args
         } else {

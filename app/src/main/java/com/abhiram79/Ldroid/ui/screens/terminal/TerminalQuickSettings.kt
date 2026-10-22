@@ -57,11 +57,11 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.abhiram79.Ldroid.R
-import com.abhiram79.Ldroid.ui.components.PodroidGhostButton
-import com.abhiram79.Ldroid.ui.components.PodroidListRow
-import com.abhiram79.Ldroid.ui.components.PodroidSectionLabel
-import com.abhiram79.Ldroid.ui.components.PodroidSwitch
-import com.abhiram79.Ldroid.ui.theme.PodroidTokens
+import com.abhiram79.Ldroid.ui.components.LdroidGhostButton
+import com.abhiram79.Ldroid.ui.components.LdroidListRow
+import com.abhiram79.Ldroid.ui.components.LdroidSectionLabel
+import com.abhiram79.Ldroid.ui.components.LdroidSwitch
+import com.abhiram79.Ldroid.ui.theme.LdroidTokens
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
@@ -188,8 +188,8 @@ internal fun QuickSettingsDialog(
             modifier = Modifier
                 .fillMaxWidth()
                 .verticalScroll(rememberScrollState())
-                .padding(horizontal = PodroidTokens.Spacing.LG)
-                .padding(bottom = PodroidTokens.Spacing.MD),
+                .padding(horizontal = LdroidTokens.Spacing.LG)
+                .padding(bottom = LdroidTokens.Spacing.MD),
         ) {
             // Header
             Row(verticalAlignment = Alignment.CenterVertically) {
@@ -204,14 +204,14 @@ internal fun QuickSettingsDialog(
                 }
             }
 
-            PodroidSectionLabel(stringResource(R.string.display_section))
+            LdroidSectionLabel(stringResource(R.string.display_section))
 
             // Size slider: sliding doesn't dismiss (you want to adjust),
             // but releasing the thumb does (matches the "any interaction
             // closes the drawer" rule).
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth().padding(vertical = PodroidTokens.Spacing.SM),
+                modifier = Modifier.fillMaxWidth().padding(vertical = LdroidTokens.Spacing.SM),
             ) {
                 Text(
                     stringResource(R.string.size_label),
@@ -241,34 +241,34 @@ internal fun QuickSettingsDialog(
             // Theme + Font: full-width ghost buttons so they read as
             // actions, not list rows. Picker's onPick already calls
             // onDismiss to close the drawer.
-            Spacer(Modifier.height(PodroidTokens.Spacing.SM))
-            PodroidGhostButton(
+            Spacer(Modifier.height(LdroidTokens.Spacing.SM))
+            LdroidGhostButton(
                 text = stringResource(R.string.theme_with_value, prettyName(colorTheme)),
                 onClick = { showThemePicker = true },
             )
-            Spacer(Modifier.height(PodroidTokens.Spacing.SM))
-            PodroidGhostButton(
+            Spacer(Modifier.height(LdroidTokens.Spacing.SM))
+            LdroidGhostButton(
                 text = stringResource(R.string.font_with_value, prettyName(terminalFont)),
                 onClick = { showFontPicker = true },
             )
 
-            PodroidSectionLabel(stringResource(R.string.input_section))
+            LdroidSectionLabel(stringResource(R.string.input_section))
 
             // Toggles: flipping any of these dismisses the drawer
             // immediately so the terminal is unblocked.
-            PodroidListRow(
+            LdroidListRow(
                 label = stringResource(R.string.extra_keys),
                 rightSlot = {
-                    PodroidSwitch(
+                    LdroidSwitch(
                         checked = showExtraKeys,
                         onCheckedChange = { onToggleExtraKeys(it); onDismiss() },
                     )
                 },
             )
-            PodroidListRow(
+            LdroidListRow(
                 label = stringResource(R.string.haptics),
                 rightSlot = {
-                    PodroidSwitch(
+                    LdroidSwitch(
                         checked = hapticsEnabled,
                         onCheckedChange = { onToggleHaptics(it); onDismiss() },
                     )
@@ -386,7 +386,7 @@ private fun AddSwatch(
         modifier = Modifier
             .size(width = 104.dp, height = 76.dp)
             .clip(RoundedCornerShape(12.dp))
-            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(PodroidTokens.Radius.Card))
+            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(LdroidTokens.Radius.Card))
             .clickable(onClick = onClick),
         contentAlignment = Alignment.Center,
     ) {
@@ -570,7 +570,7 @@ private fun SwatchBox(
             .border(
                 width = if (selected) 2.dp else 1.dp,
                 color = if (selected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.outline,
-                shape = RoundedCornerShape(PodroidTokens.Radius.Card),
+                shape = RoundedCornerShape(LdroidTokens.Radius.Card),
             )
             .padding(6.dp),
         contentAlignment = Alignment.Center,

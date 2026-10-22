@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * AVF-only live Downloads share. Serves the real Downloads directory to the guest
  * by running an in-process 9p2000.L server (Ninep2000LServer) over the vsock
@@ -124,7 +124,7 @@ class AvfDownloadsShare(
     }
 
     companion object {
-        // Keep == PODROID_DOWNLOADS_VSOCK_PORT in build-rootfs/vsock-agent/podroid-vsock-agent.c
+        // Keep == LDROID_DOWNLOADS_VSOCK_PORT in build-rootfs/vsock-agent/ldroid-vsock-agent.c
         const val DOWNLOADS_VSOCK_PORT = 200000
         private const val TAG = "AvfDownloadsShare"
         private const val DEFAULT_ATTEMPTS = 30

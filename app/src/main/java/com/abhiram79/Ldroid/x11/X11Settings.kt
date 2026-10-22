@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * X11 viewer settings model + the pure resolution-selection policy. Pure
  * Kotlin (no Android deps) so the policy unit-tests without a device.

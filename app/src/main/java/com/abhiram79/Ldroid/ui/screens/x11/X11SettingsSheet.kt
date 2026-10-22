@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Bottom sheet for X11 viewer settings: resolution mode/preset/custom
  * (plus render scale in MATCH mode), rotation lock, touch mode, and
@@ -40,10 +40,10 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import com.abhiram79.Ldroid.ui.components.PodroidChipColors
-import com.abhiram79.Ldroid.ui.components.PodroidSectionLabel
-import com.abhiram79.Ldroid.ui.components.PodroidSwitch
-import com.abhiram79.Ldroid.ui.theme.PodroidTokens
+import com.abhiram79.Ldroid.ui.components.LdroidChipColors
+import com.abhiram79.Ldroid.ui.components.LdroidSectionLabel
+import com.abhiram79.Ldroid.ui.components.LdroidSwitch
+import com.abhiram79.Ldroid.ui.theme.LdroidTokens
 import com.abhiram79.Ldroid.x11.ResolutionMode
 import com.abhiram79.Ldroid.x11.ResolutionPreset
 import com.abhiram79.Ldroid.x11.RotationLock
@@ -58,14 +58,14 @@ fun X11SettingsSheet(viewModel: X11ViewModel, onDismiss: () -> Unit) {
     ModalBottomSheet(onDismissRequest = onDismiss) {
         Column(
             modifier = Modifier
-                .padding(horizontal = PodroidTokens.Spacing.XL)
+                .padding(horizontal = LdroidTokens.Spacing.XL)
                 .verticalScroll(rememberScrollState()),
         ) {
             // ── RESOLUTION ────────────────────────────────────────────
-            PodroidSectionLabel(stringResource(R.string.resolution))
+            LdroidSectionLabel(stringResource(R.string.resolution))
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+                horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 ResolutionMode.entries.forEach { mode ->
@@ -81,16 +81,16 @@ fun X11SettingsSheet(viewModel: X11ViewModel, onDismiss: () -> Unit) {
                                 }
                             )
                         },
-                        shape = RoundedCornerShape(PodroidTokens.Radius.Chip),
-                        colors = PodroidChipColors(),
+                        shape = RoundedCornerShape(LdroidTokens.Radius.Chip),
+                        colors = LdroidChipColors(),
                     )
                 }
             }
 
             if (s.resolutionMode == ResolutionMode.PRESET) {
-                Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+                Spacer(Modifier.height(LdroidTokens.Spacing.SM))
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+                    horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     ResolutionPreset.entries.forEach { preset ->
@@ -107,15 +107,15 @@ fun X11SettingsSheet(viewModel: X11ViewModel, onDismiss: () -> Unit) {
                                     }
                                 )
                             },
-                            shape = RoundedCornerShape(PodroidTokens.Radius.Chip),
-                            colors = PodroidChipColors(),
+                            shape = RoundedCornerShape(LdroidTokens.Radius.Chip),
+                            colors = LdroidChipColors(),
                         )
                     }
                 }
             }
 
             if (s.resolutionMode == ResolutionMode.CUSTOM) {
-                Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+                Spacer(Modifier.height(LdroidTokens.Spacing.SM))
                 CustomResolutionFields(
                     initialW = s.customW,
                     initialH = s.customH,
@@ -124,10 +124,10 @@ fun X11SettingsSheet(viewModel: X11ViewModel, onDismiss: () -> Unit) {
             }
 
             if (s.resolutionMode == ResolutionMode.MATCH) {
-                Spacer(Modifier.height(PodroidTokens.Spacing.SM))
-                PodroidSectionLabel(stringResource(R.string.x11_render_scale))
+                Spacer(Modifier.height(LdroidTokens.Spacing.SM))
+                LdroidSectionLabel(stringResource(R.string.x11_render_scale))
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+                    horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
                     modifier = Modifier.fillMaxWidth(),
                 ) {
                     listOf(100, 75, 50).forEach { scale ->
@@ -135,8 +135,8 @@ fun X11SettingsSheet(viewModel: X11ViewModel, onDismiss: () -> Unit) {
                             selected = s.renderScale == scale,
                             onClick = { viewModel.setRenderScale(scale) },
                             label = { Text("$scale%") },
-                            shape = RoundedCornerShape(PodroidTokens.Radius.Chip),
-                            colors = PodroidChipColors(),
+                            shape = RoundedCornerShape(LdroidTokens.Radius.Chip),
+                            colors = LdroidChipColors(),
                         )
                     }
                 }
@@ -148,10 +148,10 @@ fun X11SettingsSheet(viewModel: X11ViewModel, onDismiss: () -> Unit) {
             }
 
             // ── ROTATION ──────────────────────────────────────────────
-            PodroidSectionLabel(stringResource(R.string.rotation))
+            LdroidSectionLabel(stringResource(R.string.rotation))
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+                horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 RotationLock.entries.forEach { lock ->
@@ -167,17 +167,17 @@ fun X11SettingsSheet(viewModel: X11ViewModel, onDismiss: () -> Unit) {
                                 }
                             )
                         },
-                        shape = RoundedCornerShape(PodroidTokens.Radius.Chip),
-                        colors = PodroidChipColors(),
+                        shape = RoundedCornerShape(LdroidTokens.Radius.Chip),
+                        colors = LdroidChipColors(),
                     )
                 }
             }
 
             // ── TOUCH ─────────────────────────────────────────────────
-            PodroidSectionLabel(stringResource(R.string.touch))
+            LdroidSectionLabel(stringResource(R.string.touch))
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+                horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 TouchMode.entries.forEach { mode ->
@@ -185,13 +185,13 @@ fun X11SettingsSheet(viewModel: X11ViewModel, onDismiss: () -> Unit) {
                         selected = s.touchMode == mode,
                         onClick = { viewModel.setTouchMode(mode) },
                         label = { Text(if (mode == TouchMode.DIRECT) stringResource(R.string.direct_touch) else stringResource(R.string.trackpad)) },
-                        shape = RoundedCornerShape(PodroidTokens.Radius.Chip),
-                        colors = PodroidChipColors(),
+                        shape = RoundedCornerShape(LdroidTokens.Radius.Chip),
+                        colors = LdroidChipColors(),
                     )
                 }
             }
 
-            Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+            Spacer(Modifier.height(LdroidTokens.Spacing.SM))
             Text(
                 "${stringResource(R.string.pointer_speed)}: ${"%.1f".format(s.trackpadSensitivity)}x",
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
@@ -209,7 +209,7 @@ fun X11SettingsSheet(viewModel: X11ViewModel, onDismiss: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(stringResource(R.string.pointer_acceleration), color = MaterialTheme.colorScheme.onSurface)
-                PodroidSwitch(
+                LdroidSwitch(
                     checked = s.trackpadAccel,
                     onCheckedChange = { viewModel.setTrackpadAccel(it) },
                     enabled = s.touchMode == TouchMode.TRACKPAD,
@@ -217,7 +217,7 @@ fun X11SettingsSheet(viewModel: X11ViewModel, onDismiss: () -> Unit) {
             }
 
             // ── DISPLAY ───────────────────────────────────────────────
-            PodroidSectionLabel(stringResource(R.string.display))
+            LdroidSectionLabel(stringResource(R.string.display))
 
             Row(
                 modifier = Modifier.fillMaxWidth(),
@@ -225,7 +225,7 @@ fun X11SettingsSheet(viewModel: X11ViewModel, onDismiss: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(stringResource(R.string.show_extra_keys), color = MaterialTheme.colorScheme.onSurface)
-                PodroidSwitch(
+                LdroidSwitch(
                     checked = s.showExtraKeys,
                     onCheckedChange = { viewModel.setShowExtraKeys(it) },
                 )
@@ -237,17 +237,17 @@ fun X11SettingsSheet(viewModel: X11ViewModel, onDismiss: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 Text(stringResource(R.string.start_fullscreen), color = MaterialTheme.colorScheme.onSurface)
-                PodroidSwitch(
+                LdroidSwitch(
                     checked = s.fullscreenDefault,
                     onCheckedChange = { viewModel.setFullscreenDefault(it) },
                 )
             }
 
-            Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+            Spacer(Modifier.height(LdroidTokens.Spacing.SM))
             Text(stringResource(R.string.server_dpi), color = MaterialTheme.colorScheme.onSurface)
-            Spacer(Modifier.height(PodroidTokens.Spacing.XS))
+            Spacer(Modifier.height(LdroidTokens.Spacing.XS))
             Row(
-                horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+                horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
                 modifier = Modifier.fillMaxWidth(),
             ) {
                 listOf(96, 120, 144, 168, 192).forEach { dpi ->
@@ -255,8 +255,8 @@ fun X11SettingsSheet(viewModel: X11ViewModel, onDismiss: () -> Unit) {
                         selected = s.dpi == dpi,
                         onClick = { viewModel.setDpi(dpi) },
                         label = { Text("${dpi}") },
-                        shape = RoundedCornerShape(PodroidTokens.Radius.Chip),
-                        colors = PodroidChipColors(),
+                        shape = RoundedCornerShape(LdroidTokens.Radius.Chip),
+                        colors = LdroidChipColors(),
                     )
                 }
             }
@@ -266,7 +266,7 @@ fun X11SettingsSheet(viewModel: X11ViewModel, onDismiss: () -> Unit) {
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
 
-            Spacer(Modifier.height(PodroidTokens.Spacing.XL2))
+            Spacer(Modifier.height(LdroidTokens.Spacing.XL2))
         }
     }
 }
@@ -291,7 +291,7 @@ private fun CustomResolutionFields(
     }
 
     Row(
-        horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.MD),
+        horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.MD),
         modifier = Modifier.fillMaxWidth(),
     ) {
         OutlinedTextField(

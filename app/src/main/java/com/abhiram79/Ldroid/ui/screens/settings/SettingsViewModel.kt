@@ -1,8 +1,8 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
- * Settings ViewModel for Podroid.
+ * Settings ViewModel for Ldroid.
  */
 package com.abhiram79.Ldroid.ui.screens.settings
 
@@ -374,7 +374,7 @@ class SettingsViewModel @Inject constructor(
      *   - Current settings snapshot
      *   - VM state + boot stage
      *   - Port forward rules
-     *   - App logcat (filtered to this process — only Podroid tags)
+     *   - App logcat (filtered to this process — only Ldroid tags)
      *   - QEMU console.log (serial output from the VM, if the VM has run)
      *
      * Written to filesDir/log.txt and shared via the system share sheet.
@@ -427,7 +427,7 @@ class SettingsViewModel @Inject constructor(
         val rules = runCatching { portForwardRepository.getRulesSnapshot() }.getOrDefault(emptyList())
 
         buildString {
-            appendLine("=== Podroid Diagnostic Log ===")
+            appendLine("=== Ldroid Diagnostic Log ===")
             appendLine("Generated: $timestamp")
             appendLine()
 
@@ -516,7 +516,7 @@ class SettingsViewModel @Inject constructor(
     }
 
     /**
-     * Dump this process's own logcat, filtered to Podroid's tags (+ `*:S` to
+     * Dump this process's own logcat, filtered to Ldroid's tags (+ `*:S` to
      * silence everything else). Apps can only read their own logs, but that
      * per-pid buffer is otherwise ~95% framework noise (ImeTracker, Surface,
      * InsetsController, ...) that pushes the engine/vsock/boot lines out of the
@@ -533,7 +533,7 @@ class SettingsViewModel @Inject constructor(
             proc.waitFor()
             val lines = output.trimEnd().lines().filter { it.isNotBlank() }
             when {
-                lines.isEmpty() -> "(no Podroid-tagged logcat lines)\n"
+                lines.isEmpty() -> "(no Ldroid-tagged logcat lines)\n"
                 lines.size <= MAX_LOGCAT_LINES -> lines.joinToString("\n") + "\n"
                 else -> (listOf("... (${lines.size - MAX_LOGCAT_LINES} earlier lines trimmed) ...") +
                     lines.takeLast(MAX_LOGCAT_LINES)).joinToString("\n") + "\n"
@@ -547,15 +547,15 @@ class SettingsViewModel @Inject constructor(
         private const val TAG = "SettingsViewModel"
         private const val MAX_LOGCAT_LINES = 1500
         /**
-         * Podroid's own logcat tags: the const TAGs plus the two literal-string
-         * tags (AvfReflect, PodroidVM-err for QEMU stderr). Keep in sync when a
+         * Ldroid's own logcat tags: the const TAGs plus the two literal-string
+         * tags (AvfReflect, LdroidVM-err for QEMU stderr). Keep in sync when a
          * new component starts logging, or its lines won't reach the export.
          */
         private val APP_LOG_TAGS = listOf(
             "AudioStreamer", "AvfDownloadsShare", "AvfEngine", "AvfReflect",
             "ConsoleFanout", "EngineHolder", "HomeViewModel", "HostRequestServer",
-            "LanguageManager", "Ninep2000LServer", "PodroidApp", "PodroidService",
-            "PodroidVM-err", "QemuBootMonitor", "QemuEngine", "QmpClient",
+            "LanguageManager", "Ninep2000LServer", "LdroidApp", "LdroidService",
+            "LdroidVM-err", "QemuBootMonitor", "QemuEngine", "QmpClient",
             "SettingsViewModel", "TerminalVM", "UpdateRepository", "UsbPassthrough",
             "VmControlReceiver", "VsockControlChannel", "VsockPortForwarder",
             "VsockUdpForwarder", "X11Stats", "X11ViewModel",

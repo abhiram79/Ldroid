@@ -16,11 +16,11 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.abhiram79.Ldroid.data.repository.LanguageManager
-import com.abhiram79.Ldroid.service.PodroidService
+import com.abhiram79.Ldroid.service.LdroidService
 import com.abhiram79.Ldroid.service.VmControlReceiver
 import com.abhiram79.Ldroid.ui.navigation.NavGraphViewModel
-import com.abhiram79.Ldroid.ui.navigation.PodroidNavGraph
-import com.abhiram79.Ldroid.ui.theme.PodroidTheme
+import com.abhiram79.Ldroid.ui.navigation.LdroidNavGraph
+import com.abhiram79.Ldroid.ui.theme.LdroidTheme
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -79,13 +79,13 @@ class MainActivity : ComponentActivity() {
                 }
             }
 
-            PodroidTheme(darkTheme = darkTheme, dynamicColor = dynamicColor) {
+            LdroidTheme(darkTheme = darkTheme, dynamicColor = dynamicColor) {
                 Surface(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colorScheme.background,
                 ) {
                     androidx.compose.foundation.layout.Box(Modifier.fillMaxSize()) {
-                        PodroidNavGraph(windowSizeClass = windowSizeClass)
+                        LdroidNavGraph(windowSizeClass = windowSizeClass)
                         if (headlessActive) {
                             com.abhiram79.Ldroid.ui.components.HeadlessOverlay(onExit = { headlessVm.disable() })
                         }
@@ -110,7 +110,7 @@ class MainActivity : ComponentActivity() {
      */
     private fun handleStartVmIntent(intent: Intent?) {
         if (intent?.action == VmControlReceiver.ACTION_START_VM) {
-            PodroidService.start(this)
+            LdroidService.start(this)
         }
     }
 }

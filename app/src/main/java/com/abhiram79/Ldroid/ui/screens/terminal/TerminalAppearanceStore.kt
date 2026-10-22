@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Theme and font file handling for the terminal: bundled assets plus
  * user-imported themes/fonts under getExternalFilesDir. Moved out of
@@ -111,7 +111,7 @@ class TerminalAppearanceStore @Inject constructor(
                 readTimeout = 8000
                 setRequestProperty(
                     "User-Agent",
-                    "Podroid/${com.abhiram79.Ldroid.BuildConfig.VERSION_NAME}"
+                    "Ldroid/${com.abhiram79.Ldroid.BuildConfig.VERSION_NAME}"
                 )
             }
             try {

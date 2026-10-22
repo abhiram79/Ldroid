@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Unit tests for ControlProvider's pure logic: caller authorization, method+
  * arg parsing, VmState -> literal mapping, and state reply formatting. Plain

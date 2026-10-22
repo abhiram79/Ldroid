@@ -74,26 +74,26 @@ import com.abhiram79.Ldroid.data.repository.PortForwardRule
 import com.abhiram79.Ldroid.engine.EngineSelection
 import com.abhiram79.Ldroid.engine.VmState
 import com.abhiram79.Ldroid.engine.avf.AvfDiagnostics
-import com.abhiram79.Ldroid.service.PodroidService
+import com.abhiram79.Ldroid.service.LdroidService
 import com.abhiram79.Ldroid.x11.X11Constants
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.launch
 import androidx.compose.runtime.rememberCoroutineScope
 import kotlinx.coroutines.withContext
 import com.abhiram79.Ldroid.ui.components.AdaptiveContainer
-import com.abhiram79.Ldroid.ui.components.PodroidDestructiveButton
-import com.abhiram79.Ldroid.ui.components.PodroidGhostButton
-import com.abhiram79.Ldroid.ui.components.PodroidInlineAction
-import com.abhiram79.Ldroid.ui.components.PodroidListRow
+import com.abhiram79.Ldroid.ui.components.LdroidDestructiveButton
+import com.abhiram79.Ldroid.ui.components.LdroidGhostButton
+import com.abhiram79.Ldroid.ui.components.LdroidInlineAction
+import com.abhiram79.Ldroid.ui.components.LdroidListRow
 import com.abhiram79.Ldroid.ui.components.VmBandwidthChips
 import com.abhiram79.Ldroid.ui.components.VmCpuChips
 import com.abhiram79.Ldroid.ui.components.VmRamChips
 import com.abhiram79.Ldroid.ui.components.VmStorageChips
-import com.abhiram79.Ldroid.ui.components.PodroidChipColors
-import com.abhiram79.Ldroid.ui.components.PodroidSectionLabel
-import com.abhiram79.Ldroid.ui.components.PodroidSwitch
-import com.abhiram79.Ldroid.ui.components.PodroidTopBar
-import com.abhiram79.Ldroid.ui.theme.PodroidTokens
+import com.abhiram79.Ldroid.ui.components.LdroidChipColors
+import com.abhiram79.Ldroid.ui.components.LdroidSectionLabel
+import com.abhiram79.Ldroid.ui.components.LdroidSwitch
+import com.abhiram79.Ldroid.ui.components.LdroidTopBar
+import com.abhiram79.Ldroid.ui.theme.LdroidTokens
 import com.abhiram79.Ldroid.data.repository.LanguageManager
 
 @Composable
@@ -196,7 +196,7 @@ fun SettingsScreen(
 
     Scaffold(
         topBar = {
-            PodroidTopBar(
+            LdroidTopBar(
                 title = stringResource(R.string.settings),
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
@@ -220,7 +220,7 @@ fun SettingsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = PodroidTokens.Spacing.XL),
+                    .padding(horizontal = LdroidTokens.Spacing.XL),
             ) {
                 // ── APPEARANCE ────────────────────────────────────────
                 AppearanceSection(
@@ -255,17 +255,17 @@ fun SettingsScreen(
                 )
 
                 // ── NETWORK ───────────────────────────────────────────
-                PodroidSectionLabel(stringResource(R.string.network))
-                PodroidListRow(
+                LdroidSectionLabel(stringResource(R.string.network))
+                LdroidListRow(
                     label = stringResource(R.string.phone_ip),
                     value = viewModel.phoneIp,
                     mono = true,
                 )
-                PodroidListRow(
+                LdroidListRow(
                     label = stringResource(R.string.ssh),
                     onClick = { if (vmNotRunning) viewModel.setSshEnabled(!ui.sshEnabled) },
                     rightSlot = {
-                        PodroidSwitch(
+                        LdroidSwitch(
                             checked = ui.sshEnabled,
                             onCheckedChange = { viewModel.setSshEnabled(it) },
                             enabled = vmNotRunning,
@@ -281,13 +281,13 @@ fun SettingsScreen(
                 )
 
                 // ── STORAGE / SHARING ─────────────────────────────────
-                PodroidSectionLabel(stringResource(R.string.storage))
+                LdroidSectionLabel(stringResource(R.string.storage))
                 DownloadsSharingRow(
                     enabled = ui.storageAccessEnabled,
                     vmNotRunning = vmNotRunning,
                     onToggle = { viewModel.setStorageAccessEnabled(it) },
                 )
-                PodroidListRow(
+                LdroidListRow(
                     label = stringResource(R.string.container_backup_title),
                     value = stringResource(R.string.container_backup_settings_subtitle),
                     trailing = "›",
@@ -300,25 +300,25 @@ fun SettingsScreen(
                     activeBackendId = activeBackendId,
                     onToggle = { viewModel.setUsbPassthroughEnabled(it) },
                 )
-                Spacer(Modifier.height(PodroidTokens.Spacing.MD))
-                PodroidDestructiveButton(
+                Spacer(Modifier.height(LdroidTokens.Spacing.MD))
+                LdroidDestructiveButton(
                     text = stringResource(R.string.reset_vm),
                     onClick = { showResetDialog = true },
                 )
 
                 // ── ADVANCED ──────────────────────────────────────────
-                PodroidSectionLabel(stringResource(R.string.advanced))
-                Spacer(Modifier.height(PodroidTokens.Spacing.SM))
-                PodroidGhostButton(
+                LdroidSectionLabel(stringResource(R.string.advanced))
+                Spacer(Modifier.height(LdroidTokens.Spacing.SM))
+                LdroidGhostButton(
                     text = if (advancedExpanded) stringResource(R.string.hide_advanced) else stringResource(R.string.show_advanced),
                     onClick = { advancedExpanded = !advancedExpanded },
                 )
                 if (advancedExpanded) {
-                    PodroidSectionLabel(stringResource(R.string.backend))
-                    Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+                    LdroidSectionLabel(stringResource(R.string.backend))
+                    Spacer(Modifier.height(LdroidTokens.Spacing.SM))
                     Row(
                         horizontalArrangement = Arrangement.spacedBy(8.dp),
-                        modifier = Modifier.padding(horizontal = PodroidTokens.Spacing.MD),
+                        modifier = Modifier.padding(horizontal = LdroidTokens.Spacing.MD),
                     ) {
                         EngineSelection.entries.forEach { sel ->
                             FilterChip(
@@ -335,8 +335,8 @@ fun SettingsScreen(
                                         fontFamily = FontFamily.Monospace,
                                     )
                                 },
-                                shape = RoundedCornerShape(PodroidTokens.Radius.Chip),
-                                colors = PodroidChipColors(),
+                                shape = RoundedCornerShape(LdroidTokens.Radius.Chip),
+                                colors = LdroidChipColors(),
                             )
                         }
                     }
@@ -345,7 +345,7 @@ fun SettingsScreen(
                     // VM is actually running on QEMU right now.
                     if (ui.engineSelection == EngineSelection.AVF) {
                         backendFallback?.let { reasonResId ->
-                            Spacer(Modifier.height(PodroidTokens.Spacing.XS))
+                            Spacer(Modifier.height(LdroidTokens.Spacing.XS))
                             Text(
                                 text = stringResource(
                                     R.string.backend_avf_unavailable,
@@ -353,7 +353,7 @@ fun SettingsScreen(
                                 ),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.error,
-                                modifier = Modifier.padding(horizontal = PodroidTokens.Spacing.MD),
+                                modifier = Modifier.padding(horizontal = LdroidTokens.Spacing.MD),
                             )
                         }
                     } else if (ui.engineSelection == EngineSelection.AUTO) {
@@ -362,16 +362,16 @@ fun SettingsScreen(
                         // (#43). Plain secondary text, not the AVF-forced error
                         // styling above.
                         backendFallback?.takeIf { it == R.string.backend_fallback_reason_network }?.let { reasonResId ->
-                            Spacer(Modifier.height(PodroidTokens.Spacing.XS))
+                            Spacer(Modifier.height(LdroidTokens.Spacing.XS))
                             Text(
                                 text = stringResource(reasonResId),
                                 style = MaterialTheme.typography.bodySmall,
                                 color = MaterialTheme.colorScheme.onSurfaceVariant,
-                                modifier = Modifier.padding(horizontal = PodroidTokens.Spacing.MD),
+                                modifier = Modifier.padding(horizontal = LdroidTokens.Spacing.MD),
                             )
                         }
                     }
-                    Spacer(Modifier.height(PodroidTokens.Spacing.MD))
+                    Spacer(Modifier.height(LdroidTokens.Spacing.MD))
                     AdvancedFieldsBlock(
                         qemuExtraArgs = ui.qemuExtraArgs,
                         kernelExtraCmdline = ui.kernelExtraCmdline,
@@ -394,7 +394,7 @@ fun SettingsScreen(
                     onExportLogs = { viewModel.exportConsoleLogs() },
                 )
 
-                Spacer(Modifier.height(PodroidTokens.Spacing.XL2))
+                Spacer(Modifier.height(LdroidTokens.Spacing.XL2))
             }
         }
     }
@@ -453,22 +453,22 @@ private fun AppearanceSection(
     dynamicColorEnabled: Boolean,
     onDynamicColorChange: (Boolean) -> Unit,
 ) {
-    PodroidSectionLabel(stringResource(R.string.appearance))
-    PodroidListRow(
+    LdroidSectionLabel(stringResource(R.string.appearance))
+    LdroidListRow(
         label = stringResource(R.string.dark_theme),
         onClick = { onDarkThemeChange(!darkTheme) },
         rightSlot = {
-            PodroidSwitch(
+            LdroidSwitch(
                 checked = darkTheme,
                 onCheckedChange = onDarkThemeChange,
             )
         },
     )
-    PodroidListRow(
+    LdroidListRow(
         label = stringResource(R.string.dynamic_color),
         onClick = { onDynamicColorChange(!dynamicColorEnabled) },
         rightSlot = {
-            PodroidSwitch(
+            LdroidSwitch(
                 checked = dynamicColorEnabled,
                 onCheckedChange = onDynamicColorChange,
             )
@@ -482,8 +482,8 @@ private fun LanguageSection(
     systemDefaultLanguage: String,
     onClick: () -> Unit,
 ) {
-    PodroidSectionLabel(stringResource(R.string.language_label))
-    PodroidListRow(
+    LdroidSectionLabel(stringResource(R.string.language_label))
+    LdroidListRow(
         label = stringResource(R.string.language_label),
         value = languageDisplayName(language, systemDefaultLanguage),
         onClick = onClick,
@@ -506,20 +506,20 @@ private fun VmResourcesSection(
     autostartOnBoot: Boolean,
     onAutostartChange: (Boolean) -> Unit,
 ) {
-    PodroidSectionLabel(stringResource(R.string.vm_resources))
+    LdroidSectionLabel(stringResource(R.string.vm_resources))
     if (!vmNotRunning) {
         Text(
             text = stringResource(R.string.stop_vm_to_change),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.error,
-            modifier = Modifier.padding(top = PodroidTokens.Spacing.SM),
+            modifier = Modifier.padding(top = LdroidTokens.Spacing.SM),
         )
     }
-    PodroidListRow(
+    LdroidListRow(
         label = stringResource(R.string.load_balance),
         onClick = { if (vmNotRunning) onLoadBalanceChange(!loadBalanceEnabled) },
         rightSlot = {
-            PodroidSwitch(
+            LdroidSwitch(
                 checked = loadBalanceEnabled,
                 onCheckedChange = onLoadBalanceChange,
                 enabled = vmNotRunning,
@@ -547,11 +547,11 @@ private fun VmResourcesSection(
         minGb = storageSizeGb,
         enabled = vmNotRunning && !loadBalanceEnabled,
     )
-    PodroidListRow(
+    LdroidListRow(
         label = stringResource(R.string.autostart_on_boot),
         onClick = { onAutostartChange(!autostartOnBoot) },
         rightSlot = {
-            PodroidSwitch(
+            LdroidSwitch(
                 checked = autostartOnBoot,
                 onCheckedChange = onAutostartChange,
             )
@@ -562,9 +562,9 @@ private fun VmResourcesSection(
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier.padding(
-            start = PodroidTokens.Spacing.MD,
-            end = PodroidTokens.Spacing.MD,
-            bottom = PodroidTokens.Spacing.SM,
+            start = LdroidTokens.Spacing.MD,
+            end = LdroidTokens.Spacing.MD,
+            bottom = LdroidTokens.Spacing.SM,
         ),
     )
 }
@@ -577,34 +577,34 @@ private fun AboutSection(
     onRunAvfDiagnostic: () -> Unit,
     onExportLogs: () -> Unit,
 ) {
-    PodroidSectionLabel(stringResource(R.string.about))
-    PodroidListRow(label = stringResource(R.string.version_label), value = "v${BuildConfig.VERSION_NAME}", mono = true)
-    PodroidListRow(label = stringResource(R.string.qemu_label), value = "v${BuildConfig.QEMU_VERSION}", mono = true)
-    PodroidListRow(label = stringResource(R.string.architecture), value = "AArch64", mono = true)
-    PodroidListRow(label = stringResource(R.string.linux_distro), value = "Alpine 3.24", mono = true)
-    Spacer(Modifier.height(PodroidTokens.Spacing.MD))
+    LdroidSectionLabel(stringResource(R.string.about))
+    LdroidListRow(label = stringResource(R.string.version_label), value = "v${BuildConfig.VERSION_NAME}", mono = true)
+    LdroidListRow(label = stringResource(R.string.qemu_label), value = "v${BuildConfig.QEMU_VERSION}", mono = true)
+    LdroidListRow(label = stringResource(R.string.architecture), value = "AArch64", mono = true)
+    LdroidListRow(label = stringResource(R.string.linux_distro), value = "Alpine 3.24", mono = true)
+    Spacer(Modifier.height(LdroidTokens.Spacing.MD))
     val uriHandler = LocalUriHandler.current
-    PodroidGhostButton(
+    LdroidGhostButton(
         text = stringResource(R.string.documentation),
-        onClick = { uriHandler.openUri("https://extv.github.io/Podroid/guide/") },
+        onClick = { uriHandler.openUri("https://extv.github.io/Ldroid/guide/") },
     )
-    Spacer(Modifier.height(PodroidTokens.Spacing.SM))
-    PodroidGhostButton(
+    Spacer(Modifier.height(LdroidTokens.Spacing.SM))
+    LdroidGhostButton(
         text = stringResource(R.string.export_diagnostic_log),
         onClick = onExportLogs,
     )
-    Spacer(Modifier.height(PodroidTokens.Spacing.SM))
-    PodroidListRow(
+    Spacer(Modifier.height(LdroidTokens.Spacing.SM))
+    LdroidListRow(
         label = stringResource(R.string.verbose_avf_logging),
         onClick = { onAvfVerboseLoggingChange(!avfVerboseLogging) },
         rightSlot = {
-            PodroidSwitch(
+            LdroidSwitch(
                 checked = avfVerboseLogging,
                 onCheckedChange = onAvfVerboseLoggingChange,
             )
         },
     )
-    PodroidGhostButton(
+    LdroidGhostButton(
         text = if (avfRunning) stringResource(R.string.running_avf_diagnostic) else stringResource(R.string.avf_diagnostic),
         onClick = onRunAvfDiagnostic,
     )
@@ -629,7 +629,7 @@ private fun AvfDiagnosticDialog(
                     modifier = Modifier
                         .fillMaxWidth()
                         .verticalScroll(rememberScrollState())
-                        .padding(PodroidTokens.Spacing.SM),
+                        .padding(LdroidTokens.Spacing.SM),
                 ) {
                     Text(
                         text = report,
@@ -692,8 +692,8 @@ private fun LanguagePickerDialog(
                         selected = selectedLanguage == code,
                         onClick = { onSelect(code) },
                         label = { Text(label) },
-                        shape = RoundedCornerShape(PodroidTokens.Radius.Chip),
-                        colors = PodroidChipColors(),
+                        shape = RoundedCornerShape(LdroidTokens.Radius.Chip),
+                        colors = LdroidChipColors(),
                     )
                 }
             }
@@ -716,27 +716,27 @@ private fun PortForwardSection(
 ) {
     var showCleanConfirm by remember { mutableStateOf(false) }
 
-    PodroidListRow(
+    LdroidListRow(
         label = stringResource(R.string.port_forwards_count, rules.size),
         rightSlot = {
-            Row(horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM)) {
                 if (rules.isNotEmpty()) {
-                    PodroidInlineAction(
+                    LdroidInlineAction(
                         label = stringResource(R.string.port_forwards_clean),
                         onClick = { showCleanConfirm = true },
                     )
                 }
-                PodroidInlineAction(label = stringResource(R.string.add_btn), onClick = onAdd)
+                LdroidInlineAction(label = stringResource(R.string.add_btn), onClick = onAdd)
             }
         },
     )
 
-    // The forwards Podroid sets up itself. They never appear in the rule list
+    // The forwards Ldroid sets up itself. They never appear in the rule list
     // because they are not user rules, which left people reading netstat in the
     // guest and guessing what had claimed a port, or trying to add a rule on one
     // and getting a refusal with no visible reason.
     ReservedForwardRow(
-        hostPort = PodroidService.SSH_HOST_PORT,
+        hostPort = LdroidService.SSH_HOST_PORT,
         guestPort = 22,
         purpose = stringResource(
             if (sshEnabled) R.string.port_forward_purpose_ssh else R.string.port_forward_purpose_ssh_off
@@ -762,7 +762,7 @@ private fun PortForwardSection(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = PodroidTokens.Spacing.SM),
+                    .padding(vertical = LdroidTokens.Spacing.SM),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
@@ -770,7 +770,7 @@ private fun PortForwardSection(
                     text = "${rule.hostPort} → ${rule.guestPort} (${rule.protocol})",
                     style = MaterialTheme.typography.bodyMedium,
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontFamily = PodroidTokens.mono(),
+                    fontFamily = LdroidTokens.mono(),
                     modifier = Modifier.weight(1f),
                 )
                 IconButton(onClick = { onRemove(rule) }) {
@@ -810,7 +810,7 @@ private fun PortForwardSection(
     }
 }
 
-/** One of Podroid's own forwards: shown for reference, with no delete action. */
+/** One of Ldroid's own forwards: shown for reference, with no delete action. */
 @Composable
 private fun ReservedForwardRow(
     hostPort: Int,
@@ -823,7 +823,7 @@ private fun ReservedForwardRow(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(vertical = PodroidTokens.Spacing.SM),
+            .padding(vertical = LdroidTokens.Spacing.SM),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween,
     ) {
@@ -831,7 +831,7 @@ private fun ReservedForwardRow(
             text = "$hostPort → $guestPort (tcp)",
             style = MaterialTheme.typography.bodyMedium,
             color = tint,
-            fontFamily = PodroidTokens.mono(),
+            fontFamily = LdroidTokens.mono(),
         )
         Text(
             text = purpose,
@@ -889,11 +889,11 @@ private fun DownloadsSharingRow(
         }
     }
 
-    PodroidListRow(
+    LdroidListRow(
         label = stringResource(R.string.downloads_sharing),
         onClick = { if (vmNotRunning) toggleDownloadsSharing(!enabled) },
         rightSlot = {
-            PodroidSwitch(
+            LdroidSwitch(
                 checked = enabled,
                 onCheckedChange = { checked -> toggleDownloadsSharing(checked) },
                 enabled = vmNotRunning,
@@ -917,11 +917,11 @@ private fun UsbPassthroughRow(
     activeBackendId: String,
     onToggle: (Boolean) -> Unit,
 ) {
-    PodroidListRow(
+    LdroidListRow(
         label = stringResource(R.string.usb_passthrough_settings_label),
         onClick = { if (vmNotRunning && available) onToggle(!(enabled && available)) },
         rightSlot = {
-            PodroidSwitch(
+            LdroidSwitch(
                 checked = enabled && available,
                 onCheckedChange = onToggle,
                 enabled = vmNotRunning && available,
@@ -937,9 +937,9 @@ private fun UsbPassthroughRow(
         style = MaterialTheme.typography.bodySmall,
         color = MaterialTheme.colorScheme.onSurfaceVariant,
         modifier = Modifier.padding(
-            start = PodroidTokens.Spacing.MD,
-            end = PodroidTokens.Spacing.MD,
-            bottom = PodroidTokens.Spacing.SM,
+            start = LdroidTokens.Spacing.MD,
+            end = LdroidTokens.Spacing.MD,
+            bottom = LdroidTokens.Spacing.SM,
         ),
     )
 }
@@ -955,10 +955,10 @@ private fun AdvancedFieldsBlock(
     enabled: Boolean,
 ) {
     Column(
-        verticalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.MD),
+        verticalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.MD),
         modifier = Modifier.padding(
-            top = PodroidTokens.Spacing.SM,
-            bottom = PodroidTokens.Spacing.MD,
+            top = LdroidTokens.Spacing.SM,
+            bottom = LdroidTokens.Spacing.MD,
         ),
     ) {
         if (!enabled) {
@@ -1040,8 +1040,8 @@ private fun AddPortForwardDialog(
                                     style = MaterialTheme.typography.labelSmall,
                                 )
                             },
-                            shape = RoundedCornerShape(PodroidTokens.Radius.Chip),
-                            colors = PodroidChipColors(),
+                            shape = RoundedCornerShape(LdroidTokens.Radius.Chip),
+                            colors = LdroidChipColors(),
                         )
                     }
                 }

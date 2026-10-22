@@ -52,7 +52,7 @@ public final class TerminalRow {
     /** If this row has a {@link TerminalBitmap}. Used for performance only. */
     public boolean mHasTerminalBitmap;
 
-    /** Podroid: scratch buffer reused by {@link #copyInterval} for the in-place
+    /** Ldroid: scratch buffer reused by {@link #copyInterval} for the in-place
      *  case (this == line). Avoids allocating a fresh char[] every row-shift —
      *  hot path during full-screen scrolls. Grown on demand. */
     private char[] mCopyScratch;
@@ -71,7 +71,7 @@ public final class TerminalRow {
         final int x1 = line.findStartOfColumn(sourceX1);
         final int x2 = line.findStartOfColumn(sourceX2);
         boolean startingFromSecondHalfOfWideChar = (sourceX1 > 0 && line.wideDisplayCharacterStartingAt(sourceX1 - 1));
-        // Podroid: in-place copy (this == line) needs an isolated source view because
+        // Ldroid: in-place copy (this == line) needs an isolated source view because
         // setChar() below mutates mText. Reuse a per-row scratch buffer instead of
         // Arrays.copyOf'ing fresh each call — full-screen scrolls hit this rapidly.
         final char[] sourceChars;

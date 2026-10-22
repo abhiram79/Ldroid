@@ -42,7 +42,7 @@ app/src/main/assets/initrd.img
 app/src/main/assets/alpine-rootfs.squashfs
 app/src/main/jniLibs/arm64-v8a/libqemu-system-aarch64.so
 app/src/main/jniLibs/arm64-v8a/libslirp.so
-app/src/main/jniLibs/arm64-v8a/libpodroid-bridge.so
+app/src/main/jniLibs/arm64-v8a/libldroid-bridge.so
 
 # Local planning / scratch dirs
 docs/superpowers/
@@ -75,7 +75,7 @@ app/src/main/jniLibs/
 /tmp/
 
 # Release signing keystore — never commit
-/podroid-release.jks
+/ldroid-release.jks
 
 # Visual companion (brainstorming sessions)
 .superpowers/

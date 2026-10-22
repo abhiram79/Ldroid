@@ -60,18 +60,18 @@ import com.abhiram79.Ldroid.BuildConfig
 import com.abhiram79.Ldroid.R
 import com.abhiram79.Ldroid.engine.VmState
 import com.abhiram79.Ldroid.engine.avf.AvfFailureGuidance
-import com.abhiram79.Ldroid.service.PodroidService
+import com.abhiram79.Ldroid.service.LdroidService
 import com.abhiram79.Ldroid.ui.components.AdaptiveContainer
 import com.abhiram79.Ldroid.ui.components.PermissionRows
-import com.abhiram79.Ldroid.ui.components.PodroidDestructiveButton
-import com.abhiram79.Ldroid.ui.components.PodroidGhostButton
-import com.abhiram79.Ldroid.ui.components.PodroidListRow
-import com.abhiram79.Ldroid.ui.components.PodroidPrimaryButton
-import com.abhiram79.Ldroid.ui.components.PodroidSectionLabel
-import com.abhiram79.Ldroid.ui.components.PodroidStatus
-import com.abhiram79.Ldroid.ui.components.PodroidStatusColors
-import com.abhiram79.Ldroid.ui.components.PodroidTopBar
-import com.abhiram79.Ldroid.ui.theme.PodroidTokens
+import com.abhiram79.Ldroid.ui.components.LdroidDestructiveButton
+import com.abhiram79.Ldroid.ui.components.LdroidGhostButton
+import com.abhiram79.Ldroid.ui.components.LdroidListRow
+import com.abhiram79.Ldroid.ui.components.LdroidPrimaryButton
+import com.abhiram79.Ldroid.ui.components.LdroidSectionLabel
+import com.abhiram79.Ldroid.ui.components.LdroidStatus
+import com.abhiram79.Ldroid.ui.components.LdroidStatusColors
+import com.abhiram79.Ldroid.ui.components.LdroidTopBar
+import com.abhiram79.Ldroid.ui.theme.LdroidTokens
 import com.abhiram79.Ldroid.util.AppPermission
 import com.abhiram79.Ldroid.util.AppPermissions
 import com.abhiram79.Ldroid.util.isGranted
@@ -183,7 +183,7 @@ fun HomeScreen(
 
     Scaffold(
         topBar = {
-            PodroidTopBar(
+            LdroidTopBar(
                 title = stringResource(R.string.app_name),
                 actions = {
                     IconButton(onClick = onNavigateToStatus) {
@@ -210,13 +210,13 @@ fun HomeScreen(
                 Row(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = PodroidTokens.Spacing.XL2, vertical = PodroidTokens.Spacing.LG),
+                        .padding(horizontal = LdroidTokens.Spacing.XL2, vertical = LdroidTokens.Spacing.LG),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
                     Column(
                         modifier = Modifier
                             .weight(1f)
-                            .padding(end = PodroidTokens.Spacing.XL2)
+                            .padding(end = LdroidTokens.Spacing.XL2)
                             .verticalScroll(rememberScrollState()),
                     ) {
                         if (missingPermissions.isNotEmpty() && !permissionsCardDismissed) {
@@ -250,14 +250,14 @@ fun HomeScreen(
                         modifier = Modifier
                             .weight(1f)
                             .verticalScroll(rememberScrollState()),
-                        verticalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+                        verticalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
                     ) {
                         HomeActionButtons(
                             isRunning = isRunning,
                             isStarting = isStarting,
                             isStopping = isStopping,
                             vmState = vmState,
-                            onStart = { viewModel.startPodroid() },
+                            onStart = { viewModel.startLdroid() },
                             onStop = { viewModel.stopVm() },
                             onRestart = { viewModel.restartVm() },
                             onOpenTerminal = onNavigateToTerminal,
@@ -271,10 +271,10 @@ fun HomeScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .verticalScroll(rememberScrollState())
-                        .padding(horizontal = PodroidTokens.Spacing.XL),
-                    verticalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.MD),
+                        .padding(horizontal = LdroidTokens.Spacing.XL),
+                    verticalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.MD),
                 ) {
-                    Spacer(Modifier.height(PodroidTokens.Spacing.XL))
+                    Spacer(Modifier.height(LdroidTokens.Spacing.XL))
                     if (missingPermissions.isNotEmpty() && !permissionsCardDismissed) {
                         PermissionsNeededCard(
                             permissions = missingPermissions,
@@ -311,14 +311,14 @@ fun HomeScreen(
                         isStarting = isStarting,
                         isStopping = isStopping,
                         vmState = vmState,
-                        onStart = { viewModel.startPodroid() },
+                        onStart = { viewModel.startLdroid() },
                         onStop = { viewModel.stopVm() },
                         onRestart = { viewModel.restartVm() },
                         onOpenTerminal = onNavigateToTerminal,
                         onBackup = onNavigateToContainerBackup,
                         onStatus = onNavigateToStatus,
                     )
-                    Spacer(Modifier.height(PodroidTokens.Spacing.XL))
+                    Spacer(Modifier.height(LdroidTokens.Spacing.XL))
                 }
             }
         }
@@ -335,14 +335,14 @@ private fun PermissionsNeededCard(
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = PodroidTokens.Spacing.MD),
+            .padding(bottom = LdroidTokens.Spacing.MD),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ),
     ) {
         Column(
-            modifier = Modifier.padding(PodroidTokens.Spacing.MD),
-            verticalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+            modifier = Modifier.padding(LdroidTokens.Spacing.MD),
+            verticalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
         ) {
             Text(
                 stringResource(R.string.permissions_needed),
@@ -370,14 +370,14 @@ private fun AvfHintBanner(onDismiss: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = PodroidTokens.Spacing.MD),
+            .padding(bottom = LdroidTokens.Spacing.MD),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ),
     ) {
         Column(
-            modifier = Modifier.padding(PodroidTokens.Spacing.MD),
-            verticalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+            modifier = Modifier.padding(LdroidTokens.Spacing.MD),
+            verticalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
         ) {
             Text(
                 stringResource(R.string.avf_available),
@@ -412,7 +412,7 @@ private fun AvfFallbackBanner() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = PodroidTokens.Spacing.MD),
+            .padding(bottom = LdroidTokens.Spacing.MD),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surfaceVariant,
         ),
@@ -421,7 +421,7 @@ private fun AvfFallbackBanner() {
             text = stringResource(R.string.backend_fallback_banner),
             style = MaterialTheme.typography.bodySmall,
             color = MaterialTheme.colorScheme.onSurfaceVariant,
-            modifier = Modifier.padding(PodroidTokens.Spacing.MD),
+            modifier = Modifier.padding(LdroidTokens.Spacing.MD),
         )
     }
 }
@@ -443,7 +443,7 @@ private fun HomeStatusBlock(
     onSwitchToQemu: () -> Unit = {},
     onRetry: () -> Unit = {},
 ) {
-    PodroidSectionLabel(stringResource(R.string.vm_status))
+    LdroidSectionLabel(stringResource(R.string.vm_status))
     val statusText = when {
         isStopping -> stringResource(R.string.status_stopping)
         isStarting -> stringResource(R.string.status_starting)
@@ -463,7 +463,7 @@ private fun HomeStatusBlock(
             color = color,
         )
     }
-    Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+    Spacer(Modifier.height(LdroidTokens.Spacing.SM))
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
@@ -476,7 +476,7 @@ private fun HomeStatusBlock(
                     strokeWidth = 2.dp,
                     color = MaterialTheme.colorScheme.tertiary,
                 )
-                Spacer(Modifier.width(PodroidTokens.Spacing.SM))
+                Spacer(Modifier.width(LdroidTokens.Spacing.SM))
                 Text(
                     text = stringResource(R.string.stopping_vm),
                     style = MaterialTheme.typography.bodyMedium,
@@ -485,11 +485,11 @@ private fun HomeStatusBlock(
             }
         } else {
             val (dot, label) = when {
-                isRunning  -> PodroidStatusColors.Running  to (uptimeLabel ?: stringResource(R.string.up))
-                isStarting -> PodroidStatusColors.Starting to bootStage.ifEmpty { stringResource(R.string.status_starting) }
-                else       -> PodroidStatusColors.Stopped  to stringResource(R.string.status_idle)
+                isRunning  -> LdroidStatusColors.Running  to (uptimeLabel ?: stringResource(R.string.up))
+                isStarting -> LdroidStatusColors.Starting to bootStage.ifEmpty { stringResource(R.string.status_starting) }
+                else       -> LdroidStatusColors.Stopped  to stringResource(R.string.status_idle)
             }
-            PodroidStatus(label = label, dotColor = dot)
+            LdroidStatus(label = label, dotColor = dot)
         }
         Text(
             text = meta.resourcesLabel,
@@ -498,7 +498,7 @@ private fun HomeStatusBlock(
         )
     }
     if (avfNetWorkaroundFailed) {
-        Spacer(Modifier.height(PodroidTokens.Spacing.MD))
+        Spacer(Modifier.height(LdroidTokens.Spacing.MD))
         Text(
             text = stringResource(R.string.avf_net_workaround_failed),
             style = MaterialTheme.typography.bodyMedium,
@@ -506,8 +506,8 @@ private fun HomeStatusBlock(
         )
     }
     if (!isRunning && !isStarting && !isStopping) {
-        Spacer(Modifier.height(PodroidTokens.Spacing.MD))
-        PodroidSectionLabel(stringResource(R.string.home_containers_created))
+        Spacer(Modifier.height(LdroidTokens.Spacing.MD))
+        LdroidSectionLabel(stringResource(R.string.home_containers_created))
         Text(
             text = containerCount?.let { stringResource(R.string.home_containers_count, it) }
                 ?: stringResource(R.string.home_containers_unknown),
@@ -516,15 +516,15 @@ private fun HomeStatusBlock(
         )
     }
     if (vmState is VmState.Error) {
-        Spacer(Modifier.height(PodroidTokens.Spacing.MD))
-        PodroidSectionLabel(stringResource(R.string.error_title))
+        Spacer(Modifier.height(LdroidTokens.Spacing.MD))
+        LdroidSectionLabel(stringResource(R.string.error_title))
         Text(
             text = vmState.message,
             style = MaterialTheme.typography.bodyMedium,
             color = MaterialTheme.colorScheme.error,
         )
         if (avfBootFailure) {
-            Spacer(Modifier.height(PodroidTokens.Spacing.MD))
+            Spacer(Modifier.height(LdroidTokens.Spacing.MD))
             Text(
                 text = stringResource(
                     if (avfFailureAdvice == AvfFailureGuidance.Advice.TRY_ONE_CORE)
@@ -535,21 +535,21 @@ private fun HomeStatusBlock(
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+            Spacer(Modifier.height(LdroidTokens.Spacing.SM))
             if (avfFailureAdvice == AvfFailureGuidance.Advice.TRY_ONE_CORE) {
-                PodroidPrimaryButton(
+                LdroidPrimaryButton(
                     text = stringResource(R.string.avf_action_use_one_core),
                     onClick = onUseOneCore,
                 )
-                Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+                Spacer(Modifier.height(LdroidTokens.Spacing.SM))
             }
-            Row(horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM)) {
-                PodroidGhostButton(
+            Row(horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM)) {
+                LdroidGhostButton(
                     text = stringResource(R.string.avf_action_switch_qemu),
                     onClick = onSwitchToQemu,
                     modifier = Modifier.weight(1f),
                 )
-                PodroidGhostButton(
+                LdroidGhostButton(
                     text = stringResource(R.string.avf_action_retry),
                     onClick = onRetry,
                     modifier = Modifier.weight(1f),
@@ -573,34 +573,34 @@ private fun HomeDataSection(
     val showStarting = vmState is VmState.Starting
     val showError = vmState is VmState.Error
     if (showStarting || showError || isStopping) return
-    Spacer(Modifier.height(PodroidTokens.Spacing.MD))
+    Spacer(Modifier.height(LdroidTokens.Spacing.MD))
     if (isRunning) {
-        PodroidSectionLabel(stringResource(R.string.network))
-        PodroidListRow(
+        LdroidSectionLabel(stringResource(R.string.network))
+        LdroidListRow(
             label = stringResource(R.string.home_containers_created),
             value = containerCount?.toString() ?: stringResource(R.string.home_containers_unknown),
             mono = true,
         )
-        PodroidListRow(label = stringResource(R.string.phone_ip), value = phoneIp, mono = true)
-        PodroidListRow(
+        LdroidListRow(label = stringResource(R.string.phone_ip), value = phoneIp, mono = true)
+        LdroidListRow(
             label = stringResource(R.string.ssh),
-            value = if (meta.sshEnabled) ":${PodroidService.SSH_HOST_PORT} · podroid" else stringResource(R.string.off),
+            value = if (meta.sshEnabled) ":${LdroidService.SSH_HOST_PORT} · ldroid" else stringResource(R.string.off),
             mono = meta.sshEnabled,
         )
-        PodroidListRow(
+        LdroidListRow(
             label = stringResource(R.string.port_forwards),
             value = if (meta.portForwardCount == 0) stringResource(R.string.none)
                     else "${meta.portForwardCount} ${stringResource(R.string.active)}",
         )
     } else {
-        PodroidSectionLabel(stringResource(R.string.last_session))
+        LdroidSectionLabel(stringResource(R.string.last_session))
         if (meta.lastBootDurationMs > 0L) {
-            PodroidListRow(
+            LdroidListRow(
                 label = stringResource(R.string.booted_in),
                 value = formatBootDuration(meta.lastBootDurationMs),
             )
         }
-        PodroidListRow(
+        LdroidListRow(
             label = stringResource(R.string.build),
             value = "v${BuildConfig.VERSION_NAME} · QEMU ${BuildConfig.QEMU_VERSION}",
             mono = true,
@@ -637,29 +637,29 @@ private fun HomeActionButtons(
         // Teardown in progress: one disabled affordance so the user can't
         // double-stop or start over a stop that's already running. The spinner
         // lives in the status block above.
-        PodroidPrimaryButton(
+        LdroidPrimaryButton(
             text = stringResource(R.string.stopping_action),
             onClick = {},
             enabled = false,
         )
     } else if (isRunning) {
-        PodroidPrimaryButton(text = stringResource(R.string.open_terminal), onClick = onOpenTerminal)
-        Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+        LdroidPrimaryButton(text = stringResource(R.string.open_terminal), onClick = onOpenTerminal)
+        Spacer(Modifier.height(LdroidTokens.Spacing.SM))
         HomeQuickActions(onBackup = onBackup, onStatus = onStatus)
-        Spacer(Modifier.height(PodroidTokens.Spacing.SM))
-        Row(horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM)) {
-            PodroidGhostButton(text = stringResource(R.string.restart), onClick = onRestart, modifier = Modifier.weight(1f))
-            PodroidDestructiveButton(text = stringResource(R.string.stop), onClick = onStop, modifier = Modifier.weight(1f))
+        Spacer(Modifier.height(LdroidTokens.Spacing.SM))
+        Row(horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM)) {
+            LdroidGhostButton(text = stringResource(R.string.restart), onClick = onRestart, modifier = Modifier.weight(1f))
+            LdroidDestructiveButton(text = stringResource(R.string.stop), onClick = onStop, modifier = Modifier.weight(1f))
         }
     } else if (isStarting) {
-        PodroidDestructiveButton(text = stringResource(R.string.stop), onClick = onStop)
+        LdroidDestructiveButton(text = stringResource(R.string.stop), onClick = onStop)
     } else if (vmState is VmState.Error) {
-        PodroidPrimaryButton(text = stringResource(R.string.try_again), onClick = onStart)
-        Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+        LdroidPrimaryButton(text = stringResource(R.string.try_again), onClick = onStart)
+        Spacer(Modifier.height(LdroidTokens.Spacing.SM))
         HomeQuickActions(onBackup = onBackup, onStatus = onStatus)
     } else {
-        PodroidPrimaryButton(text = stringResource(R.string.start_vm), onClick = onStart)
-        Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+        LdroidPrimaryButton(text = stringResource(R.string.start_vm), onClick = onStart)
+        Spacer(Modifier.height(LdroidTokens.Spacing.SM))
         HomeQuickActions(onBackup = onBackup, onStatus = onStatus)
     }
 }
@@ -671,14 +671,14 @@ private fun HomeQuickActions(
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+        horizontalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
     ) {
-        PodroidGhostButton(
+        LdroidGhostButton(
             text = stringResource(R.string.home_action_backup),
             onClick = onBackup,
             modifier = Modifier.weight(1f),
         )
-        PodroidGhostButton(
+        LdroidGhostButton(
             text = stringResource(R.string.home_action_status),
             onClick = onStatus,
             modifier = Modifier.weight(1f),

@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * USB device passthrough into the QEMU guest.
  *
@@ -191,7 +191,7 @@ class UsbPassthroughManager @Inject constructor(
                     connection.close()
                     return
                 }
-                val qemuId = "podroid_usb_${device.deviceId}"
+                val qemuId = "ldroid_usb_${device.deviceId}"
                 val args = JSONObject()
                     .put("driver", "usb-host")
                     .put("id", qemuId)

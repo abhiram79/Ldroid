@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Owns the guest-bridge connection for one VM session. Opens a HostTransport
  * (retrying until the guest daemon is up), then loops: read request line ->

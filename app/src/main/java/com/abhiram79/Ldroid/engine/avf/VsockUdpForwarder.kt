@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Per-rule UDP forwarder for the AVF backend. Binds 0.0.0.0:hostPort as a
  * DatagramSocket and, per distinct client source address ("flow"), opens one

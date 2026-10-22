@@ -1,10 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Podroid - Rootless Podman for Android
-  Copyright (C) 2024-2026 Podroid contributors
+  Ldroid - Rootless Podman for Android
+  Copyright (C) 2024-2026 Ldroid contributors
 -->
 <resources>
-    <string name="app_name">Podroid</string>
+    <string name="app_name">Ldroid</string>
 
     <!-- VM Status -->
     <string name="vm_status">VM Status</string>
@@ -56,7 +56,7 @@
     <string name="ram_label">RAM</string>
     <string name="network_label">Network</string>
     <string name="ssh_access">SSH access</string>
-    <string name="ssh_password_hint">ssh root@&lt;phone-ip&gt; -p 9922   (password: podroid)</string>
+    <string name="ssh_password_hint">ssh root@&lt;phone-ip&gt; -p 9922   (password: ldroid)</string>
     <string name="load_balance">Load balance</string>
     <string name="load_balance_description">Automatically tune CPU, RAM, storage, and bandwidth for this device.</string>
     <string name="load_balance_resources_hint">Set automatically by load balance. Turn it off on the previous step to pick these yourself.</string>
@@ -106,7 +106,7 @@
     <string name="avf_diagnostic">AVF (pKVM) diagnostic</string>
     <string name="running_avf_diagnostic">Running AVF diagnostic…</string>
     <string name="probing_avf">Probing…</string>
-    <string name="export_diagnostic_subject">Podroid Diagnostic Log</string>
+    <string name="export_diagnostic_subject">Ldroid Diagnostic Log</string>
     <string name="export_diagnostic_chooser">Share diagnostic log</string>
     <string name="export_diagnostic_failed">Export failed: %1$s</string>
     <string name="unknown_error">unknown error</string>
@@ -134,7 +134,7 @@
     <string name="port_forwards_count">Port forwards (%1$d)</string>
     <string name="port_forwards_clean">Clean all</string>
     <string name="port_forwards_clean_confirm_title">Remove all port forwards?</string>
-    <string name="port_forwards_clean_confirm_body">This removes all %1$d forwarding rules. Podroid\'s own forwards (SSH, display, audio) are not affected.</string>
+    <string name="port_forwards_clean_confirm_body">This removes all %1$d forwarding rules. Ldroid\'s own forwards (SSH, display, audio) are not affected.</string>
     <string name="port_forwards_clean_confirm_btn">Remove all</string>
     <string name="none">None</string>
     <string name="active">active</string>
@@ -159,7 +159,7 @@
     <string name="status_live_hint">2 updates per second</string>
     <string name="status_chart_window">Last ~1 min</string>
     <string name="status_resource_phone">Phone</string>
-    <string name="status_resource_vm">Podroid VM</string>
+    <string name="status_resource_vm">Ldroid VM</string>
     <string name="status_metric_phone_cpu">CPU (average)</string>
     <string name="status_metric_phone_ram">Memory (phone)</string>
     <string name="status_metric_phone_storage">Storage (phone)</string>
@@ -189,7 +189,7 @@
     <string name="container_backup_location">Backup location</string>
     <string name="container_backup_guest_path">Guest path</string>
     <string name="container_backup_phone_path">On phone (Downloads)</string>
-    <string name="container_backup_phone_path_value">Download/Podroid/backups</string>
+    <string name="container_backup_phone_path_value">Download/Ldroid/backups</string>
     <string name="container_backup_downloads_hint">Enable Downloads sharing in Settings so backups appear on your phone.</string>
     <string name="container_backup_export">Export container</string>
     <string name="container_backup_vm_stopped">Start the VM before running backup commands.</string>
@@ -202,10 +202,10 @@
     <string name="container_backup_tools">Tools</string>
     <string name="container_backup_copy_list">Copy list command</string>
     <string name="container_backup_copy_all">Copy backup-all command</string>
-    <string name="container_backup_terminal_hint">Paste into the Podroid terminal. podroid-backup is included in newer guest images; older images fall back to podman export automatically.</string>
+    <string name="container_backup_terminal_hint">Paste into the Ldroid terminal. ldroid-backup is included in newer guest images; older images fall back to podman export automatically.</string>
     <string name="container_backup_on_phone">Backups on phone</string>
     <string name="container_backup_refresh">Refresh list</string>
-    <string name="container_backup_none">No backup archives found in Downloads/Podroid/backups yet.</string>
+    <string name="container_backup_none">No backup archives found in Downloads/Ldroid/backups yet.</string>
     <string name="container_backup_list_error">Couldn\'t read the backup folder. Try Refresh.</string>
     <string name="container_backup_copied">Command copied</string>
 
@@ -235,11 +235,11 @@
     <string name="backend_fallback_reason_service">the system service is unreachable</string>
     <string name="backend_fallback_reason_protected_only">this device only supports protected virtual machines</string>
     <!-- #43: AUTO avoided AVF because the OEM build compiled out networking (isFeatureEnabled(com.android.kvm.NETWORK) == false). Standalone sentence, unlike the fragments above. -->
-    <string name="backend_fallback_reason_network">This device\'s virtualization service has networking turned off, so Podroid uses QEMU to keep the VM online.</string>
+    <string name="backend_fallback_reason_network">This device\'s virtualization service has networking turned off, so Ldroid uses QEMU to keep the VM online.</string>
 
     <!-- Permissions -->
     <string name="permissions">Permissions</string>
-    <string name="permissions_description">Podroid needs these to run the VM reliably.</string>
+    <string name="permissions_description">Ldroid needs these to run the VM reliably.</string>
     <string name="permissions_needed">Permissions needed</string>
     <string name="perm_notifications_title">Notifications</string>
     <string name="perm_notifications_why">Shows the VM\'s state and lets you stop it from the notification shade.</string>

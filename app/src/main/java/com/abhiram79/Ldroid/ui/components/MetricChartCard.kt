@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Metric tile: title, live line chart, colored legend rows.
  */
@@ -28,7 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import com.abhiram79.Ldroid.ui.theme.PodroidTokens
+import com.abhiram79.Ldroid.ui.theme.LdroidTokens
 
 data class MetricLegend(
     val label: String,
@@ -49,7 +49,7 @@ fun MetricChartCard(
 ) {
     Card(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(PodroidTokens.Radius.Chip),
+        shape = RoundedCornerShape(LdroidTokens.Radius.Chip),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.surface,
         ),
@@ -57,8 +57,8 @@ fun MetricChartCard(
         border = BorderStroke(1.dp, MaterialTheme.colorScheme.outlineVariant),
     ) {
         Column(
-            modifier = Modifier.padding(PodroidTokens.Spacing.MD),
-            verticalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.SM),
+            modifier = Modifier.padding(LdroidTokens.Spacing.MD),
+            verticalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.SM),
         ) {
             Text(
                 text = title,
@@ -75,7 +75,7 @@ fun MetricChartCard(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(120.dp)
-                        .padding(top = PodroidTokens.Spacing.LG),
+                        .padding(top = LdroidTokens.Spacing.LG),
                 )
             } else {
                 LiveLineChart(series = series, yMax = yMax)
@@ -99,7 +99,7 @@ fun MetricChartCard(
                             .height(28.dp)
                             .background(legend.color, RoundedCornerShape(1.dp)),
                     )
-                    Spacer(modifier = Modifier.width(PodroidTokens.Spacing.SM))
+                    Spacer(modifier = Modifier.width(LdroidTokens.Spacing.SM))
                     Column(modifier = Modifier.weight(1f)) {
                         Text(
                             text = legend.label,

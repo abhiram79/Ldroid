@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Per-rule TCP listener that bridges Android-side connections to a vsock port
  * on the guest. Listens on 0.0.0.0:hostPort so LAN devices (`ssh root@<phone-IP>

@@ -28,21 +28,21 @@ Makefile*       text eol=lf
 *.config        text eol=lf
 
 # Explicitly force LF for files without extensions that are Linux scripts
-init-podroid                                    text eol=lf
-build-rootfs/files/etc/init.d/podroid-bootstrap text eol=lf
-build-rootfs/files/etc/init.d/podroid-network   text eol=lf
-build-rootfs/files/etc/init.d/podroid-ready     text eol=lf
-build-rootfs/files/etc/init.d/podroid-resize    text eol=lf
-build-rootfs/files/etc/init.d/podroid-x11       text eol=lf
-build-rootfs/files/etc/init.d/podroid-vsock     text eol=lf
-build-rootfs/files/etc/init.d/podroid-hostd     text eol=lf
-build-rootfs/files/etc/init.d/podroid-migrate   text eol=lf
+init-ldroid                                    text eol=lf
+build-rootfs/files/etc/init.d/ldroid-bootstrap text eol=lf
+build-rootfs/files/etc/init.d/ldroid-network   text eol=lf
+build-rootfs/files/etc/init.d/ldroid-ready     text eol=lf
+build-rootfs/files/etc/init.d/ldroid-resize    text eol=lf
+build-rootfs/files/etc/init.d/ldroid-x11       text eol=lf
+build-rootfs/files/etc/init.d/ldroid-vsock     text eol=lf
+build-rootfs/files/etc/init.d/ldroid-hostd     text eol=lf
+build-rootfs/files/etc/init.d/ldroid-migrate   text eol=lf
 build-rootfs/files/etc/inittab                  text eol=lf
 build-rootfs/files/etc/rc.conf                  text eol=lf
-build-rootfs/files/usr/local/bin/podroid-getty  text eol=lf
-build-rootfs/files/usr/local/bin/podroid-login  text eol=lf
-build-rootfs/files/usr/local/bin/podroid-resize text eol=lf
-build-rootfs/files/etc/podroid/forwards.conf    text eol=lf
+build-rootfs/files/usr/local/bin/ldroid-getty  text eol=lf
+build-rootfs/files/usr/local/bin/ldroid-login  text eol=lf
+build-rootfs/files/usr/local/bin/ldroid-resize text eol=lf
+build-rootfs/files/etc/ldroid/forwards.conf    text eol=lf
 
 # Binary assets — never convert
 *.squashfs      binary

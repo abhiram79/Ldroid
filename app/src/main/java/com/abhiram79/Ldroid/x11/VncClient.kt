@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Minimal RFB 3.8 client. Supports SecurityType None, Raw + CopyRect +
  * ExtendedDesktopSize + ZRLE encodings. Used over a loopback connection on

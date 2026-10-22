@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import com.abhiram79.Ldroid.R
-import com.abhiram79.Ldroid.ui.theme.PodroidTokens
+import com.abhiram79.Ldroid.ui.theme.LdroidTokens
 import com.abhiram79.Ldroid.util.AppPermission
 
 /**
@@ -37,7 +37,7 @@ fun PermissionRows(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(vertical = PodroidTokens.Spacing.MD),
+                    .padding(vertical = LdroidTokens.Spacing.MD),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween,
             ) {
@@ -53,7 +53,7 @@ fun PermissionRows(
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
                 }
-                Spacer(Modifier.width(PodroidTokens.Spacing.SM))
+                Spacer(Modifier.width(LdroidTokens.Spacing.SM))
                 if (isGranted(permission)) {
                     Text(
                         text = stringResource(R.string.perm_granted),

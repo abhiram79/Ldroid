@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  */
 package com.abhiram79.Ldroid.engine
 
@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
  * [state] to Running when "Ready!" appears. Each feed scans the newly-appended
  * region plus a short overlap carried from the previous feed, so a marker that
  * straddles a read boundary — or sits early in a single oversized chunk — is
- * still caught (see the history of detectBootStage in PodroidQemu pre-refactor).
+ * still caught (see the history of detectBootStage in LdroidQemu pre-refactor).
  * One-shot: stops scanning after the first "Ready!" to keep [onReady] idempotent.
  */
 class BootStageDetector(

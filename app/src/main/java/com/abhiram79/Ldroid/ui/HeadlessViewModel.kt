@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Exposes the shared server-mode state to MainActivity so it can draw the black
  * overlay and drop window brightness, and lets the overlay turn it off.

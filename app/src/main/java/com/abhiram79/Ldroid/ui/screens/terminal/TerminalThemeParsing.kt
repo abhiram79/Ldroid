@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Pure theme-file parsing shared by TerminalAppearanceStore, with no Android
  * framework dependency so it runs in a plain JVM unit test.

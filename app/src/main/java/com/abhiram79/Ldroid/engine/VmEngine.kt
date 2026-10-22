@@ -1,6 +1,6 @@
 /*
- * Podroid
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * This program is free software; you can redistribute it and/or modify
  * it under the terms of the GNU General Public License as published by
@@ -15,7 +15,7 @@ import com.termux.terminal.TerminalSessionClient
 import kotlinx.coroutines.flow.StateFlow
 
 /**
- * The seam between Podroid's UI/service layer and a concrete VM runtime
+ * The seam between Ldroid's UI/service layer and a concrete VM runtime
  * (QEMU/TCG today, AVF/pKVM on Pixel 8+ with `adb pm grant`). Implementations
  * are picked by `EngineFactory` at service-construction time and live for the
  * lifetime of the foreground service; swapping requires the VM to be stopped.
@@ -114,7 +114,7 @@ interface VmEngine {
 }
 
 /**
- * Engine-agnostic launch parameters. Strict superset of PodroidQemu.LaunchConfig
+ * Engine-agnostic launch parameters. Strict superset of LdroidQemu.LaunchConfig
  * so existing call sites don't change.
  */
 data class VmConfig(

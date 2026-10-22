@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  */
 package com.abhiram79.Ldroid.data.repository
 
@@ -24,7 +24,7 @@ class LanguageManager @Inject constructor(
         const val LANGUAGE_ZH = "zh"
         const val LANGUAGE_EN = "en"
 
-        private const val LANG_CACHE_FILE = "podroid_lang_cache"
+        private const val LANG_CACHE_FILE = "ldroid_lang_cache"
 
         /**
          * Synchronously reads the saved language preference from the cache file.

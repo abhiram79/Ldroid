@@ -1,0 +1,10 @@
+#!/sbin/openrc-run
+description="Ldroid terminal resize daemon (hvc1 → stty hvc0)"
+command="/usr/local/bin/ldroid-resize"
+command_background="yes"
+pidfile="/run/ldroid-resize.pid"
+
+depend() {
+    need ldroid-bootstrap
+    before ldroid-ready
+}

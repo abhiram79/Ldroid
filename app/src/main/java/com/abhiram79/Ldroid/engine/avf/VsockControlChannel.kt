@@ -1,8 +1,8 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
- * Line-oriented control channel from the Android side to podroid-vsock-agent.
+ * Line-oriented control channel from the Android side to ldroid-vsock-agent.
  * Single connection — the guest serializes commands so we never need request
  * IDs or response correlation. All sends are best-effort: failure logs and
  * drops the bytes; the caller (engine) decides whether to surface that in UI.

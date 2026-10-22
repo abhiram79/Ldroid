@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  */
 package com.abhiram79.Ldroid.ui.screens.x11
 
@@ -86,7 +86,7 @@ import androidx.compose.ui.viewinterop.AndroidView
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.abhiram79.Ldroid.R
-import com.abhiram79.Ldroid.ui.components.PodroidTopBar
+import com.abhiram79.Ldroid.ui.components.LdroidTopBar
 import com.abhiram79.Ldroid.ui.components.rememberExtraKeyTapModifier
 import com.abhiram79.Ldroid.x11.RenderGeometry
 import com.abhiram79.Ldroid.x11.X11Keysym
@@ -164,7 +164,7 @@ fun X11Screen(
 
     // Keep the display awake while the X11 viewer is open, matching the
     // terminal (TerminalScreen adds the same flag). The VM-lifetime WakeLock in
-    // PodroidService is partial/CPU-only; this is the screen-on counterpart.
+    // LdroidService is partial/CPU-only; this is the screen-on counterpart.
     DisposableEffect(Unit) {
         activity?.window?.addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON)
         onDispose { activity?.window?.clearFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON) }
@@ -309,7 +309,7 @@ fun X11Screen(
                 .windowInsetsPadding(WindowInsets.ime),
         ) {
             if (!fullscreen) {
-                PodroidTopBar(
+                LdroidTopBar(
                     title = stringResource(R.string.x11_title),
                     navigationIcon = {
                         IconButton(onClick = onNavigateBack) {

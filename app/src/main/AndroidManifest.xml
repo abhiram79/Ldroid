@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  Podroid - Rootless Podman for Android
-  Copyright (C) 2024-2026 Podroid contributors
+  Ldroid - Rootless Podman for Android
+  Copyright (C) 2024-2026 Ldroid contributors
 
   A headless AArch64 QEMU micro-VM running Alpine Linux with Podman,
   exposed via ttyd web terminal.
@@ -73,7 +73,7 @@
     <uses-permission android:name="android.permission.USE_CUSTOM_VIRTUAL_MACHINE" />
 
     <application
-        android:name=".PodroidApplication"
+        android:name=".LdroidApplication"
         android:allowBackup="true"
         android:dataExtractionRules="@xml/data_extraction_rules"
         android:extractNativeLibs="true"
@@ -85,7 +85,7 @@
         android:usesCleartextTraffic="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/Theme.Podroid">
+        android:theme="@style/Theme.Ldroid">
 
         <!-- Main activity — single-activity Compose app -->
         <activity
@@ -93,7 +93,7 @@
             android:configChanges="orientation|screenSize|keyboardHidden|keyboard"
             android:exported="true"
             android:launchMode="singleTop"
-            android:theme="@style/Theme.Podroid"
+            android:theme="@style/Theme.Ldroid"
             android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -134,7 +134,7 @@
 
         <!-- Foreground service that hosts the QEMU process -->
         <service
-            android:name=".service.PodroidService"
+            android:name=".service.LdroidService"
             android:exported="false"
             android:foregroundServiceType="specialUse">
             <property
@@ -146,7 +146,7 @@
             Boot autostart + Tasker/automation entry point (#78). Exported
             without a permission on purpose: automation apps (Tasker etc.)
             cannot hold a custom signature permission, and the two custom
-            actions only start/stop the VM via PodroidService's own
+            actions only start/stop the VM via LdroidService's own
             companion - there is nothing privileged for a permission to gate.
         -->
         <receiver

@@ -1,5 +1,5 @@
 /*
- * Podroid — Rootless Podman for Android
+ * Ldroid — Rootless Podman for Android
  *
  * A headless AArch64 QEMU micro-VM running Alpine Linux with Podman,
  * accessed via built-in serial terminal.
@@ -11,7 +11,7 @@ plugins {
     alias(libs.plugins.hilt.android)
 }
 
-val podroidQemuVersion = providers.gradleProperty("podroidQemuVersion").get()
+val ldroidQemuVersion = providers.gradleProperty("ldroidQemuVersion").get()
 
 android {
     namespace = "com.abhiram79.Ldroid"
@@ -27,7 +27,7 @@ android {
         targetSdk = 36
         versionCode = 1
         versionName = "1.0"
-        buildConfigField("String", "QEMU_VERSION", "\"$podroidQemuVersion\"")
+        buildConfigField("String", "QEMU_VERSION", "\"$ldroidQemuVersion\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
 
@@ -39,12 +39,12 @@ android {
 
     signingConfigs {
         create("release") {
-            val storePath = (project.findProperty("PODROID_RELEASE_STORE_FILE") as? String)
+            val storePath = (project.findProperty("LDROID_RELEASE_STORE_FILE") as? String)
             if (storePath != null && file(storePath).exists()) {
                 storeFile     = file(storePath)
-                storePassword = project.findProperty("PODROID_RELEASE_STORE_PASSWORD") as? String
-                keyAlias      = project.findProperty("PODROID_RELEASE_KEY_ALIAS")      as? String
-                keyPassword   = project.findProperty("PODROID_RELEASE_KEY_PASSWORD")   as? String
+                storePassword = project.findProperty("LDROID_RELEASE_STORE_PASSWORD") as? String
+                keyAlias      = project.findProperty("LDROID_RELEASE_KEY_ALIAS")      as? String
+                keyPassword   = project.findProperty("LDROID_RELEASE_KEY_PASSWORD")   as? String
             }
         }
     }

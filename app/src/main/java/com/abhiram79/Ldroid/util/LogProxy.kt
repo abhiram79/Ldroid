@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Tiny shim for the seven log methods every Termux TerminalSessionClient and
  * TerminalViewClient implementation has to override. Both QemuEngine's proxy

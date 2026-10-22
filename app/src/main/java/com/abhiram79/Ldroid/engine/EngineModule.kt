@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * The single Hilt binding for VmEngine is EngineHolder. The holder picks the
  * concrete engine (QemuEngine vs AvfEngine) at construction, watches Settings

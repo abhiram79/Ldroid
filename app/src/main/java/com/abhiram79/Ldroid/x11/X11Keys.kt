@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Pure key-mapping helpers for the X11 viewer: X11 keysym constants, the
  * extra-keys-row label table, the hardware-key/IME keycode-to-keysym maps,

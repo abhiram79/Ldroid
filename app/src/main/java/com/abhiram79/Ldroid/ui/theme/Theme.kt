@@ -1,7 +1,7 @@
 /*
- * Podroid Compose theme.
+ * Ldroid Compose theme.
  *
- * Default identity: fixed dark/light palette derived from PodroidTokens, with
+ * Default identity: fixed dark/light palette derived from LdroidTokens, with
  * a lime-green accent (#4ade80). Material You wallpaper-derived dynamic color
  * is OFF by default — users opt in via Settings → Appearance → Dynamic color,
  * which flows in via the dynamicColor parameter.
@@ -18,70 +18,70 @@ import androidx.compose.material3.lightColorScheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.platform.LocalContext
 
-private val PodroidDark = darkColorScheme(
-    primary             = PodroidAccent,
-    onPrimary           = PodroidAccentInk,
-    primaryContainer    = PodroidDarkSurface2,
-    onPrimaryContainer  = PodroidDarkText,
+private val LdroidDark = darkColorScheme(
+    primary             = LdroidAccent,
+    onPrimary           = LdroidAccentInk,
+    primaryContainer    = LdroidDarkSurface2,
+    onPrimaryContainer  = LdroidDarkText,
 
-    secondary           = PodroidAccent,
-    onSecondary         = PodroidAccentInk,
-    secondaryContainer  = PodroidDarkSurface2,
-    onSecondaryContainer= PodroidDarkText,
+    secondary           = LdroidAccent,
+    onSecondary         = LdroidAccentInk,
+    secondaryContainer  = LdroidDarkSurface2,
+    onSecondaryContainer= LdroidDarkText,
 
-    tertiary            = PodroidAmber,
-    onTertiary          = PodroidAccentInk,
+    tertiary            = LdroidAmber,
+    onTertiary          = LdroidAccentInk,
 
-    background          = PodroidDarkBg,
-    onBackground        = PodroidDarkText,
-    surface             = PodroidDarkSurface,
-    onSurface           = PodroidDarkText,
-    surfaceVariant      = PodroidDarkSurface2,
-    onSurfaceVariant    = PodroidDarkTextMute,
-    surfaceContainerHighest = PodroidDarkSurface2,
+    background          = LdroidDarkBg,
+    onBackground        = LdroidDarkText,
+    surface             = LdroidDarkSurface,
+    onSurface           = LdroidDarkText,
+    surfaceVariant      = LdroidDarkSurface2,
+    onSurfaceVariant    = LdroidDarkTextMute,
+    surfaceContainerHighest = LdroidDarkSurface2,
 
-    outline             = PodroidDarkBorder,
-    outlineVariant      = PodroidDarkBorder,
+    outline             = LdroidDarkBorder,
+    outlineVariant      = LdroidDarkBorder,
 
-    error               = PodroidRed,
-    onError             = PodroidDarkText,
-    errorContainer      = PodroidDarkSurface2,
-    onErrorContainer    = PodroidRed,
+    error               = LdroidRed,
+    onError             = LdroidDarkText,
+    errorContainer      = LdroidDarkSurface2,
+    onErrorContainer    = LdroidRed,
 )
 
-private val PodroidLight = lightColorScheme(
-    primary             = PodroidAccent,
-    onPrimary           = PodroidAccentInk,
-    primaryContainer    = PodroidLightSurface2,
-    onPrimaryContainer  = PodroidLightText,
+private val LdroidLight = lightColorScheme(
+    primary             = LdroidAccent,
+    onPrimary           = LdroidAccentInk,
+    primaryContainer    = LdroidLightSurface2,
+    onPrimaryContainer  = LdroidLightText,
 
-    secondary           = PodroidAccent,
-    onSecondary         = PodroidAccentInk,
-    secondaryContainer  = PodroidLightSurface2,
-    onSecondaryContainer= PodroidLightText,
+    secondary           = LdroidAccent,
+    onSecondary         = LdroidAccentInk,
+    secondaryContainer  = LdroidLightSurface2,
+    onSecondaryContainer= LdroidLightText,
 
-    tertiary            = PodroidAmber,
-    onTertiary          = PodroidLightText,
+    tertiary            = LdroidAmber,
+    onTertiary          = LdroidLightText,
 
-    background          = PodroidLightBg,
-    onBackground        = PodroidLightText,
-    surface             = PodroidLightSurface,
-    onSurface           = PodroidLightText,
-    surfaceVariant      = PodroidLightSurface2,
-    onSurfaceVariant    = PodroidLightTextMute,
-    surfaceContainerHighest = PodroidLightSurface2,
+    background          = LdroidLightBg,
+    onBackground        = LdroidLightText,
+    surface             = LdroidLightSurface,
+    onSurface           = LdroidLightText,
+    surfaceVariant      = LdroidLightSurface2,
+    onSurfaceVariant    = LdroidLightTextMute,
+    surfaceContainerHighest = LdroidLightSurface2,
 
-    outline             = PodroidLightBorder,
-    outlineVariant      = PodroidLightBorder,
+    outline             = LdroidLightBorder,
+    outlineVariant      = LdroidLightBorder,
 
-    error               = PodroidRed,
-    onError             = PodroidLightText,
-    errorContainer      = PodroidLightSurface2,
-    onErrorContainer    = PodroidRed,
+    error               = LdroidRed,
+    onError             = LdroidLightText,
+    errorContainer      = LdroidLightSurface2,
+    onErrorContainer    = LdroidRed,
 )
 
 @Composable
-fun PodroidTheme(
+fun LdroidTheme(
     darkTheme: Boolean? = null,
     dynamicColor: Boolean = false,
     content: @Composable () -> Unit,
@@ -92,13 +92,13 @@ fun PodroidTheme(
             val ctx = LocalContext.current
             if (effectiveDark) dynamicDarkColorScheme(ctx) else dynamicLightColorScheme(ctx)
         }
-        effectiveDark -> PodroidDark
-        else          -> PodroidLight
+        effectiveDark -> LdroidDark
+        else          -> LdroidLight
     }
 
     MaterialTheme(
         colorScheme = colorScheme,
-        typography  = buildPodroidTypography(),
+        typography  = buildLdroidTypography(),
         content     = content,
     )
 }

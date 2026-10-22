@@ -1,10 +1,10 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
- * Terminal ViewModel — wires TerminalView to the podroid-bridge binary.
+ * Terminal ViewModel — wires TerminalView to the ldroid-bridge binary.
  *
- * The bridge binary (libpodroid-bridge.so) runs as the TerminalSession
+ * The bridge binary (libldroid-bridge.so) runs as the TerminalSession
  * subprocess. Termux allocates a real PTY for it; the bridge relays that
  * PTY to QEMU's virtio-console terminal.sock (= /dev/hvc0 in the VM).
  * Window resize is handled out-of-band over a second virtio-console port:
@@ -16,7 +16,7 @@
  *       keyboard-slide animation collapses to one event
  *     → reads final size via TIOCGWINSZ
  *     → writes "RESIZE rows cols\n" to ctrl.sock (= /dev/hvc1 in the VM)
- *     → init-podroid resize daemon calls stty on /dev/hvc0
+ *     → init-ldroid resize daemon calls stty on /dev/hvc0
  *     → Linux sends SIGWINCH to the VM's foreground process group
  *     → nvim / htop / btop redraws correctly
  *
@@ -304,7 +304,7 @@ class TerminalViewModel @Inject constructor(
         override fun setTerminalShellPid(session: TerminalSession, pid: Int) {}
         override fun getTerminalCursorStyle(): Int = 0
         override fun getTerminalVersionString(): String =
-            "Podroid ${com.abhiram79.Ldroid.BuildConfig.VERSION_NAME}"
+            "Ldroid ${com.abhiram79.Ldroid.BuildConfig.VERSION_NAME}"
         override fun logError(tag: String?, message: String?) = LogProxy.error(tag, TAG, message)
         override fun logWarn(tag: String?, message: String?) = LogProxy.warn(tag, TAG, message)
         override fun logInfo(tag: String?, message: String?) = LogProxy.info(tag, TAG, message)

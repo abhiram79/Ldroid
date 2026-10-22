@@ -5,11 +5,11 @@ CFLAGS  ?= -O2 -Wall -Wextra -Wno-unused-parameter -static -D_GNU_SOURCE \
            -fstack-protector-strong -D_FORTIFY_SOURCE=2
 LDFLAGS ?=
 
-BIN = podroid-hostd
+BIN = ldroid-hostd
 
 all: $(BIN)
 
-$(BIN): podroid-hostd.c
+$(BIN): ldroid-hostd.c
 	$(CC) $(CFLAGS) -o $@ $< $(LDFLAGS)
 
 clean:

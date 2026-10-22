@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Shared bridge-session plumbing for QemuEngine and AvfEngine: the proxy
  * TerminalSessionClient that lets an engine create the bridge session before
@@ -45,14 +45,14 @@ class ProxySessionClient(private val tag: String) : TerminalSessionClient {
 }
 
 /**
- * Builds the podroid-bridge TerminalSession shared by both engines: same
+ * Builds the ldroid-bridge TerminalSession shared by both engines: same
  * executable lookup, argv, cwd, transcript size and initial size push. Each
  * call site keeps its own existence-check and missing-exe handling (silent
  * return, log, or throw) - this only covers the part that was identical.
  */
 object TerminalBridge {
     fun executable(context: Context): File =
-        File(context.applicationInfo.nativeLibraryDir, "libpodroid-bridge.so")
+        File(context.applicationInfo.nativeLibraryDir, "libldroid-bridge.so")
 
     /**
      * [onResize] non-null builds a [ResizeNotifyingSession] (AVF); null builds

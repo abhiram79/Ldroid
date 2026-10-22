@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * One open guest<->Android connection carrying the host-bridge line protocol.
  * Two impls: QEMU connects to a filesystem AF_UNIX socket QEMU created

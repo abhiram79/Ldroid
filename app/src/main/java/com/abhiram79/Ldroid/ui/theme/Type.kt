@@ -9,12 +9,12 @@ import androidx.compose.ui.unit.sp
 
 /**
  * Build a Material3 Typography that uses Inter as the base UI font family.
- * Called from PodroidTheme — must be @Composable so we can resolve the
- * asset-backed Inter family via LocalContext (see PodroidTokens.ui()).
+ * Called from LdroidTheme — must be @Composable so we can resolve the
+ * asset-backed Inter family via LocalContext (see LdroidTokens.ui()).
  */
 @Composable @ReadOnlyComposable
-fun buildPodroidTypography(): Typography {
-    val ui = PodroidTokens.ui()
+fun buildLdroidTypography(): Typography {
+    val ui = LdroidTokens.ui()
     // Default M3 slots, carried forward only to pick up their fontFamily so
     // the app cannot drift to Roboto the first time a screen reaches for a
     // slot we haven't hand-tuned yet.
@@ -23,7 +23,7 @@ fun buildPodroidTypography(): Typography {
         displayLarge = TextStyle(
             fontFamily    = ui,
             fontWeight    = FontWeight.Thin,
-            fontSize      = PodroidTokens.TypeSize.Display,
+            fontSize      = LdroidTokens.TypeSize.Display,
             letterSpacing = (-0.02).sp,
             lineHeight    = 34.sp,
         ),
@@ -34,14 +34,14 @@ fun buildPodroidTypography(): Typography {
         headlineSmall = TextStyle(
             fontFamily = ui,
             fontWeight = FontWeight.SemiBold,
-            fontSize   = PodroidTokens.TypeSize.Headline,
+            fontSize   = LdroidTokens.TypeSize.Headline,
             lineHeight = 26.sp,
         ),
         titleLarge  = defaults.titleLarge.copy(fontFamily = ui),
         titleMedium = TextStyle(
             fontFamily    = ui,
             fontWeight    = FontWeight.Normal,
-            fontSize      = PodroidTokens.TypeSize.Title,
+            fontSize      = LdroidTokens.TypeSize.Title,
             letterSpacing = (-0.005).sp,
         ),
         titleSmall = defaults.titleSmall.copy(fontFamily = ui),
@@ -49,7 +49,7 @@ fun buildPodroidTypography(): Typography {
         bodyMedium = TextStyle(
             fontFamily = ui,
             fontWeight = FontWeight.Normal,
-            fontSize   = PodroidTokens.TypeSize.Body,
+            fontSize   = LdroidTokens.TypeSize.Body,
             lineHeight = 18.sp,
         ),
         bodySmall = defaults.bodySmall.copy(fontFamily = ui),
@@ -57,7 +57,7 @@ fun buildPodroidTypography(): Typography {
         labelMedium = TextStyle(
             fontFamily    = ui,
             fontWeight    = FontWeight.Normal,
-            fontSize      = PodroidTokens.TypeSize.Label,
+            fontSize      = LdroidTokens.TypeSize.Label,
             letterSpacing = 1.4.sp,
         ),
         labelSmall = defaults.labelSmall.copy(fontFamily = ui),

@@ -74,20 +74,20 @@ mkdir -p "$ROOTFS/etc/sudoers.d"
 echo "%wheel ALL=(ALL) ALL" > "$ROOTFS/etc/sudoers.d/wheel"
 chmod 0440 "$ROOTFS/etc/sudoers.d/wheel"
 
-# Set root password to "podroid" (pre-hashed with openssl).
+# Set root password to "ldroid" (pre-hashed with openssl).
 # We can't run chpasswd inside the aarch64 rootfs from an x86_64 host,
 # so write the SHA-512 hash directly into /etc/shadow.
 # No fixed -salt: openssl generates a random salt so the stored hash differs
-# per build (the password stays the documented default "podroid").
-ROOT_HASH=$(openssl passwd -6 podroid)
+# per build (the password stays the documented default "ldroid").
+ROOT_HASH=$(openssl passwd -6 ldroid)
 sed -i "s|^root:[^:]*:|root:${ROOT_HASH}:|" "$ROOTFS/etc/shadow"
 
 # Strip docs/man/locale to shrink squashfs
 rm -rf "$ROOTFS/usr/share/man" "$ROOTFS/usr/share/doc" \
        "$ROOTFS/usr/share/locale" "$ROOTFS/usr/share/info"
 
-# Remove the stock pulseaudio OpenRC service. Podroid starts pulseaudio
-# directly from podroid-x11 (start-stop-daemon), never as a service; left in
+# Remove the stock pulseaudio OpenRC service. Ldroid starts pulseaudio
+# directly from ldroid-x11 (start-stop-daemon), never as a service; left in
 # place its depend() pulls in a non-existent "udev" service, so OpenRC logs
 # "Service 'pulseaudio' needs non existent service 'udev'" on every boot.
 rm -f "$ROOTFS/etc/init.d/pulseaudio"
@@ -99,70 +99,70 @@ mkdir -p "$ROOTFS/var/lib/containers/storage" \
          "$ROOTFS/run/crun"
 
 # Copy custom service files into the rootfs
-cp /work/files/etc/init.d/podroid-bootstrap "$ROOTFS/etc/init.d/"
-cp /work/files/etc/init.d/podroid-network   "$ROOTFS/etc/init.d/"
-cp /work/files/etc/init.d/podroid-resize    "$ROOTFS/etc/init.d/"
-cp /work/files/etc/init.d/podroid-ready     "$ROOTFS/etc/init.d/"
-cp /work/files/etc/init.d/podroid-x11       "$ROOTFS/etc/init.d/"
-cp /work/files/etc/init.d/podroid-vsock     "$ROOTFS/etc/init.d/"
-cp /work/files/etc/init.d/podroid-hostd     "$ROOTFS/etc/init.d/"
-cp /work/files/etc/init.d/podroid-downloads "$ROOTFS/etc/init.d/"
-cp /work/files/etc/init.d/podroid-migrate   "$ROOTFS/etc/init.d/"
-chmod +x "$ROOTFS/etc/init.d/podroid-"*
+cp /work/files/etc/init.d/ldroid-bootstrap "$ROOTFS/etc/init.d/"
+cp /work/files/etc/init.d/ldroid-network   "$ROOTFS/etc/init.d/"
+cp /work/files/etc/init.d/ldroid-resize    "$ROOTFS/etc/init.d/"
+cp /work/files/etc/init.d/ldroid-ready     "$ROOTFS/etc/init.d/"
+cp /work/files/etc/init.d/ldroid-x11       "$ROOTFS/etc/init.d/"
+cp /work/files/etc/init.d/ldroid-vsock     "$ROOTFS/etc/init.d/"
+cp /work/files/etc/init.d/ldroid-hostd     "$ROOTFS/etc/init.d/"
+cp /work/files/etc/init.d/ldroid-downloads "$ROOTFS/etc/init.d/"
+cp /work/files/etc/init.d/ldroid-migrate   "$ROOTFS/etc/init.d/"
+chmod +x "$ROOTFS/etc/init.d/ldroid-"*
 
 # Copy /usr/local/bin scripts (resize daemon + login wrapper + getty selector)
 mkdir -p "$ROOTFS/usr/local/bin"
-cp /work/files/usr/local/bin/podroid-resize "$ROOTFS/usr/local/bin/"
-cp /work/files/usr/local/bin/podroid-login  "$ROOTFS/usr/local/bin/"
-cp /work/files/usr/local/bin/podroid-getty  "$ROOTFS/usr/local/bin/"
-cp /work/files/usr/local/bin/podroid-backup "$ROOTFS/usr/local/bin/"
-cp /work/files/usr/local/bin/podroid-docs   "$ROOTFS/usr/local/bin/"
-# podroid-vsock-agent is COPY'd in from the vsock-builder Docker stage. Make
+cp /work/files/usr/local/bin/ldroid-resize "$ROOTFS/usr/local/bin/"
+cp /work/files/usr/local/bin/ldroid-login  "$ROOTFS/usr/local/bin/"
+cp /work/files/usr/local/bin/ldroid-getty  "$ROOTFS/usr/local/bin/"
+cp /work/files/usr/local/bin/ldroid-backup "$ROOTFS/usr/local/bin/"
+cp /work/files/usr/local/bin/ldroid-docs   "$ROOTFS/usr/local/bin/"
+# ldroid-vsock-agent is COPY'd in from the vsock-builder Docker stage. Make
 # sure it's executable (cross-arch COPY can lose the mode bit on some buildkit
 # versions).
-chmod +x "$ROOTFS/usr/local/bin/podroid-vsock-agent" 2>/dev/null || true
-# podroid-hostd is also COPY'd from the vsock-builder stage; same mode-bit guard.
+chmod +x "$ROOTFS/usr/local/bin/ldroid-vsock-agent" 2>/dev/null || true
+# ldroid-hostd is also COPY'd from the vsock-builder stage; same mode-bit guard.
 # The CLIs are argv[0]-dispatch symlinks onto the one multi-call binary.
-chmod +x "$ROOTFS/usr/local/bin/podroid-hostd" 2>/dev/null || true
-# podroid-overlay-normalize is COPY'd from the vsock-builder stage; mode-bit guard.
-chmod +x "$ROOTFS/usr/local/bin/podroid-overlay-normalize" 2>/dev/null || true
-ln -sf podroid-hostd "$ROOTFS/usr/local/bin/podroid-notify"
-ln -sf podroid-hostd "$ROOTFS/usr/local/bin/podroid-forward"
-ln -sf podroid-hostd "$ROOTFS/usr/local/bin/podroid-open"
-ln -sf podroid-hostd "$ROOTFS/usr/local/bin/podroid-power"
-ln -sf podroid-hostd "$ROOTFS/usr/local/bin/podroid-headless"
-ln -sf podroid-hostd "$ROOTFS/usr/local/bin/podroid-server"
-ln -sf podroid-hostd "$ROOTFS/usr/local/bin/podroid-phone-ip"
-chmod +x "$ROOTFS/usr/local/bin/podroid-"*
-# vsock agent's initial forward table (read at podroid-vsock startup).
-mkdir -p "$ROOTFS/etc/podroid"
-cp /work/files/etc/podroid/forwards.conf "$ROOTFS/etc/podroid/forwards.conf"
-chmod 0644 "$ROOTFS/etc/podroid/forwards.conf"
+chmod +x "$ROOTFS/usr/local/bin/ldroid-hostd" 2>/dev/null || true
+# ldroid-overlay-normalize is COPY'd from the vsock-builder stage; mode-bit guard.
+chmod +x "$ROOTFS/usr/local/bin/ldroid-overlay-normalize" 2>/dev/null || true
+ln -sf ldroid-hostd "$ROOTFS/usr/local/bin/ldroid-notify"
+ln -sf ldroid-hostd "$ROOTFS/usr/local/bin/ldroid-forward"
+ln -sf ldroid-hostd "$ROOTFS/usr/local/bin/ldroid-open"
+ln -sf ldroid-hostd "$ROOTFS/usr/local/bin/ldroid-power"
+ln -sf ldroid-hostd "$ROOTFS/usr/local/bin/ldroid-headless"
+ln -sf ldroid-hostd "$ROOTFS/usr/local/bin/ldroid-server"
+ln -sf ldroid-hostd "$ROOTFS/usr/local/bin/ldroid-phone-ip"
+chmod +x "$ROOTFS/usr/local/bin/ldroid-"*
+# vsock agent's initial forward table (read at ldroid-vsock startup).
+mkdir -p "$ROOTFS/etc/ldroid"
+cp /work/files/etc/ldroid/forwards.conf "$ROOTFS/etc/ldroid/forwards.conf"
+chmod 0644 "$ROOTFS/etc/ldroid/forwards.conf"
 # Migration scripts dir (seeded with its README; per-version <v>.sh added over time).
-mkdir -p "$ROOTFS/etc/podroid/migrations"
-cp /work/files/etc/podroid/migrations/README "$ROOTFS/etc/podroid/migrations/README"
+mkdir -p "$ROOTFS/etc/ldroid/migrations"
+cp /work/files/etc/ldroid/migrations/README "$ROOTFS/etc/ldroid/migrations/README"
 # Install every migration script so a new one needs no build-script edit.
-for f in /work/files/etc/podroid/migrations/*.sh; do
+for f in /work/files/etc/ldroid/migrations/*.sh; do
     [ -f "$f" ] || continue
-    cp "$f" "$ROOTFS/etc/podroid/migrations/"
-    chmod 0755 "$ROOTFS/etc/podroid/migrations/$(basename "$f")"
+    cp "$f" "$ROOTFS/etc/ldroid/migrations/"
+    chmod 0755 "$ROOTFS/etc/ldroid/migrations/$(basename "$f")"
 done
 # System-version stamp: the migration anchor. Baked from the app versionCode at
-# build time; compared against /mnt/persist/.podroid/applied-version at boot.
-printf '%s\n' "${SYSTEM_VERSION:-0}" > "$ROOTFS/etc/podroid/system-version"
-chmod 0644 "$ROOTFS/etc/podroid/system-version"
+# build time; compared against /mnt/persist/.ldroid/applied-version at boot.
+printf '%s\n' "${SYSTEM_VERSION:-0}" > "$ROOTFS/etc/ldroid/system-version"
+chmod 0644 "$ROOTFS/etc/ldroid/system-version"
 cp /work/files/etc/inittab "$ROOTFS/etc/inittab"
 cp /work/files/etc/rc.conf "$ROOTFS/etc/rc.conf"
 
 # /etc/profile.d/*.sh — sourced by Alpine's /etc/profile in login shells.
-# podroid-color.sh: COLORTERM=truecolor (24-bit color). podroid-x11.sh:
+# ldroid-color.sh: COLORTERM=truecolor (24-bit color). ldroid-x11.sh:
 # DISPLAY / PULSE_SERVER for the in-app GUI viewer. Copy by explicit name so
 # a renamed/removed asset fails the build (set -e) instead of silently
 # shipping a squashfs without these exports.
 mkdir -p "$ROOTFS/etc/profile.d"
-cp /work/files/etc/profile.d/podroid-color.sh "$ROOTFS/etc/profile.d/"
-cp /work/files/etc/profile.d/podroid-x11.sh   "$ROOTFS/etc/profile.d/"
-chmod 0644 "$ROOTFS/etc/profile.d/podroid-color.sh" "$ROOTFS/etc/profile.d/podroid-x11.sh"
+cp /work/files/etc/profile.d/ldroid-color.sh "$ROOTFS/etc/profile.d/"
+cp /work/files/etc/profile.d/ldroid-x11.sh   "$ROOTFS/etc/profile.d/"
+chmod 0644 "$ROOTFS/etc/profile.d/ldroid-color.sh" "$ROOTFS/etc/profile.d/ldroid-x11.sh"
 
 # /etc/containers/storage.conf — pin Podman to the in-kernel overlay driver.
 # Without this file, Podman auto-detects fuse-overlayfs (still apk-installed
@@ -174,23 +174,23 @@ chmod 0644 "$ROOTFS/etc/containers/storage.conf"
 # Offline copy of the docs/guide site, staged into /work/docs-guide by
 # build_rootfs() in build-all.sh (this must run after the "Strip docs" rm -rf
 # above, or mksquashfs would ship nothing here). Served in-guest by
-# podroid-docs.
-mkdir -p "$ROOTFS/usr/share/doc/podroid"
-cp /work/docs-guide/*.html /work/docs-guide/style.css "$ROOTFS/usr/share/doc/podroid/"
-chmod 0644 "$ROOTFS/usr/share/doc/podroid/"*
+# ldroid-docs.
+mkdir -p "$ROOTFS/usr/share/doc/ldroid"
+cp /work/docs-guide/*.html /work/docs-guide/style.css "$ROOTFS/usr/share/doc/ldroid/"
+chmod 0644 "$ROOTFS/usr/share/doc/ldroid/"*
 
-# Hostname (read by podroid-bootstrap via `hostname -F /etc/hostname`)
-echo "podroid" > "$ROOTFS/etc/hostname"
-echo "127.0.0.1 localhost podroid" > "$ROOTFS/etc/hosts"
+# Hostname (read by ldroid-bootstrap via `hostname -F /etc/hostname`)
+echo "ldroid" > "$ROOTFS/etc/hostname"
+echo "127.0.0.1 localhost ldroid" > "$ROOTFS/etc/hosts"
 echo "::1 localhost ip6-localhost" >> "$ROOTFS/etc/hosts"
 
 # Login banner shown by getty before the login prompt.
 # \S=Alpine release, \r=kernel, \m=arch, \l=tty
 cat > "$ROOTFS/etc/issue" <<'EOF'
-Welcome to Podroid (Alpine \S)
+Welcome to Ldroid (Alpine \S)
 Kernel \r on \m (\l)
 
-  Default login:  root  /  podroid
+  Default login:  root  /  ldroid
   Change root password:    passwd
   Create a regular user:   adduser -G wheel <name>
                            (wheel group → can run doas/sudo)
@@ -202,8 +202,8 @@ EOF
 mkdir -p "$ROOTFS/etc/runlevels/default" "$ROOTFS/etc/runlevels/boot"
 # Guard each link: a dangling symlink (e.g. dnsmasq.lxcbr0, which lxc-bridge
 # may ship only as dnsmasq config and not an init script) makes OpenRC log
-# an error every boot and stalls podroid-ready's `after *` on a phantom.
-for svc in podroid-migrate podroid-bootstrap podroid-network podroid-resize dropbear docker lxc dnsmasq.lxcbr0 podroid-x11 podroid-vsock podroid-downloads podroid-hostd podroid-ready; do
+# an error every boot and stalls ldroid-ready's `after *` on a phantom.
+for svc in ldroid-migrate ldroid-bootstrap ldroid-network ldroid-resize dropbear docker lxc dnsmasq.lxcbr0 ldroid-x11 ldroid-vsock ldroid-downloads ldroid-hostd ldroid-ready; do
     if [ -e "$ROOTFS/etc/init.d/$svc" ]; then
         ln -sf "/etc/init.d/$svc" "$ROOTFS/etc/runlevels/default/$svc"
     else

@@ -1,9 +1,9 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Pure decode of VirtualMachineManager.getCapabilities() bitmask + the
- * protected-VM selection policy. Podroid runs a raw custom kernel/initrd
+ * protected-VM selection policy. Ldroid runs a raw custom kernel/initrd
  * image, which AVF can only boot as a NON-protected VM (protected VMs need a
  * pvmfw-signed payload). So: prefer non-protected; if the device only supports
  * protected VMs we cannot run here and the caller must fall back to QEMU.
@@ -37,7 +37,7 @@ object AvfCapabilities {
         capabilities and CAPABILITY_NON_PROTECTED_VM != 0 -> ProtectedVmChoice.NonProtected
         capabilities and CAPABILITY_PROTECTED_VM != 0 -> ProtectedVmChoice.Unsupported(
             "This device's hypervisor only supports protected VMs; AVF can't run " +
-                "Podroid's custom Linux image here. Falling back to QEMU."
+                "Ldroid's custom Linux image here. Falling back to QEMU."
         )
         else -> ProtectedVmChoice.Unknown
     }

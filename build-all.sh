@@ -1,6 +1,6 @@
 #!/bin/bash
 # ─────────────────────────────────────────────────────────────────────────────
-# Podroid Unified Build & Deploy Script
+# Ldroid Unified Build & Deploy Script
 # Coordinates kernel, initramfs, rootfs, QEMU, and APK builds.
 # (libtermux.so is no longer built here — the vendored terminal-emulator
 #  module compiles it via AGP's NDK build using src/main/jni/Android.mk.)
@@ -26,16 +26,16 @@ success() { printf "${GREEN}SUCCESS:${NC} %s\n" "$*"; }
 # ── Help ──────────────────────────────────────────────────────────────────────
 show_help() {
     cat <<EOF
-Podroid Unified Build Tool
+Ldroid Unified Build Tool
 
 Usage: $0 [command] [options]
 
 Commands:
   all           Build everything (Kernel, Initramfs, Rootfs, QEMU, APK)
-  kernel        Build custom kernel only (podroid_kernel.config + Linux source)
+  kernel        Build custom kernel only (ldroid_kernel.config + Linux source)
   initramfs     Build custom kernel + Alpine VM initramfs (vmlinuz + initrd)
   rootfs        Build Alpine rootfs squashfs (alpine-rootfs.squashfs)
-  qemu          Build QEMU + podroid-bridge + podroid-launcher
+  qemu          Build QEMU + ldroid-bridge + ldroid-launcher
   apk           Build the Android APK (also builds libtermux.so via Gradle NDK)
   deploy        Build APK, uninstall old version, and install to device
   test          Perform full build, install, and automated boot validation
@@ -87,35 +87,35 @@ EOF
 
 build_kernel() {
     local kernel_ver
-    kernel_ver=$(grep -E '^podroidKernelVersion=' "${SCRIPT_DIR}/gradle.properties" | cut -d= -f2)
+    kernel_ver=$(grep -E '^ldroidKernelVersion=' "${SCRIPT_DIR}/gradle.properties" | cut -d= -f2)
     log "Building custom kernel ${kernel_ver} for aarch64 (Docker)..."
     docker build --network=host \
         --build-arg "KERNEL_VERSION=${kernel_ver}" \
-        -t podroid-kernel-builder --target kernel-builder "$SCRIPT_DIR"
+        -t ldroid-kernel-builder --target kernel-builder "$SCRIPT_DIR"
     log "Extracting kernel artifact..."
-    docker rm -f podroid-kernel-extract 2>/dev/null || true
-    docker create --name podroid-kernel-extract podroid-kernel-builder
+    docker rm -f ldroid-kernel-extract 2>/dev/null || true
+    docker create --name ldroid-kernel-extract ldroid-kernel-builder
     mkdir -p "$ASSETS"
-    docker cp podroid-kernel-extract:/output/vmlinuz-virt "$ASSETS/vmlinuz-virt"
-    docker rm podroid-kernel-extract >/dev/null
+    docker cp ldroid-kernel-extract:/output/vmlinuz-virt "$ASSETS/vmlinuz-virt"
+    docker rm ldroid-kernel-extract >/dev/null
     success "Custom kernel ready."
 }
 
 build_initramfs() {
     local kernel_ver
-    kernel_ver=$(grep -E '^podroidKernelVersion=' "${SCRIPT_DIR}/gradle.properties" | cut -d= -f2)
+    kernel_ver=$(grep -E '^ldroidKernelVersion=' "${SCRIPT_DIR}/gradle.properties" | cut -d= -f2)
     log "Building custom kernel + Alpine Initramfs (Docker)..."
     docker build --network=host \
         --build-arg "KERNEL_VERSION=${kernel_ver}" \
-        -t podroid-builder --target packer "$SCRIPT_DIR"
+        -t ldroid-builder --target packer "$SCRIPT_DIR"
 
     log "Extracting initramfs artifacts..."
-    docker rm podroid-extract 2>/dev/null || true
-    docker create --name podroid-extract podroid-builder /bin/true
+    docker rm ldroid-extract 2>/dev/null || true
+    docker create --name ldroid-extract ldroid-builder /bin/true
     mkdir -p "$ASSETS"
-    docker cp podroid-extract:/output/vmlinuz-virt "$ASSETS/vmlinuz-virt"
-    docker cp podroid-extract:/output/initrd.img "$ASSETS/initrd.img"
-    docker rm podroid-extract >/dev/null
+    docker cp ldroid-extract:/output/vmlinuz-virt "$ASSETS/vmlinuz-virt"
+    docker cp ldroid-extract:/output/initrd.img "$ASSETS/initrd.img"
+    docker rm ldroid-extract >/dev/null
     success "Kernel + initramfs ready."
 }
 
@@ -131,7 +131,7 @@ build_rootfs() {
     cp "${SCRIPT_DIR}/docs/guide/"*.html "${SCRIPT_DIR}/docs/guide/style.css" "${SCRIPT_DIR}/build-rootfs/docs-guide/"
 
     docker build -f "${SCRIPT_DIR}/build-rootfs/Dockerfile.rootfs" \
-        -t podroid-rootfs:latest \
+        -t ldroid-rootfs:latest \
         --build-arg "SYSTEM_VERSION=${sysver:-0}" \
         --output type=local,dest="${ASSETS}" \
         "${SCRIPT_DIR}/build-rootfs/"
@@ -140,24 +140,24 @@ build_rootfs() {
 
 build_qemu() {
     local qemu_ver
-    qemu_ver=$(grep -E '^podroidQemuVersion=' "${SCRIPT_DIR}/gradle.properties" | cut -d= -f2)
+    qemu_ver=$(grep -E '^ldroidQemuVersion=' "${SCRIPT_DIR}/gradle.properties" | cut -d= -f2)
     log "Building QEMU ${qemu_ver} for Android ARM64 (Docker)..."
     
     docker build --build-arg "QEMU_VERSION=${qemu_ver}" \
-        -t podroid-qemu-builder --target final "${SCRIPT_DIR}"
+        -t ldroid-qemu-builder --target final "${SCRIPT_DIR}"
         
     log "Extracting QEMU artifacts..."
-    docker rm -f podroid-qemu-extract 2>/dev/null || true
-    docker create --name podroid-qemu-extract podroid-qemu-builder /bin/true
+    docker rm -f ldroid-qemu-extract 2>/dev/null || true
+    docker create --name ldroid-qemu-extract ldroid-qemu-builder /bin/true
     
     mkdir -p "$JNILIBS" "$ASSETS/qemu/keymaps"
-    docker cp podroid-qemu-extract:/libqemu-system-aarch64.so "$JNILIBS/"
-    docker cp podroid-qemu-extract:/libslirp.so               "$JNILIBS/"
-    docker cp podroid-qemu-extract:/libpodroid-bridge.so      "$JNILIBS/"
-    docker cp podroid-qemu-extract:/libpodroid-launcher.so    "$JNILIBS/"
-    docker cp podroid-qemu-extract:/qemu/efi-virtio.rom        "$ASSETS/qemu/"
-    docker cp podroid-qemu-extract:/qemu/keymaps/.             "$ASSETS/qemu/keymaps/"
-    docker rm podroid-qemu-extract >/dev/null
+    docker cp ldroid-qemu-extract:/libqemu-system-aarch64.so "$JNILIBS/"
+    docker cp ldroid-qemu-extract:/libslirp.so               "$JNILIBS/"
+    docker cp ldroid-qemu-extract:/libldroid-bridge.so      "$JNILIBS/"
+    docker cp ldroid-qemu-extract:/libldroid-launcher.so    "$JNILIBS/"
+    docker cp ldroid-qemu-extract:/qemu/efi-virtio.rom        "$ASSETS/qemu/"
+    docker cp ldroid-qemu-extract:/qemu/keymaps/.             "$ASSETS/qemu/keymaps/"
+    docker rm ldroid-qemu-extract >/dev/null
     
     verify_16kb_align "$JNILIBS/libqemu-system-aarch64.so"
     success "QEMU and bridge ready."
@@ -263,7 +263,7 @@ case "$1" in
     clean)
         log "Cleaning up..."
         ./gradlew clean
-        docker rmi podroid-builder podroid-qemu-builder podroid-rootfs:latest 2>/dev/null || true
+        docker rmi ldroid-builder ldroid-qemu-builder ldroid-rootfs:latest 2>/dev/null || true
         success "Cleaned."
         ;;
     *)

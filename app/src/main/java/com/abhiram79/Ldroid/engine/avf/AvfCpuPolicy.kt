@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Pure logic for the AVF multi-vCPU boot policy. AVF's public Builder API only
  * exposes ONE_CPU (1 vCPU) or MATCH_HOST (all host cores) - see

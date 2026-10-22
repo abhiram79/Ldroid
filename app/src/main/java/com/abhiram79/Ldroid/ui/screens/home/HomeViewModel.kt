@@ -11,7 +11,7 @@ import com.abhiram79.Ldroid.data.repository.UpdateInfo
 import com.abhiram79.Ldroid.data.repository.UpdateRepository
 import com.abhiram79.Ldroid.engine.EngineHolder
 import com.abhiram79.Ldroid.engine.VmState
-import com.abhiram79.Ldroid.service.PodroidService
+import com.abhiram79.Ldroid.service.LdroidService
 import com.abhiram79.Ldroid.util.NetworkUtils
 import com.abhiram79.Ldroid.util.UptimeFormatter
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -229,12 +229,12 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch { settingsRepository.setAvfHintDismissed(true) }
     }
 
-    fun startPodroid() = PodroidService.start(context)
+    fun startLdroid() = LdroidService.start(context)
 
-    fun stopVm() = PodroidService.stop(context)
+    fun stopVm() = LdroidService.stop(context)
 
     fun restartVm() {
-        PodroidService.stop(context)
+        LdroidService.stop(context)
         viewModelScope.launch {
             // Only start if we observed a terminal state within the timeout window.
             // A null result means QEMU is still tearing down — starting over it would
@@ -245,7 +245,7 @@ class HomeViewModel @Inject constructor(
                 }
             }
             if (reached != null) {
-                PodroidService.start(context)
+                LdroidService.start(context)
             }
         }
     }

@@ -25,7 +25,7 @@ import javax.inject.Inject
 data class ContainerBackupUiState(
     val vmRunning: Boolean = false,
     val storageAccessEnabled: Boolean = false,
-    val guestPath: String = "/var/backups/podroid",
+    val guestPath: String = "/var/backups/ldroid",
     val backupFiles: List<ContainerBackupFile> = emptyList(),
     val backupListError: Boolean = false,
     val containerName: String = "",
@@ -112,7 +112,7 @@ class ContainerBackupViewModel @Inject constructor(
     }
 
     fun copyAllCommand() {
-        copyToClipboard("podroid-backup all")
+        copyToClipboard("ldroid-backup all")
     }
 
     fun formatSize(bytes: Long): String = repository.formatSize(bytes)
@@ -121,6 +121,6 @@ class ContainerBackupViewModel @Inject constructor(
 
     private fun copyToClipboard(text: String) {
         val cm = context.getSystemService(Context.CLIPBOARD_SERVICE) as ClipboardManager
-        cm.setPrimaryClip(ClipData.newPlainText("podroid-backup", text))
+        cm.setPrimaryClip(ClipData.newPlainText("ldroid-backup", text))
     }
 }

@@ -162,7 +162,7 @@ public final class TerminalView extends View {
     /** Keep track of the time when a touch event leading to sending mouse scroll events started. */
     private long mMouseStartDownTime = -1;
 
-    /** Podroid: reusable scratch buffer for {@link #getColumnAndRow(MotionEvent, boolean)}.
+    /** Ldroid: reusable scratch buffer for {@link #getColumnAndRow(MotionEvent, boolean)}.
      *  Mouse events fire dozens of times per second during drag — allocating a fresh
      *  int[2] each call was needless GC pressure. Callers read & forward the values
      *  immediately, so reuse is safe. */
@@ -671,7 +671,7 @@ public final class TerminalView extends View {
         if (relativeToScroll) {
             row += mTopRow;
         }
-        // Podroid: returns the shared mTempCoords; callers read and forward
+        // Ldroid: returns the shared mTempCoords; callers read and forward
         // the values immediately, so the next call overwriting them is fine.
         mTempCoords[0] = column;
         mTempCoords[1] = row;

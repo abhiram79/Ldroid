@@ -11,7 +11,7 @@ class HostMetricsChildPidTest {
 
     @get:Rule val tmp = TemporaryFolder()
 
-    private val names = setOf("libpodroid-launcher.so", "libqemu-system-aarch64.so")
+    private val names = setOf("libldroid-launcher.so", "libqemu-system-aarch64.so")
 
     private fun proc(pid: Int, ppid: Int, comm: String, argv0: String) {
         val dir = File(tmp.root, pid.toString()).apply { mkdirs() }
@@ -28,7 +28,7 @@ class HostMetricsChildPidTest {
 
     @Test
     fun `finds the launcher before it has exec'd qemu`() {
-        proc(4321, 100, "libpodroid-laun", "/data/app/x/lib/arm64/libpodroid-launcher.so")
+        proc(4321, 100, "libldroid-laun", "/data/app/x/lib/arm64/libldroid-launcher.so")
         assertEquals(4321, HostMetrics.childPidByExecutable(100, names, tmp.root))
     }
 
@@ -36,7 +36,7 @@ class HostMetricsChildPidTest {
     fun `ignores other children and other parents`() {
         // The terminal bridge is also a child of the app; a QEMU under another
         // parent is not ours.
-        proc(200, 100, "libpodroid-brid", "/data/app/x/lib/arm64/libpodroid-bridge.so")
+        proc(200, 100, "libldroid-brid", "/data/app/x/lib/arm64/libldroid-bridge.so")
         proc(300, 999, "libqemu-system-", "/data/app/x/lib/arm64/libqemu-system-aarch64.so")
         assertNull(HostMetrics.childPidByExecutable(100, names, tmp.root))
     }

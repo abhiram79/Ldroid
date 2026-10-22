@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * AVF (Android Virtualization Framework) diagnostic + smoke-test entry point.
  *
@@ -88,7 +88,7 @@ object AvfDiagnostics {
 
     /**
      * True only if this device's AVF build exposes the custom-VM builder API
-     * Podroid drives (raw kernel + initrd). A vendor build that ships AVF for
+     * Ldroid drives (raw kernel + initrd). A vendor build that ships AVF for
      * system use but omits the custom-image config will return false, so
      * EngineHolder.pick() can fall back to QEMU at selection time instead of
      * erroring at VM start. Never throws: a missing class is a normal "no".
@@ -168,8 +168,8 @@ object AvfDiagnostics {
 
         if (AvfCapabilities.choose(pre.capabilitiesRaw) is AvfCapabilities.ProtectedVmChoice.Unsupported) {
             return "not applicable on this device: the hypervisor only supports protected VMs " +
-                "(caps=${pre.capabilitiesDecoded}), and Podroid's custom Linux kernel can run only as a " +
-                "non-protected VM. This is expected, not a failure: Podroid automatically uses the QEMU " +
+                "(caps=${pre.capabilitiesDecoded}), and Ldroid's custom Linux kernel can run only as a " +
+                "non-protected VM. This is expected, not a failure: Ldroid automatically uses the QEMU " +
                 "backend here."
         }
 
@@ -185,7 +185,7 @@ object AvfDiagnostics {
             val customCfg = buildCustomImageConfig(kernel.absolutePath, initrd.absolutePath)
             val config = buildVirtualMachineConfig(vmm, context, customCfg)
 
-            val name = "podroid-avf-smoke"
+            val name = "ldroid-avf-smoke"
             val vm = invokeOrCreate(vmm, name, config)
 
             // Start + immediately stop. We're proving the framework accepts us,
@@ -213,8 +213,8 @@ object AvfDiagnostics {
                 // framework rejected our non-protected VM at build/run instead. Same
                 // expected outcome as the early check above, not a failure.
                 "not applicable on this device: AVF rejected a non-protected VM " +
-                    "(${cause.message}). Podroid's custom Linux kernel can run only as a non-protected " +
-                    "VM. This is expected, not a failure: Podroid automatically uses the QEMU backend here."
+                    "(${cause.message}). Ldroid's custom Linux kernel can run only as a non-protected " +
+                    "VM. This is expected, not a failure: Ldroid automatically uses the QEMU backend here."
             } else {
                 "FAILED: ${cause.javaClass.simpleName}: ${cause.message}"
             }
@@ -252,7 +252,7 @@ object AvfDiagnostics {
         val builderCls = Class.forName("$CLS_CUSTOM_CFG\$Builder")
         val ctor = builderCls.getDeclaredConstructor().apply { isAccessible = true }
         val builder = ctor.newInstance()
-        invokeSetter(builderCls, builder, "setName", String::class.java, "podroid-avf-smoke")
+        invokeSetter(builderCls, builder, "setName", String::class.java, "ldroid-avf-smoke")
         invokeSetter(builderCls, builder, "setKernelPath", String::class.java, kernelPath)
         invokeSetter(builderCls, builder, "setInitrdPath", String::class.java, initrdPath)
         runCatching {

@@ -1207,11 +1207,11 @@ public final class TerminalEmulator {
             // and also resize the bitmap, so that memory allocations are avoided if possible.
             // `mTerminalControlArgs.length() > 1` is done so that loop does not engage on first
             // character after `q` and only after first command has been fully received.
-            // Podroid: also flush on `$` (sixel CR) and `-` (sixel LF). The upstream sixel4
+            // Ldroid: also flush on `$` (sixel CR) and `-` (sixel LF). The upstream sixel4
             // fork only triggers on `#`/`!`/`"`, but in pixel-data runs those are infrequent
             // (color is typically set once per row) while `$` and `-` end every sub-row. With
             // chafa's high-color output the buffer would otherwise overflow at 16 KB before
-            // any flush-eligible byte arrived — see Podroid CLAUDE.md.
+            // any flush-eligible byte arrived — see Ldroid CLAUDE.md.
             || (ESC_DCS__SIXEL && ((b == '#' || b == '!' || b == '"' || b == '$' || b == '-') &&
                     ((mTerminalControlArgs.length() >= (TERMINAL_CONTROL_ARGS__DEFAULT_MAX_LENGTH / 2)) || (mTerminalControlArgs.length() > 1 && mSixelCommandPartNum == 1))))
         ) {
@@ -1453,7 +1453,7 @@ public final class TerminalEmulator {
 
                 incArg = true;
             } else if (ch == 'q') {
-                // Podroid: also accept `Pa;Pb;Pcq` form (no trailing `;` before `q`).
+                // Ldroid: also accept `Pa;Pb;Pcq` form (no trailing `;` before `q`).
                 // chafa emits `\eP0;1;0q` for Sixel; the upstream sixel4 fork only handled
                 // the `Pa;Pb;Pc;q` form (with trailing `;`), so chafa output never entered
                 // Sixel mode and bytes accumulated as DCS args until overflow at 16 KB.
@@ -1958,7 +1958,7 @@ public final class TerminalEmulator {
                 // capabilities (truecolor, sync output, etc.) without trial-and-error.
                 if (getArg0(0) == 0) {
                     String version = mClient != null ? mClient.getTerminalVersionString() : null;
-                    if (version == null || version.isEmpty()) version = "Podroid";
+                    if (version == null || version.isEmpty()) version = "Ldroid";
                     mSession.write("\033P>|" + version + "\033\\");
                 }
                 break;

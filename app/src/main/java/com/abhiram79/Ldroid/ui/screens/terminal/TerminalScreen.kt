@@ -72,10 +72,10 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import com.abhiram79.Ldroid.R
 import com.abhiram79.Ldroid.engine.VmState
 import com.abhiram79.Ldroid.ui.components.AdaptiveContainer
-import com.abhiram79.Ldroid.ui.components.PodroidGhostButton
-import com.abhiram79.Ldroid.ui.components.PodroidTopBar
+import com.abhiram79.Ldroid.ui.components.LdroidGhostButton
+import com.abhiram79.Ldroid.ui.components.LdroidTopBar
 import com.abhiram79.Ldroid.ui.components.rememberExtraKeyTapModifier
-import com.abhiram79.Ldroid.ui.theme.PodroidTokens
+import com.abhiram79.Ldroid.ui.theme.LdroidTokens
 import com.termux.terminal.TerminalSession
 import com.termux.view.TerminalView
 
@@ -149,7 +149,7 @@ fun TerminalScreen(
             .windowInsetsPadding(WindowInsets.navigationBars)
             .windowInsetsPadding(WindowInsets.ime)
     ) {
-        PodroidTopBar(
+        LdroidTopBar(
             title = stringResource(R.string.terminal_title),
             navigationIcon = {
                 IconButton(onClick = {
@@ -173,11 +173,11 @@ fun TerminalScreen(
                 IconButton(onClick = { showServerSheet = true }) {
                     Icon(Icons.Default.Bedtime, contentDescription = stringResource(R.string.server_mode))
                 }
-                Spacer(Modifier.width(PodroidTokens.Spacing.XS))
+                Spacer(Modifier.width(LdroidTokens.Spacing.XS))
                 IconButton(onClick = onNavigateToX11) {
                     Icon(Icons.Default.DesktopWindows, contentDescription = stringResource(R.string.x11_open))
                 }
-                Spacer(Modifier.width(PodroidTokens.Spacing.XS))
+                Spacer(Modifier.width(LdroidTokens.Spacing.XS))
                 IconButton(onClick = { viewModel.openQuickSettings() }) {
                     Icon(Icons.Default.Tune, contentDescription = stringResource(R.string.settings))
                 }
@@ -200,7 +200,7 @@ fun TerminalScreen(
                             style = MaterialTheme.typography.displayLarge,
                             color = MaterialTheme.colorScheme.onSurface,
                         )
-                        Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+                        Spacer(Modifier.height(LdroidTokens.Spacing.SM))
                         Text(
                             stringResource(R.string.vm_not_running_hint),
                             style = MaterialTheme.typography.bodyMedium,
@@ -214,22 +214,22 @@ fun TerminalScreen(
                 Box(modifier = Modifier.weight(1f).fillMaxWidth(), contentAlignment = Alignment.Center) {
                     Column(
                         horizontalAlignment = Alignment.CenterHorizontally,
-                        modifier = Modifier.padding(horizontal = PodroidTokens.Spacing.XL),
+                        modifier = Modifier.padding(horizontal = LdroidTokens.Spacing.XL),
                     ) {
                         Text(
                             text = stringResource(R.string.error_title),
                             style = MaterialTheme.typography.displayLarge,
                             color = MaterialTheme.colorScheme.error,
                         )
-                        Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+                        Spacer(Modifier.height(LdroidTokens.Spacing.SM))
                         Text(
                             (vmState as VmState.Error).message,
                             style = MaterialTheme.typography.bodyMedium,
                             color = MaterialTheme.colorScheme.onSurfaceVariant,
                             textAlign = TextAlign.Center,
                         )
-                        Spacer(Modifier.height(PodroidTokens.Spacing.LG))
-                        PodroidGhostButton(
+                        Spacer(Modifier.height(LdroidTokens.Spacing.LG))
+                        LdroidGhostButton(
                             text = stringResource(R.string.back_to_home),
                             onClick = onNavigateBack,
                             modifier = Modifier.fillMaxWidth(0.6f),
@@ -529,7 +529,7 @@ private fun ExtraKeysRow(
                 .background(MaterialTheme.colorScheme.surface)
                 .fadingEdgesHorizontal(scroll)
                 .horizontalScroll(scroll)
-                .padding(horizontal = PodroidTokens.Spacing.SM, vertical = PodroidTokens.Spacing.SM),
+                .padding(horizontal = LdroidTokens.Spacing.SM, vertical = LdroidTokens.Spacing.SM),
             horizontalArrangement = Arrangement.spacedBy(4.dp),
             verticalAlignment = Alignment.CenterVertically,
         ) {
@@ -564,12 +564,12 @@ private fun KeyButton(
         color = if (isActive) MaterialTheme.colorScheme.onPrimary else MaterialTheme.colorScheme.onSurface,
         fontSize = 13.sp,
         fontWeight = FontWeight.Medium,
-        fontFamily = PodroidTokens.mono(),
+        fontFamily = LdroidTokens.mono(),
         textAlign = TextAlign.Center,
         modifier = Modifier
-            .clip(RoundedCornerShape(PodroidTokens.Radius.Chip))
+            .clip(RoundedCornerShape(LdroidTokens.Radius.Chip))
             .background(if (isActive) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.surfaceVariant)
-            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(PodroidTokens.Radius.Chip))
+            .border(1.dp, MaterialTheme.colorScheme.outline, RoundedCornerShape(LdroidTokens.Radius.Chip))
             .then(tapModifier)
             .padding(horizontal = 13.dp, vertical = 9.dp),
     )

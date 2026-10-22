@@ -1,4 +1,4 @@
-# ZRLE regression fixtures captured from TigerVNC Xvnc in the Podroid guest.
+# ZRLE regression fixtures captured from TigerVNC Xvnc in the Ldroid guest.
 #
 # Each .zrle.bin file: magic "PDRF", then big-endian u16 fbW, fbH, regionX, regionY,
 # regionW, regionH, then every server byte after ServerInit (FramebufferUpdate

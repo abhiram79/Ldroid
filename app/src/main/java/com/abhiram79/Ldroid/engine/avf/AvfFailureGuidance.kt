@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Pure policy: given the current vCPU setting, what should we advise the user
  * when an AVF guest fails to boot? AVF has no vCPU-count API (only ONE_CPU or

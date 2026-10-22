@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * EngineHolder — the single @Singleton VmEngine Hilt hands out. Internally
  * swaps between QemuEngine and AvfEngine when the user changes Settings →
@@ -119,7 +119,7 @@ class EngineHolder @Inject constructor(
     // removed during the boot window is still torn down.
     @Volatile private var launchRules: Set<PortForwardRule> = emptySet()
 
-    // Always-on forwards that PodroidService injects into the launch set but
+    // Always-on forwards that LdroidService injects into the launch set but
     // never persists to the DataStore (SSH 9922→22 when enabled, plus the X11
     // viewer's VNC 5900 and audio 4713). They live in launchRules but not in the
     // DataStore `rules`, so a diff of `desired = rules` computes them as removed
@@ -132,7 +132,7 @@ class EngineHolder @Inject constructor(
     // The engine instance started during the current selection cycle. @Singleton
     // engines retain their last terminal state (e.g. Stopped) across a swap, so a
     // freshly (re)selected engine that hasn't been started this cycle must surface
-    // Idle instead of that stale terminal value (else PodroidService treats the
+    // Idle instead of that stale terminal value (else LdroidService treats the
     // republished Stopped as actionable and tears down). Cleared on every fresh
     // publish; set when start() runs.
     @Volatile private var startedEngine: VmEngine? = null
@@ -374,7 +374,7 @@ class EngineHolder @Inject constructor(
     // A freshly (re)selected engine that hasn't been started this cycle has its
     // retained terminal state (Stopped/Error) normalized to Idle, so a swap-back
     // to a previously-Stopped @Singleton engine doesn't republish an actionable
-    // Stopped that PodroidService would treat as a teardown signal. Once start()
+    // Stopped that LdroidService would treat as a teardown signal. Once start()
     // marks the engine started, its real state (including a later Stopped) passes
     // through unchanged.
     override val state: StateFlow<VmState> = combine(
@@ -414,7 +414,7 @@ class EngineHolder @Inject constructor(
         _startFailure.value = null
         // Guarantee the first Start runs on the correctly-picked engine even on a
         // fast cold launch where Start beats the init publish coroutine. start()
-        // is always called off-main (PodroidService.launchPodroid → withContext
+        // is always called off-main (LdroidService.launchLdroid → withContext
         // (Dispatchers.IO)), so awaiting the off-main first pick here is safe and
         // closes the seed→AVF race: the seed (QEMU) can never run by mistake.
         //

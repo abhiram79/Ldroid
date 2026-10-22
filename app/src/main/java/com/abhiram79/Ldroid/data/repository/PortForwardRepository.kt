@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Persists port forwarding rules in DataStore.
  */
@@ -68,7 +68,7 @@ data class PortForwardRule(
  */
 /**
  * Ceiling on persisted rules. Not a human limit — it exists because
- * `podroid-forward add` in a shell loop can produce thousands, and every rule is
+ * `ldroid-forward add` in a shell loop can produce thousands, and every rule is
  * a listening socket, a row in the Settings list, and a QMP round trip on every
  * boot. One user scripted 1005 of them and made their VM unstartable.
  */

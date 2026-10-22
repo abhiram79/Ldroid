@@ -32,12 +32,12 @@ import androidx.hilt.lifecycle.viewmodel.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import com.abhiram79.Ldroid.R
 import com.abhiram79.Ldroid.ui.components.AdaptiveContainer
-import com.abhiram79.Ldroid.ui.components.PodroidGhostButton
-import com.abhiram79.Ldroid.ui.components.PodroidListRow
-import com.abhiram79.Ldroid.ui.components.PodroidPrimaryButton
-import com.abhiram79.Ldroid.ui.components.PodroidSectionLabel
-import com.abhiram79.Ldroid.ui.components.PodroidTopBar
-import com.abhiram79.Ldroid.ui.theme.PodroidTokens
+import com.abhiram79.Ldroid.ui.components.LdroidGhostButton
+import com.abhiram79.Ldroid.ui.components.LdroidListRow
+import com.abhiram79.Ldroid.ui.components.LdroidPrimaryButton
+import com.abhiram79.Ldroid.ui.components.LdroidSectionLabel
+import com.abhiram79.Ldroid.ui.components.LdroidTopBar
+import com.abhiram79.Ldroid.ui.theme.LdroidTokens
 import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -54,7 +54,7 @@ fun ContainerBackupScreen(
 
     Scaffold(
         topBar = {
-            PodroidTopBar(
+            LdroidTopBar(
                 title = stringResource(R.string.container_backup_title),
                 navigationIcon = {
                     IconButton(onClick = onNavigateBack) {
@@ -75,8 +75,8 @@ fun ContainerBackupScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState())
-                    .padding(horizontal = PodroidTokens.Spacing.XL, vertical = PodroidTokens.Spacing.LG),
-                verticalArrangement = Arrangement.spacedBy(PodroidTokens.Spacing.MD),
+                    .padding(horizontal = LdroidTokens.Spacing.XL, vertical = LdroidTokens.Spacing.LG),
+                verticalArrangement = Arrangement.spacedBy(LdroidTokens.Spacing.MD),
             ) {
                 Text(
                     text = stringResource(R.string.container_backup_description),
@@ -84,14 +84,14 @@ fun ContainerBackupScreen(
                     color = MaterialTheme.colorScheme.onSurfaceVariant,
                 )
 
-                PodroidSectionLabel(stringResource(R.string.container_backup_location))
-                PodroidListRow(
+                LdroidSectionLabel(stringResource(R.string.container_backup_location))
+                LdroidListRow(
                     label = stringResource(R.string.container_backup_guest_path),
                     value = ui.guestPath,
                     mono = true,
                 )
                 if (ui.storageAccessEnabled) {
-                    PodroidListRow(
+                    LdroidListRow(
                         label = stringResource(R.string.container_backup_phone_path),
                         value = stringResource(R.string.container_backup_phone_path_value),
                         mono = true,
@@ -100,11 +100,11 @@ fun ContainerBackupScreen(
                     Text(
                         text = stringResource(R.string.container_backup_downloads_hint),
                         style = MaterialTheme.typography.bodySmall,
-                        color = PodroidTokens.Amber,
+                        color = LdroidTokens.Amber,
                     )
                 }
 
-                PodroidSectionLabel(stringResource(R.string.container_backup_export))
+                LdroidSectionLabel(stringResource(R.string.container_backup_export))
                 if (!ui.vmRunning) {
                     Text(
                         text = stringResource(R.string.container_backup_vm_stopped),
@@ -119,7 +119,7 @@ fun ContainerBackupScreen(
                     label = { Text(stringResource(R.string.container_backup_container_name)) },
                     singleLine = true,
                 )
-                PodroidPrimaryButton(
+                LdroidPrimaryButton(
                     text = stringResource(R.string.container_backup_copy_export),
                     onClick = {
                         if (viewModel.copyExportCommand()) {
@@ -129,7 +129,7 @@ fun ContainerBackupScreen(
                     enabled = ui.containerName.isNotBlank(),
                 )
 
-                PodroidSectionLabel(stringResource(R.string.container_backup_save_image))
+                LdroidSectionLabel(stringResource(R.string.container_backup_save_image))
                 OutlinedTextField(
                     value = ui.imageRef,
                     onValueChange = viewModel::setImageRef,
@@ -138,7 +138,7 @@ fun ContainerBackupScreen(
                     placeholder = { Text(stringResource(R.string.container_backup_image_placeholder)) },
                     singleLine = true,
                 )
-                PodroidGhostButton(
+                LdroidGhostButton(
                     text = stringResource(R.string.container_backup_copy_save),
                     onClick = {
                         if (viewModel.copySaveCommand()) {
@@ -148,8 +148,8 @@ fun ContainerBackupScreen(
                     modifier = Modifier.fillMaxWidth(),
                 )
 
-                PodroidSectionLabel(stringResource(R.string.container_backup_tools))
-                PodroidGhostButton(
+                LdroidSectionLabel(stringResource(R.string.container_backup_tools))
+                LdroidGhostButton(
                     text = stringResource(R.string.container_backup_copy_list),
                     onClick = {
                         viewModel.copyListCommand()
@@ -157,7 +157,7 @@ fun ContainerBackupScreen(
                     },
                     modifier = Modifier.fillMaxWidth(),
                 )
-                PodroidGhostButton(
+                LdroidGhostButton(
                     text = stringResource(R.string.container_backup_copy_all),
                     onClick = {
                         viewModel.copyAllCommand()
@@ -173,9 +173,9 @@ fun ContainerBackupScreen(
                     fontFamily = FontFamily.Monospace,
                 )
 
-                Spacer(Modifier.height(PodroidTokens.Spacing.SM))
-                PodroidSectionLabel(stringResource(R.string.container_backup_on_phone))
-                PodroidGhostButton(
+                Spacer(Modifier.height(LdroidTokens.Spacing.SM))
+                LdroidSectionLabel(stringResource(R.string.container_backup_on_phone))
+                LdroidGhostButton(
                     text = stringResource(R.string.container_backup_refresh),
                     onClick = viewModel::refresh,
                     modifier = Modifier.fillMaxWidth(),
@@ -194,7 +194,7 @@ fun ContainerBackupScreen(
                     )
                 } else {
                     ui.backupFiles.forEach { file ->
-                        PodroidListRow(
+                        LdroidListRow(
                             label = file.name,
                             value = "${viewModel.formatSize(file.sizeBytes)} · ${viewModel.formatDate(file.lastModifiedMs)}",
                             mono = true,

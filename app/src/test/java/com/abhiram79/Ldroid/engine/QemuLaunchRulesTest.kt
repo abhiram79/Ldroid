@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  */
 package com.abhiram79.Ldroid.engine
 
@@ -61,7 +61,7 @@ class QemuLaunchRulesTest {
 
     @Test
     fun `a thousand user rules collapse to the implicit ones`() {
-        // The exact shape of the report: seq 30000 31000 through podroid-forward,
+        // The exact shape of the report: seq 30000 31000 through ldroid-forward,
         // plus the three the app injects itself.
         val flood = (30000..31000).map { user(it) }
         val inline = inlineLaunchRules(flood + listOf(ssh, vnc, audio))

@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Thin reflective wrappers over android.system.virtualmachine.*. Each call is
  * one Method.invoke with setAccessible(true) — Android 14+ requires

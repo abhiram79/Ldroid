@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * AvfEngine — VmEngine implementation backed by Android Virtualization Framework.
  *
@@ -9,7 +9,7 @@
  * lands in the catch branch and transitions to VmState.Error.
  *
  * Terminal wiring: ConsoleFanout bridges AVF console streams to a filesystem
- * unix socket; libpodroid-bridge connects to that socket and splices PTY ↔
+ * unix socket; libldroid-bridge connects to that socket and splices PTY ↔
  * socket, same as the QEMU path. The ctrl socket is a dummy path (never bound)
  * — bridge tolerates the connect failure gracefully (no resize on AVF, MVP).
  */
@@ -59,10 +59,10 @@ class AvfEngine @Inject constructor(
 
     companion object {
         private const val TAG = "AvfEngine"
-        // Use "podroid" as the VM name. The smoke-test in AvfDiagnostics used
-        // "podroid-avf-smoke" — a different name — so there is no config
+        // Use "ldroid" as the VM name. The smoke-test in AvfDiagnostics used
+        // "ldroid-avf-smoke" — a different name — so there is no config
         // conflict between the two paths.
-        private const val VM_NAME = "podroid"
+        private const val VM_NAME = "ldroid"
         // Safety net for a guest that never emits "Ready!" (a console quirk, a
         // lost marker, no onStopped/onDied) so it doesn't strand the engine in
         // Starting forever — EngineHolder.trySwap waits on a terminal state, so
@@ -121,7 +121,7 @@ class AvfEngine @Inject constructor(
 
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.IO)
     // Serializes the check-and-claim in start(). Two near-simultaneous
-    // ACTION_STARTs can both pass PodroidService's main-thread alreadyActive
+    // ACTION_STARTs can both pass LdroidService's main-thread alreadyActive
     // check before either coroutine flips _state to Starting; without this lock
     // both would run launchAttempt against the same VM_NAME (mirrors
     // QemuEngine.startMutex).
@@ -165,7 +165,7 @@ class AvfEngine @Inject constructor(
     @Volatile private var downloadsShare: AvfDownloadsShare? = null
     /**
      * Initial rules captured from start()'s portForwards arg — includes the
-     * auto-injected SSH/X11/audio rules that PodroidService adds in-memory
+     * auto-injected SSH/X11/audio rules that LdroidService adds in-memory
      * (not in DataStore), which EngineHolder's diff loop never sees. Replayed
      * via addPortForward() in the onReady callback. The putIfAbsent dedup in
      * addPortForward handles the race with EngineHolder's parallel dispatch
@@ -237,7 +237,7 @@ class AvfEngine @Inject constructor(
     /**
      * Bring up the vsock control channel and replay the initial port-forward
      * rules. EngineHolder's diff loop fires on state → Running and dispatches
-     * DataStore rules; we replay the initialRules here too because PodroidService
+     * DataStore rules; we replay the initialRules here too because LdroidService
      * auto-injects SSH/X11/audio rules in-memory (never in DataStore) and
      * EngineHolder never sees them. addPortForward's putIfAbsent dedups the
      * parallel path. Idempotent (guarded on a null `control`) so the detector's
@@ -321,7 +321,7 @@ class AvfEngine @Inject constructor(
             // Remember the launch args so the adaptive multi-vCPU fallback (issue
             // #29) can re-launch with fewer cores after an early-boot reset WITHOUT
             // routing through a terminal state (Error/Stopped tears the foreground
-            // service down — see PodroidService.observeStateForShutdown). Claim
+            // service down — see LdroidService.observeStateForShutdown). Claim
             // Starting under the lock so a re-entrant start() is rejected.
             lastConfig = config
             synchronized(lastPortForwards) { lastPortForwards.clear(); lastPortForwards.addAll(portForwards) }
@@ -548,7 +548,7 @@ class AvfEngine @Inject constructor(
                 if (promoted) bringUpControlChannel()
             }
         } catch (e: CancellationException) {
-            // The start coroutine runs in PodroidService.serviceScope, cancelled
+            // The start coroutine runs in LdroidService.serviceScope, cancelled
             // on every stop/teardown; buildConfig has real suspension points (the
             // DataStore cpu-cap read). A cancel landing mid-start is NOT an engine
             // error — letting it fall into the generic catch below would set a
@@ -607,7 +607,7 @@ class AvfEngine @Inject constructor(
     }
 
     /**
-     * Spawn libpodroid-bridge.so unconditionally at VM start, NOT on demand.
+     * Spawn libldroid-bridge.so unconditionally at VM start, NOT on demand.
      * The fanout's accept() loops until the bridge connects; without an early
      * bridge spawn, the VM's console output is never drained and BootStageDetector
      * never sees "Ready!". This matches QemuEngine's autoStartBridge pattern but
@@ -830,7 +830,7 @@ class AvfEngine @Inject constructor(
 
         val bridgeExe = TerminalBridge.executable(context)
         if (!bridgeExe.exists()) {
-            throw IllegalStateException("podroid-bridge not found at ${bridgeExe.absolutePath}")
+            throw IllegalStateException("ldroid-bridge not found at ${bridgeExe.absolutePath}")
         }
         val sess = TerminalBridge.newSession(
             context, terminalSockPath, ctrlSockPath, proxySessionClient,
@@ -1040,13 +1040,13 @@ class AvfEngine @Inject constructor(
         // captured input/output streams to hvc0; `console=hvc0` in the
         // kernel cmdline routes kernel logs the same way; the guest's
         // /etc/inittab spawns the getty on the device named by the
-        // `podroid.tty=` marker.
+        // `ldroid.tty=` marker.
         //
-        // `podroid.backend=avf` is a stable backend identifier — used by
-        // guest OpenRC scripts (podroid-network, podroid-vsock) to pick
+        // `ldroid.backend=avf` is a stable backend identifier — used by
+        // guest OpenRC scripts (ldroid-network, ldroid-vsock) to pick
         // AVF-specific behaviour without coupling to the tty choice.
         //
-        // `podroid.epoch=...` seeds the wall clock — AVF/crosvm doesn't
+        // `ldroid.epoch=...` seeds the wall clock — AVF/crosvm doesn't
         // wire an RTC the way QEMU TCG does, so without this the guest
         // boots at 1970-01-01 and TLS fails on every cert.
         val epoch = System.currentTimeMillis() / 1000
@@ -1075,9 +1075,9 @@ class AvfEngine @Inject constructor(
         // takes an undefined-instruction oops in init_cpu_features() at 0.000s.
         // The guest never uses MPAM resource control, so hiding it costs nothing.
         val resolvedCmdline = ("console=hvc0 $earlycon root=/dev/ram0 mitigations=off arm64.nompam " +
-            "elevator=mq-deadline podroid.tty=hvc0 podroid.backend=avf podroid.epoch=$epoch " +
-            "podroid.x11.dpi=${config.x11Dpi}$verboseFlags$nrCpusFlag " +
-            (if (config.bandwidthMbps > 0) "podroid.bandwidth=${config.bandwidthMbps} " else "") +
+            "elevator=mq-deadline ldroid.tty=hvc0 ldroid.backend=avf ldroid.epoch=$epoch " +
+            "ldroid.x11.dpi=${config.x11Dpi}$verboseFlags$nrCpusFlag " +
+            (if (config.bandwidthMbps > 0) "ldroid.bandwidth=${config.bandwidthMbps} " else "") +
             config.kernelExtraCmdline).trim()
         AvfReflect.addParams(cb, resolvedCmdline)
         if (config.verboseLogging) {

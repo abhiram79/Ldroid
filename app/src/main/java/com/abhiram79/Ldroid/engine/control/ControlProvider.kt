@@ -1,11 +1,11 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * ContentProvider answering `adb shell content call` for on-device test
  * automation: read VM state, switch backend, add/remove a port forward, list
  * backup archives, jump to a screen. Start/stop already exist as broadcast
- * intents (service/PodroidService.kt, VmControlReceiver) and are out of scope.
+ * intents (service/LdroidService.kt, VmControlReceiver) and are out of scope.
  *
  * adb shell content call --uri content://<applicationId>.control --method state
  *

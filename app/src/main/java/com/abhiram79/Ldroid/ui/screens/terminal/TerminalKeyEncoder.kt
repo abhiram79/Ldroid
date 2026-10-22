@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Pure xterm key-sequence encoding shared by TerminalViewModel's onKeyDown
  * (hardware/soft keyboard) and sendExtraKey (the extra keys row), so both

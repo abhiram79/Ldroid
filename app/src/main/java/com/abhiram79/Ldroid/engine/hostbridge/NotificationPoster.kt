@@ -1,6 +1,6 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Seam between the host-bridge dispatcher and Android's NotificationManager,
  * so the dispatcher can be unit-tested with a fake.
@@ -43,8 +43,8 @@ class AndroidNotificationPoster @Inject constructor(
 ) : NotificationPoster {
 
     companion object {
-        private const val CHANNEL_ID = "podroid_guest"
-        // Guest notification ids live well above PodroidService.NOTIFICATION_ID (1001)
+        private const val CHANNEL_ID = "ldroid_guest"
+        // Guest notification ids live well above LdroidService.NOTIFICATION_ID (1001)
         // so a guest --id can never replace the foreground-service notification.
         private const val ID_BASE = 0x7000_0000
         private const val ID_SPAN = 0x0000_FFFF
@@ -55,7 +55,7 @@ class AndroidNotificationPoster @Inject constructor(
     init {
         val channel = NotificationChannel(
             CHANNEL_ID, "VM notifications", NotificationManager.IMPORTANCE_DEFAULT,
-        ).apply { description = "Notifications sent from inside the VM (podroid-notify)" }
+        ).apply { description = "Notifications sent from inside the VM (ldroid-notify)" }
         context.getSystemService(NotificationManager::class.java).createNotificationChannel(channel)
     }
 
@@ -77,7 +77,7 @@ class AndroidNotificationPoster @Inject constructor(
             else -> NotificationCompat.PRIORITY_DEFAULT
         }
         val n = NotificationCompat.Builder(context, CHANNEL_ID)
-            .setContentTitle(title ?: "Podroid")
+            .setContentTitle(title ?: "Ldroid")
             .setContentText(body)
             .setStyle(NotificationCompat.BigTextStyle().bigText(body))
             .setSmallIcon(R.drawable.ic_vm_notification)

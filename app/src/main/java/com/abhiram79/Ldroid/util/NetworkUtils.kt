@@ -1,9 +1,9 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Tiny shared helper for resolving the device's primary IPv4 address.
- * Used by both PodroidService (when launching QEMU) and the Settings UI
+ * Used by both LdroidService (when launching QEMU) and the Settings UI
  * (to display "Phone IP: …" next to port-forward rules).
  */
 package com.abhiram79.Ldroid.util
@@ -101,7 +101,7 @@ object NetworkUtils {
      *
      * IPv4-only here on purpose: musl's resolver in the Alpine guest reads a plain
      * `nameserver <addr>` line per line, and the guest network stack this feeds (see
-     * `podroid-network`) is IPv4-only, so a literal we can't reach is worse than none.
+     * `ldroid-network`) is IPv4-only, so a literal we can't reach is worse than none.
      */
     fun dnsServers(context: Context): List<String> = try {
         val cm = context.getSystemService(Context.CONNECTIVITY_SERVICE) as? ConnectivityManager

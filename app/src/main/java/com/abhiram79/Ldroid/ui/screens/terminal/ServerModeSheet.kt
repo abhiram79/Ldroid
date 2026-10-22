@@ -1,9 +1,9 @@
 /*
- * Podroid - Rootless Podman for Android
- * Copyright (C) 2024-2026 Podroid contributors
+ * Ldroid - Rootless Podman for Android
+ * Copyright (C) 2024-2026 Ldroid contributors
  *
  * Explainer card for server (headless) mode. Modeled on X11SettingsSheet: a
- * ModalBottomSheet styled from PodroidTokens. Describes the feature and how to
+ * ModalBottomSheet styled from LdroidTokens. Describes the feature and how to
  * exit, with one primary action to enable it.
  */
 package com.abhiram79.Ldroid.ui.screens.terminal
@@ -21,8 +21,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import com.abhiram79.Ldroid.R
-import com.abhiram79.Ldroid.ui.components.PodroidPrimaryButton
-import com.abhiram79.Ldroid.ui.theme.PodroidTokens
+import com.abhiram79.Ldroid.ui.components.LdroidPrimaryButton
+import com.abhiram79.Ldroid.ui.theme.LdroidTokens
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -31,22 +31,22 @@ fun ServerModeSheet(onDismiss: () -> Unit, onEnable: () -> Unit) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = PodroidTokens.Spacing.XL)
-                .padding(bottom = PodroidTokens.Spacing.XL),
+                .padding(horizontal = LdroidTokens.Spacing.XL)
+                .padding(bottom = LdroidTokens.Spacing.XL),
         ) {
             Text(
                 text = stringResource(R.string.server_mode),
                 style = MaterialTheme.typography.titleLarge,
                 color = MaterialTheme.colorScheme.onSurface,
             )
-            Spacer(Modifier.height(PodroidTokens.Spacing.SM))
+            Spacer(Modifier.height(LdroidTokens.Spacing.SM))
             Text(
                 text = stringResource(R.string.server_mode_desc),
                 style = MaterialTheme.typography.bodyMedium,
                 color = MaterialTheme.colorScheme.onSurfaceVariant,
             )
-            Spacer(Modifier.height(PodroidTokens.Spacing.LG))
-            PodroidPrimaryButton(
+            Spacer(Modifier.height(LdroidTokens.Spacing.LG))
+            LdroidPrimaryButton(
                 text = stringResource(R.string.server_mode_enable),
                 onClick = { onEnable(); onDismiss() },
             )

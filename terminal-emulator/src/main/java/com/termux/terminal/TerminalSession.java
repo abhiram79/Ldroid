@@ -134,7 +134,7 @@ public class TerminalSession extends TerminalOutput {
             @Override
             public void run() {
                 try (InputStream termIn = new FileInputStream(terminalFileDescriptorWrapped)) {
-                    // Podroid: 64 KB drain buffer (was 4 KB upstream). Pairs with the
+                    // Ldroid: 64 KB drain buffer (was 4 KB upstream). Pairs with the
                     // 64 KB main-thread receive buffer below — bursts drain the PTY in
                     // a single read instead of splintering across 16 wakeups.
                     final byte[] buffer = new byte[64 * 1024];
@@ -142,7 +142,7 @@ public class TerminalSession extends TerminalOutput {
                         int read = termIn.read(buffer);
                         if (read == -1) return;
                         if (!mProcessToTerminalIOQueue.write(buffer, 0, read)) return;
-                        // Podroid: dedupe — main thread reads up to 64 KB at a time, so
+                        // Ldroid: dedupe — main thread reads up to 64 KB at a time, so
                         // queueing N messages just to discover an empty queue N-1 times
                         // is pure overhead. One pending message is enough.
                         if (!mMainThreadHandler.hasMessages(MSG_NEW_INPUT)) {
@@ -351,7 +351,7 @@ public class TerminalSession extends TerminalOutput {
             int bytesRead = mProcessToTerminalIOQueue.read(mReceiveBuffer, false);
             if (bytesRead > 0) {
                 mEmulator.append(mReceiveBuffer, bytesRead);
-                // Podroid: DECSET 2026 — if the app is mid-frame (e.g. btop's atomic
+                // Ldroid: DECSET 2026 — if the app is mid-frame (e.g. btop's atomic
                 // update), skip the invalidate. Cells are still mutated in the buffer;
                 // the close bracket arriving in a later batch will clear the flag and
                 // the next handleMessage will paint the completed frame in one shot.
