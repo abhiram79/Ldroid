@@ -33,8 +33,8 @@ Usage: $0 [command] [options]
 Commands:
   all           Build everything (Kernel, Initramfs, Rootfs, QEMU, APK)
   kernel        Build custom kernel only (ldroid_kernel.config + Linux source)
-  initramfs     Build custom kernel + Alpine VM initramfs (vmlinuz + initrd)
-  rootfs        Build Alpine rootfs squashfs (alpine-rootfs.squashfs)
+  initramfs     Build custom kernel + Debian VM initramfs (vmlinuz + initrd)
+  rootfs        Build Debian rootfs squashfs (debian-rootfs.squashfs)
   qemu          Build QEMU + ldroid-bridge + ldroid-launcher
   apk           Build the Android APK (also builds libtermux.so via Gradle NDK)
   deploy        Build APK, uninstall old version, and install to device
@@ -104,7 +104,7 @@ build_kernel() {
 build_initramfs() {
     local kernel_ver
     kernel_ver=$(grep -E '^ldroidKernelVersion=' "${SCRIPT_DIR}/gradle.properties" | cut -d= -f2)
-    log "Building custom kernel + Alpine Initramfs (Docker)..."
+    log "Building custom kernel + Debian Initramfs (Docker)..."
     docker build --network=host \
         --build-arg "KERNEL_VERSION=${kernel_ver}" \
         -t ldroid-builder --target packer "$SCRIPT_DIR"
@@ -120,7 +120,7 @@ build_initramfs() {
 }
 
 build_rootfs() {
-    log "Building Alpine rootfs squashfs..."
+    log "Building Debian rootfs squashfs..."
     local sysver
     sysver=$(grep -E '^[[:space:]]*versionCode[[:space:]]*=' "${SCRIPT_DIR}/app/build.gradle.kts" | grep -oE '[0-9]+' | head -1)
 
@@ -135,7 +135,7 @@ build_rootfs() {
         --build-arg "SYSTEM_VERSION=${sysver:-0}" \
         --output type=local,dest="${ASSETS}" \
         "${SCRIPT_DIR}/build-rootfs/"
-    success "Built ${ASSETS}/alpine-rootfs.squashfs ($(du -h "${ASSETS}/alpine-rootfs.squashfs" | cut -f1)), system-version ${sysver:-0}"
+    success "Built ${ASSETS}/debian-rootfs.squashfs ($(du -h "${ASSETS}/debian-rootfs.squashfs" | cut -f1)), system-version ${sysver:-0}"
 }
 
 build_qemu() {
