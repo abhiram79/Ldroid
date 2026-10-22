@@ -1,0 +1,18 @@
+[Unit]
+Description=LDroid AVF Downloads share (9p over vsock, AVF only)
+After=ldroid-bootstrap.service ldroid-network.service ldroid-vsock.service
+Wants=ldroid-bootstrap.service
+ConditionKernelCommandLine=ldroid.backend=avf
+Before=ldroid-ready.service
+
+[Service]
+Type=simple
+ExecStartPre=/bin/mkdir -p /mnt/downloads
+ExecStart=/usr/local/bin/ldroid-vsock-agent downloads-9p
+Restart=on-failure
+RestartSec=1
+StandardOutput=append:/var/log/ldroid-downloads.log
+StandardError=append:/var/log/ldroid-downloads.log
+
+[Install]
+WantedBy=multi-user.target
