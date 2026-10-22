@@ -1,9 +1,14 @@
 # build-rootfs/Dockerfile.rootfs
 
-# ── Stage 1: cross-compile ldroid-vsock-agent (musl-static aarch64) ────────
-# Uses qemu-user under the hood — no separate cross-toolchain needed.
-FROM --platform=linux/arm64 alpine:3.24 AS vsock-builder
-RUN apk add --no-cache musl-dev gcc make linux-headers
+# ── Stage 1: build the LDroid guest helpers (static aarch64) ───────────────
+# The guest runs Debian/glibc. The helpers are linked statically so they keep
+# working if the user upgrades libc through the persistent overlay.
+FROM --platform=linux/arm64 debian:bookworm AS helper-builder
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        build-essential make libc6-dev linux-libc-dev ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 WORKDIR /work
 COPY vsock-agent /work/vsock-agent
 RUN cd /work/vsock-agent && make CC=gcc
@@ -12,30 +17,38 @@ RUN cd /work/host-bridge && make CC=gcc
 COPY overlay-normalize /work/overlay-normalize
 RUN cd /work/overlay-normalize && make CC=gcc
 
-# ── Stage 2: build the Alpine rootfs squashfs ───────────────────────────────
-FROM alpine:3.24 AS builder
+# ── Stage 2: build the Debian (bookworm) rootfs squashfs ───────────────────
+FROM --platform=linux/arm64 debian:bookworm AS builder
 
-ARG ALPINE_RELEASE=3.24.2
-ARG ALPINE_ARCH=aarch64
+ARG DEBIAN_RELEASE=bookworm
+ARG DEBIAN_ARCH=arm64
 
-RUN apk add --no-cache curl squashfs-tools tar openssl libcap-utils
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+        debootstrap squashfs-tools zstd xz-utils openssl ca-certificates \
+    && rm -rf /var/lib/apt/lists/*
 
 WORKDIR /work
-RUN curl -L -o minirootfs.tar.gz \
-    "https://dl-cdn.alpinelinux.org/alpine/v${ALPINE_RELEASE%.*}/releases/${ALPINE_ARCH}/alpine-minirootfs-${ALPINE_RELEASE}-${ALPINE_ARCH}.tar.gz" \
- && mkdir rootfs \
- && tar -xzf minirootfs.tar.gz -C rootfs \
- && rm minirootfs.tar.gz
 
-# Pull in the vsock-agent binary built in stage 1.
-COPY --from=vsock-builder /work/vsock-agent/ldroid-vsock-agent /work/rootfs/usr/local/bin/ldroid-vsock-agent
-COPY --from=vsock-builder /work/host-bridge/ldroid-hostd /work/rootfs/usr/local/bin/ldroid-hostd
-COPY --from=vsock-builder /work/overlay-normalize/ldroid-overlay-normalize /work/rootfs/usr/local/bin/ldroid-overlay-normalize
+# debootstrap installs the complete Debian userland in one pass. Running the
+# builder as linux/arm64 means the second stage executes natively under QEMU
+# instead of needing qemu-aarch64-static inside a foreign-arch rootfs.
+RUN debootstrap --variant=minbase --arch="${DEBIAN_ARCH}" \
+        --include=systemd,systemd-sysv,libpam-systemd,dbus,apt-utils,apt-transport-https,bash,ca-certificates,coreutils,curl,e2fsprogs,hostname,iproute2,iputils-ping,isc-dhcp-client,kmod,less,procps,psmisc,util-linux,openssl,gzip,xz-utils,zstd,dropbear,openssh-sftp-server,tigervnc-standalone-server,tigervnc-common,pulseaudio,pulseaudio-utils,fonts-dejavu-core,xfonts-base,busybox-static,adduser \
+        "${DEBIAN_RELEASE}" /work/rootfs "http://deb.debian.org/debian"
+
+# Pull in the static helpers built in stage 1.
+RUN mkdir -p /work/rootfs/usr/local/bin
+COPY --from=helper-builder /work/vsock-agent/ldroid-vsock-agent /work/rootfs/usr/local/bin/ldroid-vsock-agent
+COPY --from=helper-builder /work/host-bridge/ldroid-hostd /work/rootfs/usr/local/bin/ldroid-hostd
+COPY --from=helper-builder /work/overlay-normalize/ldroid-overlay-normalize /work/rootfs/usr/local/bin/ldroid-overlay-normalize
 
 ARG SYSTEM_VERSION=0
 ENV SYSTEM_VERSION=${SYSTEM_VERSION}
 
-ENV ALPINE_VERSION=${ALPINE_RELEASE}
+ENV DEBIAN_VERSION=${DEBIAN_RELEASE}
+ENV DEBIAN_ARCH=${DEBIAN_ARCH}
 COPY files /work/files
 # Staged by build_rootfs() in build-all.sh (docs/ lives outside this build
 # context); served in-guest by /usr/local/bin/ldroid-docs.
@@ -43,10 +56,8 @@ COPY docs-guide /work/docs-guide
 COPY build-rootfs.sh /work/build-rootfs.sh
 RUN chmod +x /work/build-rootfs.sh && /work/build-rootfs.sh
 
-RUN mksquashfs /work/rootfs /work/alpine-rootfs.squashfs \
+RUN mksquashfs /work/rootfs /work/debian-rootfs.squashfs \
     -comp zstd -Xcompression-level 19 -all-root -noappend
-# (No -no-xattrs: rootless podman's newuidmap/newgidmap need their
-# file capabilities preserved; they're stored as security.capability xattr.)
 
 FROM scratch AS export
-COPY --from=builder /work/alpine-rootfs.squashfs /alpine-rootfs.squashfs
+COPY --from=builder /work/debian-rootfs.squashfs /debian-rootfs.squashfs
