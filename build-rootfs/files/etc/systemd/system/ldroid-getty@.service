@@ -1,7 +1,6 @@
 [Unit]
 Description=LDroid console getty on %I
-After=dev-%i.device
-Before=ldroid-ready.service
+After=dev-%i.device ldroid-ready.service
 
 [Service]
 Type=simple
