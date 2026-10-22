@@ -1,7 +1,7 @@
 /*
  * Ldroid — Rootless Podman for Android
  *
- * A headless AArch64 QEMU micro-VM running Alpine Linux with Podman,
+ * A headless AArch64 QEMU micro-VM running Debian Linux,
  * accessed via built-in serial terminal.
  */
 plugins {
