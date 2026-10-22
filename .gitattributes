@@ -1,6 +1,6 @@
 # Normalize line endings for files that run in Linux contexts.
 # All shell scripts, init files, and Linux config files MUST have LF endings;
-# Windows CRLF line endings break shebang parsing and OpenRC service scripts.
+# Windows CRLF line endings break shebang parsing and systemd service scripts.
 
 # Default: let git auto-detect text vs binary
 * text=auto
@@ -28,21 +28,18 @@ Makefile*       text eol=lf
 *.config        text eol=lf
 
 # Explicitly force LF for files without extensions that are Linux scripts
-init-ldroid                                    text eol=lf
-build-rootfs/files/etc/init.d/ldroid-bootstrap text eol=lf
-build-rootfs/files/etc/init.d/ldroid-network   text eol=lf
-build-rootfs/files/etc/init.d/ldroid-ready     text eol=lf
-build-rootfs/files/etc/init.d/ldroid-resize    text eol=lf
-build-rootfs/files/etc/init.d/ldroid-x11       text eol=lf
-build-rootfs/files/etc/init.d/ldroid-vsock     text eol=lf
-build-rootfs/files/etc/init.d/ldroid-hostd     text eol=lf
-build-rootfs/files/etc/init.d/ldroid-migrate   text eol=lf
-build-rootfs/files/etc/inittab                  text eol=lf
-build-rootfs/files/etc/rc.conf                  text eol=lf
-build-rootfs/files/usr/local/bin/ldroid-getty  text eol=lf
-build-rootfs/files/usr/local/bin/ldroid-login  text eol=lf
-build-rootfs/files/usr/local/bin/ldroid-resize text eol=lf
-build-rootfs/files/etc/ldroid/forwards.conf    text eol=lf
+init-ldroid                                         text eol=lf
+build-rootfs/files/usr/local/lib/ldroid/ldroid-bootstrap text eol=lf
+build-rootfs/files/usr/local/lib/ldroid/ldroid-network   text eol=lf
+build-rootfs/files/usr/local/lib/ldroid/ldroid-ready     text eol=lf
+build-rootfs/files/usr/local/lib/ldroid/ldroid-migrate   text eol=lf
+build-rootfs/files/usr/local/lib/ldroid/ldroid-xvnc      text eol=lf
+build-rootfs/files/usr/local/bin/ldroid-getty            text eol=lf
+build-rootfs/files/usr/local/bin/ldroid-login            text eol=lf
+build-rootfs/files/usr/local/bin/ldroid-resize           text eol=lf
+build-rootfs/files/usr/local/bin/ldroid-docs             text eol=lf
+build-rootfs/files/etc/ldroid/forwards.conf              text eol=lf
+*.service                                                text eol=lf
 
 # Binary assets — never convert
 *.squashfs      binary
