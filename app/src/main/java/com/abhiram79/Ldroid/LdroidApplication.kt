@@ -99,7 +99,7 @@ class LdroidApplication : Application() {
                 { copyAssetDir("qemu", filesDir, forceCopy) },
                 { copyAssetIfNeeded("vmlinuz-virt", File(filesDir, "vmlinuz-virt"), forceCopy) },
                 { copyAssetIfNeeded("initrd.img", File(filesDir, "initrd.img"), forceCopy) },
-                { copyAssetIfNeeded("alpine-rootfs.squashfs", File(filesDir, "alpine-rootfs.squashfs"), forceCopy) },
+                { copyAssetIfNeeded("debian-rootfs.squashfs", File(filesDir, "debian-rootfs.squashfs"), forceCopy) },
             )
             // runTasks waits for every task so one failed asset does not leave
             // the rest of the extraction work or its executor behind.
