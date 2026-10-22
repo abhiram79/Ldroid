@@ -1,6 +1,6 @@
 # ─────────────────────────────────────────────────────────────────────────────
 # Ldroid Unified Dockerfile
-# Combines Custom Kernel, Initramfs (Alpine VM) and QEMU (Android ARM64) builds.
+# Combines Custom Kernel, Initramfs (Debian VM) and QEMU (Android ARM64) builds.
 # ─────────────────────────────────────────────────────────────────────────────
 
 # ==============================================================================
@@ -185,32 +185,26 @@ RUN mkdir -p /output \
     && cp linux-${KERNEL_VERSION}/arch/arm64/boot/Image.gz /output/vmlinuz-virt
 
 # ==============================================================================
-# SECTION 1: Initramfs (Alpine VM) Build
+# SECTION 1: Initramfs (Debian VM) Build
 # ==============================================================================
 
-# Stage 1: Download Alpine aarch64 artifacts
-FROM alpine:3.24 AS downloader
-RUN apk add --no-cache wget cpio gzip tar xorriso
-WORKDIR /downloads
-RUN wget -q https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/aarch64/alpine-netboot-3.24.1-aarch64.tar.gz \
-    && mkdir -p /netboot && tar -xf alpine-netboot-3.24.1-aarch64.tar.gz -C /netboot
-RUN wget -q https://dl-cdn.alpinelinux.org/alpine/v3.24/releases/aarch64/alpine-virt-3.24.1-aarch64.iso \
-    && mkdir -p /iso && xorriso -osirrox on -indev alpine-virt-3.24.1-aarch64.iso -extract / /iso 2>/dev/null || true
-
-# Stage 2: Build the custom rootfs (aarch64) — no linux-virt; modules come from kernel-builder
-FROM --platform=linux/arm64/v8 alpine:3.24 AS rootfs-builder
-RUN apk update && apk add --no-cache \
-    bash busybox busybox-extras ttyd podman \
-    netavark aardvark-dns fuse-overlayfs slirp4netns iptables ip6tables \
-    shadow-uidmap ca-certificates crun curl e2fsprogs e2fsprogs-extra util-linux openrc \
-    dropbear ncurses-terminfo-base musl-locales kmod fastfetch
+# Stage 1: Build the Debian aarch64 initramfs userland. The initramfs only
+# needs the mount/fsck/switch_root toolchain; the full Debian userland is
+# supplied by the rootfs squashfs.
+FROM --platform=linux/arm64/v8 debian:bookworm AS rootfs-builder
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    bash ca-certificates e2fsprogs kmod util-linux mount \
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/* \
+              /usr/share/man /usr/share/doc /usr/share/locale
 COPY init-ldroid /init
 RUN chmod +x /init
-RUN rm -rf /var/cache/apk/* /tmp/* /var/tmp/* /usr/share/man /usr/share/doc
 
-# Stage 3: Pack Initramfs
-FROM alpine:3.24 AS packer
-RUN apk add --no-cache cpio gzip findutils
+# Stage 2: Pack Initramfs
+FROM debian:bookworm AS packer
+ENV DEBIAN_FRONTEND=noninteractive
+RUN apt-get update && apt-get install -y --no-install-recommends cpio gzip findutils \
+    && rm -rf /var/lib/apt/lists/* /var/cache/apt/*
 COPY --from=kernel-builder /output/vmlinuz-virt /output/vmlinuz-virt
 COPY --from=rootfs-builder / /rootfs/
 # Install kernel modules matching the custom kernel
