@@ -923,7 +923,7 @@ class AvfEngine @Inject constructor(
      * Creates (or resizes) the persistent storage disk. Mirrors QemuEngine's
      * helper exactly so a VM can boot under either backend with the same
      * disk identity. The file is sparse — the actual disk allocation grows
-     * as the guest writes blocks. Alpine's init formats it ext4 on first
+     * as the guest writes blocks. Debian's init formats it ext4 on first
      * boot via the standard initramfs path.
      */
     private fun ensureStorageImage(storageSizeGb: Int): File {
@@ -1024,7 +1024,7 @@ class AvfEngine @Inject constructor(
             require(it.exists()) { "initrd missing at ${it.absolutePath}" }
         }
         val storage = ensureStorageImage(config.storageSizeGb)
-        val squashfs = File(context.filesDir, "alpine-rootfs.squashfs").also {
+        val squashfs = File(context.filesDir, "debian-rootfs.squashfs").also {
             require(it.exists()) { "rootfs missing at ${it.absolutePath}" }
         }
 
