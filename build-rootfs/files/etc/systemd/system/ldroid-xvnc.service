@@ -1,0 +1,14 @@
+[Unit]
+Description=LDroid X11 server (Xvnc)
+After=ldroid-bootstrap.service
+Wants=ldroid-bootstrap.service
+Before=ldroid-ready.service
+
+[Service]
+Type=simple
+ExecStart=/usr/local/lib/ldroid/ldroid-xvnc
+Restart=always
+RestartSec=1
+
+[Install]
+WantedBy=multi-user.target
