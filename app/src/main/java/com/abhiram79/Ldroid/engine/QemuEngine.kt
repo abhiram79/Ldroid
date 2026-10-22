@@ -535,7 +535,7 @@ class QemuEngine @Inject constructor(
         // pauth-impdef swaps QEMU's slow QARMA5 PAuth for a fast non-crypto impl. The 50%
         // figure quoted upstream does not show up here: measured against a QARMA5 control
         // it is worth a few percent on xz and bc and nothing on boot or sha256, because
-        // the Alpine musl userspace is not built with PAC branch protection. Still free.
+        // the Debian glibc userspace is not built with PAC branch protection. Still free.
         args += "-cpu"; args += "max,pauth-impdef=on"
         val tbSizeMb = if (config.ramMb >= 2048) 512 else 256
         // thread=multi: one host thread per vCPU; larger tb-size reduces re-translation for JIT-heavy guests.
@@ -587,7 +587,7 @@ class QemuEngine @Inject constructor(
             args += "-drive";  args += "file=${storagePath.absolutePath},if=none,id=drive1,format=raw,cache=writeback,aio=threads,discard=unmap,detect-zeroes=unmap"
         }
 
-        val rootfsImg = File(context.filesDir, "alpine-rootfs.squashfs")
+        val rootfsImg = File(context.filesDir, "debian-rootfs.squashfs")
         if (rootfsImg.exists()) {
             // Dedicated iothread for the read-only squashfs so its decompression
             // reads don't queue behind storage.img writes on iothread0.
