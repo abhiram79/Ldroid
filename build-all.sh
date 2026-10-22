@@ -176,8 +176,8 @@ deploy_apk() {
 }
 
 run_boot_test() {
-    local pkg="com.excp.podroid.debug"
-    local activity="com.excp.podroid.MainActivity"
+    local pkg="com.abhiram79.Ldroid.debug"
+    local activity="com.abhiram79.Ldroid.MainActivity"
     local timeout=60
     
     log "Starting Automated Boot Test..."

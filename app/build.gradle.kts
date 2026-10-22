@@ -14,7 +14,7 @@ plugins {
 val podroidQemuVersion = providers.gradleProperty("podroidQemuVersion").get()
 
 android {
-    namespace = "com.excp.podroid"
+    namespace = "com.abhiram79.Ldroid"
     compileSdk {
         version = release(36) {
             minorApiLevel = 1
@@ -22,11 +22,11 @@ android {
     }
 
     defaultConfig {
-        applicationId = "com.excp.podroid"
+        applicationId = "com.abhiram79.Ldroid"
         minSdk = 26
         targetSdk = 36
-        versionCode = 34
-        versionName = "1.3.0"
+        versionCode = 1
+        versionName = "1.0"
         buildConfigField("String", "QEMU_VERSION", "\"$podroidQemuVersion\"")
 
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
