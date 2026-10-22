@@ -1039,11 +1039,11 @@ class AvfEngine @Inject constructor(
         // memory speed. setConsoleInputDevice(hvc0) tells AVF to wire its
         // captured input/output streams to hvc0; `console=hvc0` in the
         // kernel cmdline routes kernel logs the same way; the guest's
-        // /etc/inittab spawns the getty on the device named by the
-        // `ldroid.tty=` marker.
+        // ldroid-getty@.service instances spawn the getty on the device
+        // named by the `ldroid.tty=` marker.
         //
         // `ldroid.backend=avf` is a stable backend identifier — used by
-        // guest OpenRC scripts (ldroid-network, ldroid-vsock) to pick
+        // guest systemd services (ldroid-network, ldroid-vsock) to pick
         // AVF-specific behaviour without coupling to the tty choice.
         //
         // `ldroid.epoch=...` seeds the wall clock — AVF/crosvm doesn't
