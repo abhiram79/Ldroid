@@ -64,7 +64,7 @@ class VsockControlChannel(
 
     /**
      * Open the connection. The guest agent may not be ready immediately after
-     * VM Running fires (OpenRC sequencing), so we retry on a short backoff.
+     * VM Running fires (systemd sequencing), so we retry on a short backoff.
      * Commands enqueued via sendResize/addForward/removeForward before connect
      * succeeds are buffered and flushed in order on first success.
      */
