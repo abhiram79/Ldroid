@@ -581,7 +581,7 @@ private fun AboutSection(
     LdroidListRow(label = stringResource(R.string.version_label), value = "v${BuildConfig.VERSION_NAME}", mono = true)
     LdroidListRow(label = stringResource(R.string.qemu_label), value = "v${BuildConfig.QEMU_VERSION}", mono = true)
     LdroidListRow(label = stringResource(R.string.architecture), value = "AArch64", mono = true)
-    LdroidListRow(label = stringResource(R.string.linux_distro), value = "Alpine 3.24", mono = true)
+    LdroidListRow(label = stringResource(R.string.linux_distro), value = "Debian 12 (bookworm)", mono = true)
     Spacer(Modifier.height(LdroidTokens.Spacing.MD))
     val uriHandler = LocalUriHandler.current
     LdroidGhostButton(
