@@ -3,8 +3,8 @@
   Ldroid - Rootless Podman for Android
   Copyright (C) 2024-2026 Ldroid contributors
 
-  A headless AArch64 QEMU micro-VM running Alpine Linux with Podman,
-  exposed via ttyd web terminal.
+  A headless AArch64 QEMU micro-VM running Debian Linux,
+  exposed via the built-in serial terminal.
 
   This program is free software; you can redistribute it and/or modify
   it under the terms of the GNU General Public License as published by
@@ -139,7 +139,7 @@
             android:foregroundServiceType="specialUse">
             <property
                 android:name="android.app.PROPERTY_SPECIAL_USE_FGS_SUBTYPE"
-                android:value="Podman emulation via QEMU" />
+                android:value="Debian Linux via QEMU" />
         </service>
 
         <!--
