@@ -27,7 +27,7 @@ local.properties
 /qemu-build/
 
 # Docker/initramfs build intermediates
-/alpine-rootfs/
+/debian-rootfs/
 /config-temp/
 *.tar.gz
 config.log
@@ -39,7 +39,7 @@ config.log
 # Generated assets (built by docker-build-initramfs.sh)
 app/src/main/assets/vmlinuz-virt
 app/src/main/assets/initrd.img
-app/src/main/assets/alpine-rootfs.squashfs
+app/src/main/assets/debian-rootfs.squashfs
 app/src/main/jniLibs/arm64-v8a/libqemu-system-aarch64.so
 app/src/main/jniLibs/arm64-v8a/libslirp.so
 app/src/main/jniLibs/arm64-v8a/libldroid-bridge.so
@@ -55,7 +55,7 @@ docs/superpowers/
 /captures/
 app/src/main/jniLibs/
 
-# Alpine Linux rootfs directories (generated during Docker build)
+# Debian rootfs directories (generated during Docker build)
 /bin/
 /etc/
 /lib/
