@@ -1,5 +1,5 @@
 # build-rootfs/vsock-agent/Makefile
-# glibc-static aarch64 build. Invoked from Dockerfile.rootfs's vsock-builder stage.
+# glibc-static aarch64 build. Invoked from Dockerfile.rootfs's helper-builder stage.
 CC      ?= gcc
 # Hardening: the agent parses untrusted host-controlled vsock control lines.
 # -fstack-protector-strong + FORTIFY are defense-in-depth (FORTIFY needs -O,
